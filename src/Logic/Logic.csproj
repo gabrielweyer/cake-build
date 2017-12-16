@@ -3,6 +3,12 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <AssemblyName>Contoso.Hello.Logic</AssemblyName>
     <RootNamespace>Contoso.Hello.Logic</RootNamespace>
+    <PackageId>Contoso.Hello.Logic</PackageId>
+    <Authors>Gabriel Weyer</Authors>
+    <Description>An incredible greeting function!</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>Logic</PackageTags>
+    <RepositoryUrl>https://github.com/gabrielweyer/cake-build</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />

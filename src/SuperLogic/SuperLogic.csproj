@@ -3,6 +3,12 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <AssemblyName>Contoso.Hello.SuperLogic</AssemblyName>
     <RootNamespace>Contoso.Hello.SuperLogic</RootNamespace>
+    <PackageId>Contoso.Hello.SuperLogic</PackageId>
+    <Authors>Gabriel Weyer</Authors>
+    <Description>An even more incredible greeting function!</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>Super Logic;Logic</PackageTags>
+    <RepositoryUrl>https://github.com/gabrielweyer/cake-build</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logic\Logic.csproj" />

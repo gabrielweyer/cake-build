@@ -86,7 +86,9 @@ Task("Pack")
         Configuration = configuration,
         NoBuild = true,
         OutputDirectory = packagesDir,
-        MSBuildSettings = new DotNetCoreMSBuildSettings().WithProperty("PackageVersion", new [] { packageVersion })
+        MSBuildSettings = new DotNetCoreMSBuildSettings()
+            .WithProperty("PackageVersion", new [] { packageVersion })
+            .WithProperty("Copyright", new [] { $"Copyright Contoso {DateTime.Now.Year}" })
     };
 
     var projectFiles = GetFiles("./src/*/*.csproj");
