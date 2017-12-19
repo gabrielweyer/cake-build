@@ -39,6 +39,9 @@ Task("SemVer")
     var gitVersion = GitVersion();
     assemblyVersion = gitVersion.AssemblySemVer;
     packageVersion = gitVersion.NuGetVersion;
+
+    Information($"AssemblySemVer: {assemblyVersion}");
+    Information($"NuGetVersion: {packageVersion}");
 });
 
 Task("Build")
@@ -68,12 +71,9 @@ Task("Tests")
         ArgumentCustomization = args => args.Append("--results-directory=" + testsResultsDir)
     };
 
-    var projectFiles = GetFiles("./tests/*/*Tests.csproj");
-
-    foreach(var file in projectFiles)
-    {
-        DotNetCoreTest(file.FullPath, settings);
-    }
+    GetFiles("./tests/*/*Tests.csproj")
+        .ToList()
+        .ForEach(f => DotNetCoreTest(f.FullPath, settings));
 });
 
 Task("Pack")
@@ -86,17 +86,15 @@ Task("Pack")
         Configuration = configuration,
         NoBuild = true,
         OutputDirectory = packagesDir,
+        ArgumentCustomization = args => args.Append("--no-restore"),
         MSBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("PackageVersion", new [] { packageVersion })
-            .WithProperty("Copyright", new [] { $"Copyright Contoso {DateTime.Now.Year}" })
+            .WithProperty("PackageVersion", packageVersion)
+            .WithProperty("Copyright", $"Copyright Contoso {DateTime.Now.Year}")
     };
 
-    var projectFiles = GetFiles("./src/*/*.csproj");
-
-    foreach(var file in projectFiles)
-    {
-        DotNetCorePack(file.FullPath, settings);
-    }
+    GetFiles("./src/*/*.csproj")
+        .ToList()
+        .ForEach(f => DotNetCorePack(f.FullPath, settings));
 });
 
 Task("Default")
