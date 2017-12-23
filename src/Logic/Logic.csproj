@@ -6,7 +6,6 @@
     <PackageId>Contoso.Hello.Logic</PackageId>
     <Authors>Gabriel Weyer</Authors>
     <Description>An incredible greeting function!</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>Logic</PackageTags>
     <RepositoryUrl>https://github.com/gabrielweyer/cake-build</RepositoryUrl>
   </PropertyGroup>
