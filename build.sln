@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperLogic", "src\SuperLogi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloTests", "tests\HelloTests\HelloTests.csproj", "{404F7BE6-7A0D-4F36-9992-5F19DD864FCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtraLogic", "src\ExtraLogic\ExtraLogic.csproj", "{8CD7623E-BF7A-431C-8795-8958E34DD981}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{404F7BE6-7A0D-4F36-9992-5F19DD864FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{404F7BE6-7A0D-4F36-9992-5F19DD864FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{404F7BE6-7A0D-4F36-9992-5F19DD864FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CD7623E-BF7A-431C-8795-8958E34DD981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CD7623E-BF7A-431C-8795-8958E34DD981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CD7623E-BF7A-431C-8795-8958E34DD981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CD7623E-BF7A-431C-8795-8958E34DD981}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

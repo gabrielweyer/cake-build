@@ -17,6 +17,36 @@ I tried to create a somewhat realistic scenario without writing too much code:
 - A single file describing the package and the project instead of two (`*.csproj` and `*.nuspec`)
 - References (projects or `Nuget` packages) are resolved automatically. There is no need to tweak a file manually anymore!
 
+## Referencing a project without turning it into a package reference
+
+The `SuperLogic` project depends on the `ExtraLogic` project but we don't want to ship `ExtraLogic` as a package. Instead we want to include `Contoso.Hello.ExtraLogic.dll` in the `SuperLogic` package directly. Currently this is not supported out of the box but the team is [tracking it][pack-issues].
+
+Luckily [this issue][project-reference-dll-issue] provides a workaround. All the modifications will take place in `SuperLogic.csproj`.
+
+- In the `<PropertyGroup>` section add the following line:
+
+```xml
+<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeReferencedProjectInPackage</TargetsForTfmSpecificBuildOutput>
+```
+
+- Prevent the project to be added as a package reference by making [all assets private][private-assets].
+
+```xml
+<ProjectReference Include="..\ExtraLogic\ExtraLogic.csproj">
+  <PrivateAssets>all</PrivateAssets>
+</ProjectReference>
+```
+
+- Finally add the target responsible of copying the `DLL`:
+
+```xml
+<Target Name="IncludeReferencedProjectInPackage">
+  <ItemGroup>
+    <BuildOutputInPackage Include="$(OutputPath)Contoso.Hello.ExtraLogic.dll" />
+  </ItemGroup>
+</Target>
+```
+
 ## Pinning the version of Cake
 
 To pin the version of `Cake`, add the following lines to your `.gitignore` file:
@@ -40,3 +70,6 @@ Pinning the version of `Cake` guarantees you'll be using the same version of `Ca
 [build-cake]: build.cake
 [semver]: https://semver.org/
 [git-version]: https://gitversion.readthedocs.io/en/latest/
+[pack-issues]: https://github.com/NuGet/Home/issues/6285
+[project-reference-dll-issue]: https://github.com/NuGet/Home/issues/3891
+[private-assets]: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#includeassets-excludeassets-and-privateassets

@@ -9,8 +9,17 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>Super Logic;Logic</PackageTags>
     <RepositoryUrl>https://github.com/gabrielweyer/cake-build</RepositoryUrl>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeReferencedProjectInPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExtraLogic\ExtraLogic.csproj">
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
     <ProjectReference Include="..\Logic\Logic.csproj" />
   </ItemGroup>
+  <Target Name="IncludeReferencedProjectInPackage">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)Contoso.Hello.ExtraLogic.dll" />
+    </ItemGroup>
+  </Target>
 </Project>

@@ -1,4 +1,5 @@
 ﻿using Contoso.Hello.Logic;
+using ExtraLogic;
 
 namespace Contoso.Hello.SuperLogic
 {
@@ -6,7 +7,7 @@ namespace Contoso.Hello.SuperLogic
     {
         public static string DoWork()
         {
-            return $"Some JSON (maybe): {ReallyUseless.SayHi()}";
+            return IncrediblyUseless.DoNothing($"Some JSON (maybe): {ReallyUseless.SayHi()}");
         }
     }
 }
