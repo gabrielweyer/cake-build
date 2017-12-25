@@ -1,5 +1,3 @@
-#tool "nuget:?package=GitVersion.CommandLine&version=3.6.5"
-
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
@@ -36,12 +34,19 @@ Task("SemVer")
     .IsDependentOn("Restore")
     .Does(() =>
 {
-    var gitVersion = GitVersion();
-    assemblyVersion = gitVersion.AssemblySemVer;
-    packageVersion = gitVersion.NuGetVersion;
+    SemVer();
 
-    Information($"AssemblySemVer: {assemblyVersion}");
-    Information($"NuGetVersion: {packageVersion}");
+    // GitVersion gitVersion = GitVersion(new GitVersionSettings
+    // {
+    //     OutputType = GitVersionOutput.Json,
+    //     ToolPath = @"tools\GitVersion.CommandLine\tools\GitVersion.exe"
+    // });
+
+    // assemblyVersion = gitVersion.AssemblySemVer;
+    // packageVersion = gitVersion.NuGetVersion;
+
+    // Information($"AssemblySemVer: {assemblyVersion}");
+    // Information($"NuGetVersion: {packageVersion}");
 });
 
 Task("Build")
@@ -105,3 +110,46 @@ Task("Default")
     .IsDependentOn("Pack");
 
 RunTarget(target);
+
+private void SemVer()
+{
+    IEnumerable<string> redirectedStandardOutput;
+    IEnumerable<string> redirectedStandardError;
+
+    try
+    {
+        var exitCode = StartProcess(
+            "mono",
+            new ProcessSettings
+            {
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                Arguments = "\"tools/GitVersion.CommandLine/tools/GitVersion.exe\" -l console -nofetch"
+            },
+            out redirectedStandardOutput,
+            out redirectedStandardError);
+
+        if (exitCode != 0)
+        {
+            var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
+            Error($"Semver: {error}");
+            throw new InvalidOperationException();
+        }
+    }
+    catch (System.Exception ex)
+    {
+        Error($"Exception {ex.GetType()} - {ex.Message} - {ex.StackTrace} - Has inner exception {ex.InnerException != null}");
+        throw;
+    }
+
+    var json = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
+    Information($"Json returned by GitVersion: {json}");
+
+    var gitVersion = Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
+
+    assemblyVersion = gitVersion.AssemblySemVer;
+    packageVersion = gitVersion.NuGetVersion;
+
+    Information($"AssemblySemVer: {assemblyVersion}");
+    Information($"NuGetVersion: {packageVersion}");
+}
