@@ -100,7 +100,7 @@ $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
 $ADDINS_DIR = Join-Path $TOOLS_DIR "Addins"
 $MODULES_DIR = Join-Path $TOOLS_DIR "Modules"
 $NUGET_EXE = Join-Path $TOOLS_DIR "nuget.exe"
-$CAKE_EXE = Join-Path $TOOLS_DIR "Cake/Cake.exe"
+$CAKE_DLL = Join-Path $TOOLS_DIR "Cake.CoreCLR/Cake.dll"
 $NUGET_URL = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 $PACKAGES_CONFIG = Join-Path $TOOLS_DIR "packages.config"
 $PACKAGES_CONFIG_MD5 = Join-Path $TOOLS_DIR "packages.config.md5sum"
@@ -211,11 +211,9 @@ if (Test-Path $MODULES_PACKAGES_CONFIG) {
 }
 
 # Make sure that Cake has been installed.
-if (!(Test-Path $CAKE_EXE)) {
-    Throw "Could not find Cake.exe at $CAKE_EXE"
+if (!(Test-Path $CAKE_DLL)) {
+    Throw "Could not find Cake.dll at $CAKE_DLL"
 }
-
-
 
 # Build Cake arguments
 $cakeArguments = @("$Script");
@@ -230,5 +228,5 @@ $cakeArguments += $ScriptArgs
 
 # Start Cake
 Write-Host "Running build script..."
-&$CAKE_EXE $cakeArguments
+&dotnet $CAKE_DLL $cakeArguments
 exit $LASTEXITCODE
