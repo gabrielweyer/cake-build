@@ -52,7 +52,11 @@ Task("Build")
     {
         Configuration = configuration,
         NoIncremental = true,
-        MSBuildSettings = new DotNetCoreMSBuildSettings().SetVersion(assemblyVersion),
+        MSBuildSettings = new DotNetCoreMSBuildSettings()
+            .SetVersion(assemblyVersion)
+            .WithProperty("FileVersion", packageVersion)
+            .WithProperty("InformationalVersion", packageVersion)
+            .WithProperty("nowarn", "7035"),
         ArgumentCustomization = args => args.Append("--no-restore")
     };
 
