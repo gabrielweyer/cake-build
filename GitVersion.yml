@@ -1,0 +1,5 @@
+branches:
+  features?[/-]:
+    mode: ContinuousDeployment
+ignore:
+  sha: []

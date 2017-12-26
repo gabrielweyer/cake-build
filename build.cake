@@ -35,18 +35,6 @@ Task("SemVer")
     .Does(() =>
 {
     SemVer();
-
-    // GitVersion gitVersion = GitVersion(new GitVersionSettings
-    // {
-    //     OutputType = GitVersionOutput.Json,
-    //     ToolPath = @"tools\GitVersion.CommandLine\tools\GitVersion.exe"
-    // });
-
-    // assemblyVersion = gitVersion.AssemblySemVer;
-    // packageVersion = gitVersion.NuGetVersion;
-
-    // Information($"AssemblySemVer: {assemblyVersion}");
-    // Information($"NuGetVersion: {packageVersion}");
 });
 
 Task("Build")
@@ -65,7 +53,24 @@ Task("Build")
         ArgumentCustomization = args => args.Append("--no-restore")
     };
 
-    DotNetCoreBuild(solutionPath, settings);
+    if (TravisCI.IsRunningOnTravisCI)
+    {
+        settings.Framework = "netstandard2.0";
+
+        GetFiles("./src/*/*.csproj")
+        .ToList()
+        .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
+
+        settings.Framework = "netcoreapp2.0";
+
+        GetFiles("./tests/*/*Tests.csproj")
+            .ToList()
+            .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
+    }
+    else
+    {
+        DotNetCoreBuild(solutionPath, settings);
+    }
 });
 
 Task("Tests")
@@ -77,8 +82,15 @@ Task("Tests")
         Configuration = configuration,
         NoBuild = true,
         Logger = "trx",
-        ArgumentCustomization = args => args.Append("--results-directory=" + testsResultsDir)
+        ArgumentCustomization = args => args
+            .Append("--results-directory=" + testsResultsDir)
+            .Append("--no-restore")
     };
+
+    if (TravisCI.IsRunningOnTravisCI)
+    {
+        settings.Framework = "netcoreapp2.0";
+    }
 
     GetFiles("./tests/*/*Tests.csproj")
         .ToList()
@@ -101,6 +113,11 @@ Task("Pack")
             .WithProperty("Copyright", $"Copyright Contoso {DateTime.Now.Year}")
     };
 
+    if (TravisCI.IsRunningOnTravisCI)
+    {
+        settings.MSBuildSettings.WithProperty("TargetFrameworks", "netstandard2.0");
+    }
+
     GetFiles("./src/*/*.csproj")
         .ToList()
         .ForEach(f => DotNetCorePack(f.FullPath, settings));
@@ -118,13 +135,25 @@ private void SemVer()
 
     try
     {
+        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/GitVersion.CommandLine/tools/GitVersion.exe").ToString();
+
+        var binary = gitVersionBinaryPath;
+        var arguments =  new ProcessArgumentBuilder()
+                    .Append("-nofetch");
+
+        if (TravisCI.IsRunningOnTravisCI)
+        {
+            binary = "mono";
+            arguments.PrependQuoted(gitVersionBinaryPath);
+        }
+
         var exitCode = StartProcess(
-            "mono",
+            binary,
             new ProcessSettings
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                Arguments = "\"tools/GitVersion.CommandLine/tools/GitVersion.exe\" -l console -nofetch"
+                Arguments = arguments
             },
             out redirectedStandardOutput,
             out redirectedStandardError);
@@ -143,8 +172,6 @@ private void SemVer()
     }
 
     var json = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
-    Information($"Json returned by GitVersion: {json}");
-
     var gitVersion = Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
 
     assemblyVersion = gitVersion.AssemblySemVer;
