@@ -2,7 +2,8 @@
 
 | CI | Status | Platform | Framework(s)
 | --- | --- | --- | --- |
-| [Travis](#Travis-CI) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux` | `nestandard2.0`, `netcoreapp2.0`
+| [Travis CI](#travis-ci) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux` | `nestandard2.0`, `netcoreapp2.0` |
+| [AppVeyor](#appveyor) | N/A | `Windows` | `nestandard2.0`, `netcoreapp2.0`, `net461` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -81,6 +82,15 @@ Each commit triggers a build on [Travis CI][travis-ci]. `Travis CI` has a few li
 - Doesn't parse test result files
 - [Artefacts][travis-artefacts] have to be uploaded to `S3`
 
+## AppVeyor
+
+Each commit triggers a build on [AppVeyor][app-veyor].
+
+- `Windows` only
+- Can target both `.NET Core` and `.NET Framework`
+  - For this reason we'll publish the `NuGet` packages using `AppVeyor`
+- Can create a `GitHub` release and `tag` the `repository` if required
+
 [cake]: https://cakebuild.net/
 [build-ps1]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
 [nuget-org]: https://www.nuget.org/
@@ -93,3 +103,4 @@ Each commit triggers a build on [Travis CI][travis-ci]. `Travis CI` has a few li
 [travis-ci]: https://travis-ci.org/gabrielweyer/cake-build
 [travis-artefacts]: https://docs.travis-ci.com/user/uploading-artifacts/
 [build-sh]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
+[app-veyor]: https://ci.appveyor.com/project/GabrielWeyer/cake-build
