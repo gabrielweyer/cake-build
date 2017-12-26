@@ -11,4 +11,5 @@ bin/
 
 tools/*
 !tools/packages.config
+!tools/dotnet-install.sh
 artefacts/

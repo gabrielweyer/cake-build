@@ -1,0 +1,22 @@
+language: csharp
+# Needed for NuGet.exe and GitVersion.exe
+mono: latest
+# SDK version
+dotnet: 2.1.3
+branches:
+  only:
+  - master
+  # We'll also build whenever there is a new commit on any branch starting with `features/`
+  - /features\/.+/
+before_install:
+  # Make shell scripts executable
+  - chmod +x tools/dotnet-install.sh
+  - chmod +x ./build.sh
+install:
+  # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
+  # `Cake.dll` is targeting `.NET Core` `1.0.3`, so we need to install the latest `1.0.x` runtime
+  # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
+  # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
+  - tools/dotnet-install.sh --shared-runtime --version 1.0.8
+script:
+  - ./build.sh --pack
