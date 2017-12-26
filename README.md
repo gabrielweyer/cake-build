@@ -1,5 +1,9 @@
 # Cake build
 
+| CI | Status | Platform | Framework(s)
+| --- | --- | --- | --- |
+| [Travis](#Travis-CI) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux` | `nestandard2.0`, `netcoreapp2.0`
+
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
 I tried to create a somewhat realistic scenario without writing too much code:
@@ -10,7 +14,7 @@ I tried to create a somewhat realistic scenario without writing too much code:
 - The projects target both `nestandard2.0` and `net461` so they can be used with the `.NET Framework`.
 - The solution contains a test project.
 - Use [`SemVer`][semver] to version the `DLLs` and the `NuGet package`
-  - *Note*: `SemVer` is implemented via [`GitVersion`][git-version]
+  - **Note**: `SemVer` is implemented via [`GitVersion`][git-version]
 
 ## Benefits over a nuspec file
 
@@ -64,6 +68,19 @@ Pinning the version of `Cake` guarantees you'll be using the same version of `Ca
 - Copy [`build.cake`][build-cake] into the root of your directory
 - [Pin](#Pinning-the-version-of-Cake) the version of `Cake`
 
+## Travis CI
+
+Each commit triggers a build on [Travis CI][travis-ci]. `Travis CI` has a few limitations:
+
+- `Linux` only so you can't build any `net*` `Framework`
+  - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
+  - `build.sh` (the [Cake bootstrapper][build-sh]) has been modified to support `Cake Core CLR`
+  - `build.cake` has been modified
+    - Targets `netstandard2.0` / `netcoreapp2.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
+    - Custom implementation of `GitVersion` (search for `SemVer`), the built-in helper wouldn't work on `mono`
+- Doesn't parse test result files
+- [Artefacts][travis-artefacts] have to be uploaded to `S3`
+
 [cake]: https://cakebuild.net/
 [build-ps1]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
 [nuget-org]: https://www.nuget.org/
@@ -73,3 +90,6 @@ Pinning the version of `Cake` guarantees you'll be using the same version of `Ca
 [pack-issues]: https://github.com/NuGet/Home/issues/6285
 [project-reference-dll-issue]: https://github.com/NuGet/Home/issues/3891
 [private-assets]: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#includeassets-excludeassets-and-privateassets
+[travis-ci]: https://travis-ci.org/gabrielweyer/cake-build
+[travis-artefacts]: https://docs.travis-ci.com/user/uploading-artifacts/
+[build-sh]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1

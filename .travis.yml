@@ -1,7 +1,7 @@
 language: csharp
-# Needed for NuGet.exe and GitVersion.exe
+# Needed for `NuGet.exe` and `GitVersion.exe`
 mono: latest
-# SDK version
+# SDK version, based on the targeted `netstandard` / `netcoreapp` version in the projects
 dotnet: 2.1.3
 branches:
   only:
@@ -9,7 +9,8 @@ branches:
   # We'll also build whenever there is a new commit on any branch starting with `features/`
   - /features\/.+/
 install:
-  # We're cloning the entire repository so that GitVersion can do its thing
+  # We're cloning the entire repository so that GitVersion can do its thing (by default Travis
+  # is only getting a few commits)
   - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
   - cd $TRAVIS_REPO_SLUG
   - git checkout -qf $TRAVIS_COMMIT
