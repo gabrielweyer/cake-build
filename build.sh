@@ -118,8 +118,5 @@ if [[ $TRAVIS == "true" ]]; then
     dotnet_binary="/home/travis/.dotnet/dotnet"
 fi
 
-GIT_VERSION_EXE=$TOOLS_DIR/GitVersion.CommandLine/tools/GitVersion.exe
-mono "$GIT_VERSION_EXE" -l console -nofetch
-
 # Start Cake
 exec "$dotnet_binary" "$CAKE_DLL" $SCRIPT "${CAKE_ARGUMENTS[@]}"

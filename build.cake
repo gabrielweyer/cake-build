@@ -35,18 +35,6 @@ Task("SemVer")
     .Does(() =>
 {
     SemVer();
-
-    // GitVersion gitVersion = GitVersion(new GitVersionSettings
-    // {
-    //     OutputType = GitVersionOutput.Json,
-    //     ToolPath = @"tools\GitVersion.CommandLine\tools\GitVersion.exe"
-    // });
-
-    // assemblyVersion = gitVersion.AssemblySemVer;
-    // packageVersion = gitVersion.NuGetVersion;
-
-    // Information($"AssemblySemVer: {assemblyVersion}");
-    // Information($"NuGetVersion: {packageVersion}");
 });
 
 Task("Build")
@@ -118,13 +106,27 @@ private void SemVer()
 
     try
     {
+        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/GitVersion.CommandLine/tools/GitVersion.exe").ToString();
+
+        Information($"GitVersion path: {gitVersionBinaryPath}");
+
+        var binary = gitVersionBinaryPath;
+        var arguments =  new ProcessArgumentBuilder()
+                    .Append("-nofetch");
+
+        if (TravisCI.IsRunningOnTravisCI)
+        {
+            binary = "mono";
+            arguments.PrependQuoted(gitVersionBinaryPath);
+        }
+
         var exitCode = StartProcess(
-            "mono",
+            binary,
             new ProcessSettings
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                Arguments = "\"tools/GitVersion.CommandLine/tools/GitVersion.exe\" -l console -nofetch"
+                Arguments = arguments
             },
             out redirectedStandardOutput,
             out redirectedStandardError);

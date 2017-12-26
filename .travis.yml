@@ -8,11 +8,14 @@ branches:
   - master
   # We'll also build whenever there is a new commit on any branch starting with `features/`
   - /features\/.+/
-before_install:
+install:
+  # We're cloning the entire repository so that GitVersion can do its thing
+  - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
+  - cd $TRAVIS_REPO_SLUG
+  - git checkout -qf $TRAVIS_COMMIT
   # Make shell scripts executable
   - chmod +x tools/dotnet-install.sh
   - chmod +x ./build.sh
-install:
   # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
   # `Cake.dll` is targeting `.NET Core` `1.0.3`, so we need to install the latest `1.0.x` runtime
   # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
