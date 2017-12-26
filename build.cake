@@ -163,7 +163,7 @@ Task("PublishAppVeyorArtifacts")
     .WithCriteria(() => HasArgument("pack") && AppVeyor.IsRunningOnAppVeyor)
     .Does(() =>
     {
-        CopyFiles($"packagesDir/*.nupkg", MakeAbsolute(Directory("./")), false);
+        CopyFiles($"{packagesDir}/*.nupkg", MakeAbsolute(Directory("./")), false);
 
         GetFiles($"./*.nupkg")
             .ToList()
