@@ -7,7 +7,7 @@
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
-I tried to create a somewhat realistic scenario without writing too much code:
+I tried to create a *somewhat* realistic scenario without writing too much code:
 
 - The solution contains two projects which will be packed as `NuGet` packages.
   - The `SuperLogic` project depends from `Logic` and when packing this project reference will be turned into a `NuGet` package reference (handled out of the box by `dotnet pack`).
@@ -67,7 +67,7 @@ Pinning the version of `Cake` guarantees you'll be using the same version of `Ca
 
 - Get the latest [`build.ps1`][build-ps1]
 - Copy [`build.cake`][build-cake] into the root of your directory
-- [Pin](#Pinning-the-version-of-Cake) the version of `Cake`
+- [Pin](#pinning-the-version-of-cake) the version of `Cake`
 
 ## CI
 
