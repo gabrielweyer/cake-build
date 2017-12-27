@@ -69,9 +69,24 @@ Pinning the version of `Cake` guarantees you'll be using the same version of `Ca
 - Copy [`build.cake`][build-cake] into the root of your directory
 - [Pin](#Pinning-the-version-of-Cake) the version of `Cake`
 
-## Travis CI
+## CI
 
-Each commit triggers a build on [Travis CI][travis-ci]. `Travis CI` has a few limitations:
+Each time a commit is pushed to `master` or `features/*` `Travis CI` and `AppVeyor` will build the changes.
+
+In case of a successful build `AppVeyor` will:
+
+- On `master`
+  - [Create][github-release] a `GitHub` **release**
+  - Publish the `NuGet` packages to `gabrielweyer` [feed][my-get-gabrielweyer-feed]
+- On `features/*`
+  - [Create][github-release] a `GitHub` **pre-release**
+  - Publish the `NuGet` packages to `gabrielweyer-pre-release` [feed][my-get-gabrielweyer-pre-release-feed]
+
+### Travis CI
+
+Build status is visible [here][travis-ci].
+
+`Travis CI` has a few limitations:
 
 - `Linux` only so you can't build any `net*` `Framework`
   - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
@@ -82,14 +97,16 @@ Each commit triggers a build on [Travis CI][travis-ci]. `Travis CI` has a few li
 - Doesn't parse test result files
 - [Artefacts][travis-artefacts] have to be uploaded to `S3`
 
-## AppVeyor
+### AppVeyor
 
-Each commit triggers a build on [AppVeyor][app-veyor].
+Build status is visible [here][app-veyor].
 
 - `Windows` only
 - Can target both `.NET Core` and `.NET Framework`
   - For this reason we'll publish the `NuGet` packages using `AppVeyor`
 - Can create a `GitHub` release and `tag` the `repository` if required
+- You can modify `AppVeyor`'s build number programatically
+  - `Cake` integrates with `AppVeyor`: publish test results, upload artifacts, update build number...
 
 [cake]: https://cakebuild.net/
 [build-ps1]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
@@ -104,3 +121,6 @@ Each commit triggers a build on [AppVeyor][app-veyor].
 [travis-artefacts]: https://docs.travis-ci.com/user/uploading-artifacts/
 [build-sh]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
 [app-veyor]: https://ci.appveyor.com/project/GabrielWeyer/cake-build
+[my-get-gabrielweyer-feed]: https://www.myget.org/feed/Packages/gabrielweyer
+[my-get-gabrielweyer-pre-release-feed]: https://www.myget.org/feed/Packages/gabrielweyer-pre-release
+[github-release]: https://github.com/gabrielweyer/cake-build/releases
