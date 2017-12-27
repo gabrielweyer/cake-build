@@ -100,24 +100,29 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var settings = new DotNetCoreTestSettings
-        {
-            Configuration = configuration,
-            NoBuild = true,
-            Logger = "trx",
-            ArgumentCustomization = args => args
-                .Append("--results-directory=" + testsResultsDir)
-                .Append("--no-restore")
-        };
+        var settings = new DotNetCoreToolSettings();
+
+        var argumentsBuilder = new ProcessArgumentBuilder()
+            .Append("-configuration")
+            .Append(configuration)
+            .Append("-nobuild");
 
         if (TravisCI.IsRunningOnTravisCI)
         {
-            settings.Framework = "netcoreapp2.0";
+            argumentsBuilder
+                .Append("-framework")
+                .Append("netcoreapp2.0");
         }
 
-        GetFiles("./tests/*/*Tests.csproj")
-            .ToList()
-            .ForEach(f => DotNetCoreTest(f.FullPath, settings));
+        var projectFiles = GetFiles("./tests/*/*Tests.csproj");
+
+        foreach (var projectFile in projectFiles)
+        {
+            var testResultsFile = testsResultsDir.Combine($"{projectFile.GetFilenameWithoutExtension()}.xml");
+            var arguments = $"{argumentsBuilder.Render()} -xml \"{testResultsFile}\"";
+
+            DotNetCoreTool(projectFile, "xunit", arguments, settings);
+        }
     });
 
 Task("PublishAppVeyorTestResults")
@@ -125,11 +130,11 @@ Task("PublishAppVeyorTestResults")
     .WithCriteria(() => AppVeyor.IsRunningOnAppVeyor)
     .Does(() =>
     {
-        var testResults = GetFiles($"{testsResultsDir}/*.trx");
+        var testResults = GetFiles($"{testsResultsDir}/*.xml");
 
         testResults
             .ToList()
-            .ForEach(f => AppVeyor.UploadTestResults(f, AppVeyorTestResultsType.MSTest));
+            .ForEach(f => AppVeyor.UploadTestResults(f, AppVeyorTestResultsType.XUnit));
     });
 
 Task("Pack")

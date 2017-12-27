@@ -1,9 +1,9 @@
 # Cake build
 
-| CI | Status | Platform | Framework(s)
-| --- | --- | --- | --- |
-| [Travis CI](#travis-ci) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux` | `nestandard2.0`, `netcoreapp2.0` |
-| [AppVeyor](#appveyor) | [![Build Status](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build) | `Windows` | `nestandard2.0`, `netcoreapp2.0`, `net461` |
+| CI | Status | Platform | Framework(s) | Tests |
+| --- | --- | --- | --- | --- |
+| [Travis CI](#travis-ci) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux` | `nestandard2.0` | `netcoreapp2.0.3` |
+| [AppVeyor](#appveyor) | [![Build Status](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build) | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.3`, `net461` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -12,15 +12,15 @@ I tried to create a *somewhat* realistic scenario without writing too much code:
 - The solution contains two projects which will be packed as `NuGet` packages.
   - The `SuperLogic` project depends from `Logic` and when packing this project reference will be turned into a `NuGet` package reference (handled out of the box by `dotnet pack`).
   - The `Logic` project references a `NuGet` package from [nuget.org][nuget-org] via a `PackageReference`, `dotnet pack` will turn this into a package reference.
-- The projects target both `nestandard2.0` and `net461` so they can be used with the `.NET Framework`.
+- The projects target both `nestandard2.0` and `net461` so they can be used with the `.NET Framework` (`net461` and above).
 - The solution contains a test project.
-- Use [`SemVer`][semver] to version the `DLLs` and the `NuGet package`
-  - **Note**: `SemVer` is implemented via [`GitVersion`][git-version]
+- Use [`SemVer`][semver] to version the `DLLs` and the `NuGet` packages.
+  - **Note**: `SemVer` is implemented via [`GitVersion`][git-version].
 
 ## Benefits over a nuspec file
 
 - A single file describing the package and the project instead of two (`*.csproj` and `*.nuspec`)
-- References (projects or `Nuget` packages) are resolved automatically. There is no need to tweak a file manually anymore!
+- References (projects or `NuGet` packages) are resolved automatically. There is no need to tweak a file manually anymore!
 
 ## Referencing a project without turning it into a package reference
 
@@ -77,10 +77,10 @@ In case of a successful build `AppVeyor` will:
 
 - On `master`
   - [Create][github-release] a `GitHub` **release**
-  - Publish the `NuGet` packages to `gabrielweyer` [feed][my-get-gabrielweyer-feed]
+  - Publish the `NuGet` packages (including symbols) to `gabrielweyer` [feed][my-get-gabrielweyer-feed]
 - On `features/*`
   - [Create][github-release] a `GitHub` **pre-release**
-  - Publish the `NuGet` packages to `gabrielweyer-pre-release` [feed][my-get-gabrielweyer-pre-release-feed]
+  - Publish the `NuGet` packages (including symbols) to `gabrielweyer-pre-release` [feed][my-get-gabrielweyer-pre-release-feed]
 
 ### Travis CI
 
@@ -88,7 +88,7 @@ Build status is visible [here][travis-ci].
 
 `Travis CI` has a few limitations:
 
-- `Linux` only so you can't build any `net*` `Framework`
+- `Linux` only so you can't build any `net*` `Framework`s
   - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
   - `build.sh` (the [Cake bootstrapper][build-sh]) has been modified to support `Cake Core CLR`
   - `build.cake` has been modified
@@ -105,6 +105,7 @@ Build status is visible [here][app-veyor].
 - Can target both `.NET Core` and `.NET Framework`
   - For this reason we'll publish the `NuGet` packages using `AppVeyor`
 - Can create a `GitHub` release and `tag` the `repository` if required
+- Supports artifacts and test results
 - You can modify `AppVeyor`'s build number programatically
   - `Cake` integrates with `AppVeyor`: publish test results, upload artifacts, update build number...
 
