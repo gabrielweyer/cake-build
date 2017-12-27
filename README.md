@@ -3,7 +3,7 @@
 | CI | Status | Platform | Framework(s)
 | --- | --- | --- | --- |
 | [Travis CI](#travis-ci) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux` | `nestandard2.0`, `netcoreapp2.0` |
-| [AppVeyor](#appveyor) | N/A | `Windows` | `nestandard2.0`, `netcoreapp2.0`, `net461` |
+| [AppVeyor](#appveyor) | [![Build Status](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build) | `Windows` | `nestandard2.0`, `netcoreapp2.0`, `net461` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
