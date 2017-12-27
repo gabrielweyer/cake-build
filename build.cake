@@ -154,6 +154,8 @@ Task("Pack")
             settings.MSBuildSettings.WithProperty("TargetFrameworks", "netstandard2.0");
         }
 
+        FixProps();
+
         GetFiles("./src/*/*.csproj")
             .ToList()
             .ForEach(f => DotNetCorePack(f.FullPath, settings));
@@ -221,4 +223,21 @@ private GitVersion SemVerForTravis()
 
     var json = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
     return Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
+}
+
+private void FixProps()
+{
+    /* Workaround this issue: https://github.com/NuGet/Home/issues/4337
+       `pack` does not respect the `Version` and ends up generating invalid
+       `NuGet` packages when same-solution project dependencies
+     */
+
+    var restoreSettings = new DotNetCoreRestoreSettings
+    {
+        MSBuildSettings = new DotNetCoreMSBuildSettings()
+            .WithProperty("Version", assemblyVersion)
+            .WithProperty("Configuration", configuration)
+    };
+
+    DotNetCoreRestore(restoreSettings);
 }
