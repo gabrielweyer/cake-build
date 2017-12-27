@@ -125,20 +125,8 @@ Task("Test")
         }
     });
 
-Task("PublishAppVeyorTestResults")
-    .IsDependentOn("Test")
-    .WithCriteria(() => AppVeyor.IsRunningOnAppVeyor)
-    .Does(() =>
-    {
-        var testResults = GetFiles($"{testsResultsDir}/*.xml");
-
-        testResults
-            .ToList()
-            .ForEach(f => AppVeyor.UploadTestResults(f, AppVeyorTestResultsType.XUnit));
-    });
-
 Task("Pack")
-    .IsDependentOn("PublishAppVeyorTestResults")
+    .IsDependentOn("Test")
     .WithCriteria(() => HasArgument("pack"))
     .Does(() =>
     {
