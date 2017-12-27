@@ -235,7 +235,7 @@ private void FixProps()
     var restoreSettings = new DotNetCoreRestoreSettings
     {
         MSBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("Version", assemblyVersion)
+            .WithProperty("Version", packageVersion)
             .WithProperty("Configuration", configuration)
     };
 
