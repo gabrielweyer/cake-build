@@ -46,7 +46,8 @@ deploy:
       # Encrypted `MyGet` token - https://www.myget.org/profile/Me#!/AccessTokens
       # https://www.appveyor.com/docs/deployment/nuget/#provider-settings
       secure: D6J2fOzbRRsUDeQyVwTszLd+whkulKX1ZO7neqUZs2hMGOMljvRrVpkPlqvKJA2E
-    skip_symbols: true
+    skip_symbols: false
+    symbol_server: https://www.myget.org/F/gabrielweyer/symbols/api/v2/package
     artifact: packages
     on:
       branch: master
@@ -56,7 +57,8 @@ deploy:
       # Encrypted `MyGet` token - https://www.myget.org/profile/Me#!/AccessTokens
       # https://www.appveyor.com/docs/deployment/nuget/#provider-settings
       secure: 5LLnFMrZETquTfl10cGML5CoozXgD0ULTWLlSjsi/oQi0XN0beUPM3O7Nsz8AK/d
-    skip_symbols: true
+    skip_symbols: false
+    symbol_server: https://www.myget.org/F/gabrielweyer-pre-release/symbols/api/v2/package
     artifact: packages
     on:
       branch: /features\/.+/

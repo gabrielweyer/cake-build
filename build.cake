@@ -141,6 +141,7 @@ Task("Pack")
         {
             Configuration = configuration,
             NoBuild = true,
+            IncludeSymbols = true,
             OutputDirectory = packagesDir,
             ArgumentCustomization = args => args.Append("--no-restore"),
             MSBuildSettings = new DotNetCoreMSBuildSettings()
