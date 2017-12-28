@@ -118,8 +118,10 @@ fi
 # not supported in Travis CI)
 dotnet_binary="dotnet"
 if [ $TRAVIS == "true" ]; then
-    dotnet_binary = "$DOTNET_RUNTIME_INSTALL_DIR/dotnet"
+    dotnet_binary="$DOTNET_RUNTIME_INSTALL_DIR/dotnet"
 fi
+
+echo "dotnet path is '$dotnet_binary'"
 
 # Start Cake
 exec "$dotnet_binary" "$CAKE_DLL" $SCRIPT "${CAKE_ARGUMENTS[@]}"
