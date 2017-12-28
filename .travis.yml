@@ -29,6 +29,8 @@ install:
   # `Cake.dll` is targeting `.NET Core` `1.0.3`, so we need to install the latest `1.0.x` runtime
   # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
   # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
-  - tools/dotnet-install.sh --shared-runtime --version 1.0.8
+  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
+  - tools/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$DOTNET_INSTALL_DIR"
+  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
 script:
   - ./build.sh --pack
