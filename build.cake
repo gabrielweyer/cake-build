@@ -12,123 +12,166 @@ var solutionPath = "./build.sln";
 
 Task("Clean")
     .Does(() =>
-{
-    CleanDirectory(artefactsDir);
-
-    var settings = new DotNetCoreCleanSettings
     {
-        Configuration = configuration
-    };
+        CleanDirectory(artefactsDir);
 
-    DotNetCoreClean(solutionPath, settings);
-});
+        var settings = new DotNetCoreCleanSettings
+        {
+            Configuration = configuration
+        };
+
+        DotNetCoreClean(solutionPath, settings);
+    });
 
 Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
-{
-    DotNetCoreRestore();
-});
+    {
+        DotNetCoreRestore();
+    });
 
 Task("SemVer")
     .IsDependentOn("Restore")
     .Does(() =>
-{
-    SemVer();
-});
+    {
+        GitVersion gitVersion;
+
+        if (TravisCI.IsRunningOnTravisCI)
+        {
+            gitVersion = SemVerForTravis();
+        }
+        else
+        {
+            gitVersion = GitVersion();
+        }
+
+        assemblyVersion = gitVersion.AssemblySemVer;
+        packageVersion = gitVersion.NuGetVersion;
+
+        Information($"AssemblySemVer: {assemblyVersion}");
+        Information($"NuGetVersion: {packageVersion}");
+    });
+
+Task("SetAppVeyorVersion")
+    .IsDependentOn("Semver")
+    .WithCriteria(() => AppVeyor.IsRunningOnAppVeyor)
+    .Does(() =>
+    {
+        AppVeyor.UpdateBuildVersion(packageVersion);
+    });
 
 Task("Build")
-    .IsDependentOn("SemVer")
+    .IsDependentOn("SetAppVeyorVersion")
     .Does(() =>
-{
-    var settings = new DotNetCoreBuildSettings
     {
-        Configuration = configuration,
-        NoIncremental = true,
-        MSBuildSettings = new DotNetCoreMSBuildSettings()
-            .SetVersion(assemblyVersion)
-            .WithProperty("FileVersion", packageVersion)
-            .WithProperty("InformationalVersion", packageVersion)
-            .WithProperty("nowarn", "7035"),
-        ArgumentCustomization = args => args.Append("--no-restore")
-    };
+        var settings = new DotNetCoreBuildSettings
+        {
+            Configuration = configuration,
+            NoIncremental = true,
+            MSBuildSettings = new DotNetCoreMSBuildSettings()
+                .SetVersion(assemblyVersion)
+                .WithProperty("FileVersion", packageVersion)
+                .WithProperty("InformationalVersion", packageVersion)
+                .WithProperty("nowarn", "7035"),
+            ArgumentCustomization = args => args.Append("--no-restore")
+        };
 
-    if (TravisCI.IsRunningOnTravisCI)
-    {
-        settings.Framework = "netstandard2.0";
+        if (TravisCI.IsRunningOnTravisCI)
+        {
+            settings.Framework = "netstandard2.0";
 
-        GetFiles("./src/*/*.csproj")
-        .ToList()
-        .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
+            GetFiles("./src/*/*.csproj")
+                .ToList()
+                .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
 
-        settings.Framework = "netcoreapp2.0";
+            settings.Framework = "netcoreapp2.0";
 
-        GetFiles("./tests/*/*Tests.csproj")
-            .ToList()
-            .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
-    }
-    else
-    {
-        DotNetCoreBuild(solutionPath, settings);
-    }
-});
+            GetFiles("./tests/*/*Tests.csproj")
+                .ToList()
+                .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
+        }
+        else
+        {
+            DotNetCoreBuild(solutionPath, settings);
+        }
+    });
 
-Task("Tests")
+Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
-{
-    var settings = new DotNetCoreTestSettings
     {
-        Configuration = configuration,
-        NoBuild = true,
-        Logger = "trx",
-        ArgumentCustomization = args => args
-            .Append("--results-directory=" + testsResultsDir)
-            .Append("--no-restore")
-    };
+        var settings = new DotNetCoreToolSettings();
 
-    if (TravisCI.IsRunningOnTravisCI)
-    {
-        settings.Framework = "netcoreapp2.0";
-    }
+        var argumentsBuilder = new ProcessArgumentBuilder()
+            .Append("-configuration")
+            .Append(configuration)
+            .Append("-nobuild");
 
-    GetFiles("./tests/*/*Tests.csproj")
-        .ToList()
-        .ForEach(f => DotNetCoreTest(f.FullPath, settings));
-});
+        if (TravisCI.IsRunningOnTravisCI)
+        {
+            argumentsBuilder
+                .Append("-framework")
+                .Append("netcoreapp2.0");
+        }
+
+        var projectFiles = GetFiles("./tests/*/*Tests.csproj");
+
+        foreach (var projectFile in projectFiles)
+        {
+            var testResultsFile = testsResultsDir.Combine($"{projectFile.GetFilenameWithoutExtension()}.xml");
+            var arguments = $"{argumentsBuilder.Render()} -xml \"{testResultsFile}\"";
+
+            DotNetCoreTool(projectFile, "xunit", arguments, settings);
+        }
+    });
 
 Task("Pack")
-    .IsDependentOn("Tests")
+    .IsDependentOn("Test")
     .WithCriteria(() => HasArgument("pack"))
     .Does(() =>
-{
-    var settings = new DotNetCorePackSettings
     {
-        Configuration = configuration,
-        NoBuild = true,
-        OutputDirectory = packagesDir,
-        ArgumentCustomization = args => args.Append("--no-restore"),
-        MSBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("PackageVersion", packageVersion)
-            .WithProperty("Copyright", $"Copyright Contoso {DateTime.Now.Year}")
-    };
+        var settings = new DotNetCorePackSettings
+        {
+            Configuration = configuration,
+            NoBuild = true,
+            IncludeSymbols = true,
+            OutputDirectory = packagesDir,
+            ArgumentCustomization = args => args.Append("--no-restore"),
+            MSBuildSettings = new DotNetCoreMSBuildSettings()
+                .WithProperty("PackageVersion", packageVersion)
+                .WithProperty("Copyright", $"Copyright Contoso {DateTime.Now.Year}")
+        };
 
-    if (TravisCI.IsRunningOnTravisCI)
+        if (TravisCI.IsRunningOnTravisCI)
+        {
+            settings.MSBuildSettings.WithProperty("TargetFrameworks", "netstandard2.0");
+        }
+
+        FixProps();
+
+        GetFiles("./src/*/*.csproj")
+            .ToList()
+            .ForEach(f => DotNetCorePack(f.FullPath, settings));
+    });
+
+Task("PublishAppVeyorArtifacts")
+    .IsDependentOn("Pack")
+    .WithCriteria(() => HasArgument("pack") && AppVeyor.IsRunningOnAppVeyor)
+    .Does(() =>
     {
-        settings.MSBuildSettings.WithProperty("TargetFrameworks", "netstandard2.0");
-    }
+        CopyFiles($"{packagesDir}/*.nupkg", MakeAbsolute(Directory("./")), false);
 
-    GetFiles("./src/*/*.csproj")
-        .ToList()
-        .ForEach(f => DotNetCorePack(f.FullPath, settings));
-});
+        GetFiles($"./*.nupkg")
+            .ToList()
+            .ForEach(f => AppVeyor.UploadArtifact(f, new AppVeyorUploadArtifactsSettings { DeploymentName = "packages" }));
+    });
 
 Task("Default")
-    .IsDependentOn("Pack");
+    .IsDependentOn("PublishAppVeyorArtifacts");
 
 RunTarget(target);
 
-private void SemVer()
+private GitVersion SemVerForTravis()
 {
     IEnumerable<string> redirectedStandardOutput;
     IEnumerable<string> redirectedStandardError;
@@ -172,11 +215,22 @@ private void SemVer()
     }
 
     var json = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
-    var gitVersion = Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
+    return Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
+}
 
-    assemblyVersion = gitVersion.AssemblySemVer;
-    packageVersion = gitVersion.NuGetVersion;
+private void FixProps()
+{
+    /* Workaround this issue: https://github.com/NuGet/Home/issues/4337
+       `pack` does not respect the `Version` and ends up generating invalid
+       `NuGet` packages when same-solution project dependencies
+     */
 
-    Information($"AssemblySemVer: {assemblyVersion}");
-    Information($"NuGetVersion: {packageVersion}");
+    var restoreSettings = new DotNetCoreRestoreSettings
+    {
+        MSBuildSettings = new DotNetCoreMSBuildSettings()
+            .WithProperty("Version", packageVersion)
+            .WithProperty("Configuration", configuration)
+    };
+
+    DotNetCoreRestore(restoreSettings);
 }
