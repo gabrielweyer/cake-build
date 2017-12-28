@@ -7,7 +7,7 @@ namespace Contoso.Hello.SuperLogic
     {
         public static string DoWork()
         {
-            return IncrediblyUseless.DoNothing($"Some JSON (maybe): {ReallyUseless.SayHi()}");
+            return IncrediblyUsless.DoNothing($"Some JSON (maybe): {ReallyUseless.SayHi()}");
         }
     }
 }
