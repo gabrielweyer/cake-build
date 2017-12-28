@@ -1,5 +1,10 @@
 # Cake build
 
+| Package | Release | Pre-release |
+| --- | --- | --- |
+| `Contoso.Hello.Logic` | [![MyGet][my-get-logic-r-badge]][my-get-logic-r] | [![MyGet][my-get-logic-pre-badge]][my-get-logic-pre] |
+| `Contoso.Hello.SuperLogic` | [![MyGet][my-get-super-r-badge]][my-get-super-r] | [![MyGet][my-get-super-pre-badge]][my-get-super-pre] |
+
 | CI | Status | Platform | Framework(s) | Tests |
 | --- | --- | --- | --- | --- |
 | [Travis CI](#travis-ci) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux` | `nestandard2.0` | `netcoreapp2.0.3` |
@@ -125,3 +130,11 @@ Build status is visible [here][app-veyor].
 [my-get-gabrielweyer-feed]: https://www.myget.org/feed/Packages/gabrielweyer
 [my-get-gabrielweyer-pre-release-feed]: https://www.myget.org/feed/Packages/gabrielweyer-pre-release
 [github-release]: https://github.com/gabrielweyer/cake-build/releases
+[my-get-logic-r-badge]: https://img.shields.io/myget/gabrielweyer/v/Contoso.Hello.Logic.svg?label=MyGet
+[my-get-logic-r]: https://www.myget.org/feed/gabrielweyer/package/nuget/Contoso.Hello.Logic
+[my-get-logic-pre-badge]: https://img.shields.io/myget/gabrielweyer-pre-release/v/Contoso.Hello.Logic.svg?label=MyGet
+[my-get-logic-pre]: https://www.myget.org/feed/gabrielweyer-pre-release/package/nuget/Contoso.Hello.Logic
+[my-get-super-r-badge]: https://img.shields.io/myget/gabrielweyer/v/Contoso.Hello.SuperLogic.svg?label=MyGet
+[my-get-super-r]: https://www.myget.org/feed/gabrielweyer/package/nuget/Contoso.Hello.SuperLogic
+[my-get-super-pre-badge]: https://img.shields.io/myget/gabrielweyer-pre-release/v/Contoso.Hello.SuperLogic.svg?label=MyGet
+[my-get-super-pre]: https://www.myget.org/feed/gabrielweyer-pre-release/package/nuget/Contoso.Hello.SuperLogic
