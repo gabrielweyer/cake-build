@@ -114,12 +114,14 @@ if [ ! -f "$CAKE_DLL" ]; then
 fi
 
 # We installed the 1.0.8 dotnet core runtime in a child script
-# hence the dotnet path has not been exported (`sourcing`) is
-# not supported in Travis CI
+# hence the dotnet path has not been exported (`sourcing` is
+# not supported in Travis CI)
 dotnet_binary="dotnet"
-if [[ $TRAVIS == "true" ]]; then
-    dotnet_binary="/home/travis/.dotnet/dotnet"
+if [ $TRAVIS == "true" ]; then
+    dotnet_binary="$DOTNET_RUNTIME_INSTALL_DIR/dotnet"
 fi
+
+echo "dotnet path is '$dotnet_binary'"
 
 # Start Cake
 exec "$dotnet_binary" "$CAKE_DLL" $SCRIPT "${CAKE_ARGUMENTS[@]}"

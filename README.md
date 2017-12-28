@@ -5,10 +5,10 @@
 | `Contoso.Hello.Logic` | [![MyGet][my-get-logic-r-badge]][my-get-logic-r] | [![MyGet][my-get-logic-pre-badge]][my-get-logic-pre] |
 | `Contoso.Hello.SuperLogic` | [![MyGet][my-get-super-r-badge]][my-get-super-r] | [![MyGet][my-get-super-pre-badge]][my-get-super-pre] |
 
-| CI | Status | Platform | Framework(s) | Tests |
+| CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [Travis CI](#travis-ci) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux` | `nestandard2.0` | `netcoreapp2.0.3` |
-| [AppVeyor](#appveyor) | [![Build Status](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build) | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.3`, `net461` |
+| [Travis CI](#travis-ci) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.0.4` |
+| [AppVeyor](#appveyor) | [![Build Status](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build) | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.4`, `net461` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
