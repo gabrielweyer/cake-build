@@ -7,8 +7,9 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [Travis CI](#travis-ci) | [![Build Status](https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master)](https://travis-ci.org/gabrielweyer/cake-build) | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.0.4` |
-| [AppVeyor](#appveyor) | [![Build Status](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true)](https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build) | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.4`, `net461` |
+| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.0.4` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.4`, `net461` |
+| [CircleCI](#circle-ci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.0.4-sdk-2.1.3-jessie` | `nestandard2.0` | `netcoreapp2.0.4` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -76,7 +77,7 @@ Pinning the version of `Cake` guarantees you'll be using the same version of `Ca
 
 ## CI
 
-Each time a commit is pushed to `master` or `features/*` `Travis CI` and `AppVeyor` will build the changes.
+Each time a commit is pushed to `master` or `features/*` `Travis CI`, `CircleCI` and `AppVeyor` will build the changes.
 
 In case of a successful build `AppVeyor` will:
 
@@ -93,7 +94,7 @@ Build status is visible [here][travis-ci].
 
 `Travis CI` has a few limitations:
 
-- `Linux` only so you can't build any `net*` `Framework`s
+- `Linux` and `OS X` only so you can't build any `net*` `Framework`s
   - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
   - `build.sh` (the [Cake bootstrapper][build-sh]) has been modified to support `Cake Core CLR`
   - `build.cake` has been modified
@@ -114,6 +115,15 @@ Build status is visible [here][app-veyor].
 - You can modify `AppVeyor`'s build number programatically
   - `Cake` integrates with `AppVeyor`: publish test results, upload artifacts, update build number...
 
+### CircleCI
+
+Build status is visible [here][circle-ci].
+
+- `Linux` and `OS X`
+- Build in `Docker` containers
+- Supports artifacts and test results
+  - Test results have to be in `JUnit` format
+
 ## Status checks
 
 The `master` branch is [`protected`][github-protected-branch]:
@@ -123,6 +133,7 @@ The `master` branch is [`protected`][github-protected-branch]:
 - Non-protected branches (such as `features/*`) cannot be merged into `master` until they satisfy:
   - An `AppVeyor` passing build
   - A `Travis` passing build
+  - A `CircleCI` passing build
 
 After a branch was configured as `protected`, `GitHub` will suggest available [status checks][github-status-checks].
 
@@ -136,9 +147,11 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [project-reference-dll-issue]: https://github.com/NuGet/Home/issues/3891
 [private-assets]: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#includeassets-excludeassets-and-privateassets
 [travis-ci]: https://travis-ci.org/gabrielweyer/cake-build
+[travis-ci-shield]: https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master
 [travis-artefacts]: https://docs.travis-ci.com/user/uploading-artifacts/
 [build-sh]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
 [app-veyor]: https://ci.appveyor.com/project/GabrielWeyer/cake-build
+[app-veyor-shield]: https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true
 [my-get-gabrielweyer-feed]: https://www.myget.org/feed/Packages/gabrielweyer
 [my-get-gabrielweyer-pre-release-feed]: https://www.myget.org/feed/Packages/gabrielweyer-pre-release
 [github-release]: https://github.com/gabrielweyer/cake-build/releases
@@ -152,3 +165,5 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [my-get-super-pre]: https://www.myget.org/feed/gabrielweyer-pre-release/package/nuget/Contoso.Hello.SuperLogic
 [github-protected-branch]: https://help.github.com/articles/configuring-protected-branches/
 [github-status-checks]: https://help.github.com/articles/enabling-required-status-checks/
+[circle-ci]: https://circleci.com/gh/gabrielweyer/cake-build
+[circle-ci-shield]: https://circleci.com/gh/gabrielweyer/cake-build/tree/master.svg?style=shield
