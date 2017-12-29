@@ -9,7 +9,7 @@ jobs:
       - run: chmod +x tools/dotnet-install.sh
       - run: chmod +x ./build.sh
       # Fix for `tput: No value for $TERM and no -T specified`
-      - run: export DEBIAN_FRONTEND=noninteractive
+      - run: export TERM=dumb
       # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
       # `Cake.dll` is targeting `.NET Core` `1.0.3`, so we need to install the latest `1.0.x` runtime
       # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
