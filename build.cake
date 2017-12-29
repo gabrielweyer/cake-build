@@ -36,9 +36,9 @@ Task("SemVer")
     {
         GitVersion gitVersion;
 
-        if (TravisCI.IsRunningOnTravisCI)
+        if (IsRunningExeOnMono())
         {
-            gitVersion = SemVerForTravis();
+            gitVersion = SemVerForMono();
         }
         else
         {
@@ -171,7 +171,17 @@ Task("Default")
 
 RunTarget(target);
 
-private GitVersion SemVerForTravis()
+private bool IsRunningExeOnMono()
+{
+    return TravisCI.IsRunningOnTravisCI || IsRunningOnCircleCI();
+}
+
+private bool IsRunningOnCircleCI()
+{
+    return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIRCLECI"));
+}
+
+private GitVersion SemVerForMono()
 {
     IEnumerable<string> redirectedStandardOutput;
     IEnumerable<string> redirectedStandardError;
