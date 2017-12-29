@@ -1,1 +1,2 @@
 tools/dotnet-install.sh eol=lf
+build.sh eol=lf
