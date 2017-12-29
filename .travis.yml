@@ -14,8 +14,6 @@ matrix:
 branches:
   only:
   - master
-  # We'll also build whenever there is a new commit on any branch starting with `features/`
-  - /features\/.+/
 install:
   # We're cloning the entire repository so that GitVersion can do its thing (by default Travis
   # is only getting a few commits)
