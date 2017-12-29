@@ -17,9 +17,8 @@ jobs:
       - run:
           name: Install .NET Core 1.0.8 runtime
           command: |
-            DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"
-            echo 'export DOTNET_RUNTIME_INSTALL_DIR' >> $BASH_ENV
-            tools/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$DOTNET_RUNTIME_INSTALL_DIR"
+            echo 'export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"' >> $BASH_ENV
+            tools/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$PWD/.dotnetcli"
       - run:
           name: Install Mono
           command: |
