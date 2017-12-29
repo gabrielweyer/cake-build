@@ -20,6 +20,7 @@ invocation='say_verbose "Calling: ${yellow:-}${FUNCNAME[0]} ${green:-}$*${normal
 # Exposing stream 3 as a pipe to standard output of the script itself
 exec 3>&1
 
+TERM=xterm
 # Setup some colors to use. These need to work in fairly limited shells, like the Ubuntu Docker container where there are only 8 colors.
 # See if stdout is a terminal
 if [ -t 1 ]; then
