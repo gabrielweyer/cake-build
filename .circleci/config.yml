@@ -36,5 +36,3 @@ jobs:
       - store_artifacts:
           path: artefacts/tests-results
           destination: tests-results
-      - store_test_results:
-          path: artefacts/tests-results
