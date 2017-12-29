@@ -192,13 +192,9 @@ private GitVersion SemVerForMono()
 
         var binary = gitVersionBinaryPath;
         var arguments =  new ProcessArgumentBuilder()
-                    .Append("-nofetch");
-
-        if (TravisCI.IsRunningOnTravisCI)
-        {
-            binary = "mono";
-            arguments.PrependQuoted(gitVersionBinaryPath);
-        }
+            .Append("mono")
+            .AppendQuoted(gitVersionBinaryPath)
+            .Append("-nofetch");
 
         var exitCode = StartProcess(
             binary,
@@ -214,7 +210,7 @@ private GitVersion SemVerForMono()
         if (exitCode != 0)
         {
             var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
-            Error($"Semver: {error}");
+            Error($"Semver: exit code: {exitCode} - {error}");
             throw new InvalidOperationException();
         }
     }
