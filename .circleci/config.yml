@@ -21,13 +21,13 @@ jobs:
       - run: apt-get -qq -y install mono-complete
       # Build
       - run:
-        name: Build
-        command: ./build.sh --pack
+          name: Build
+          command: ./build.sh --pack
       - store_artifacts:
-        path: /artefacts/packages
-        destination: packages
+          path: /artefacts/packages
+          destination: packages
       - store_artifacts:
-        path: /artefacts/tests-results
-        destination: tests-results
+          path: /artefacts/tests-results
+          destination: tests-results
       - store_test_results:
-        path: /artefacts/tests-results
+          path: /artefacts/tests-results
