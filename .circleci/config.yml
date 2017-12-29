@@ -24,10 +24,10 @@ jobs:
           name: Build
           command: ./build.sh --pack
       - store_artifacts:
-          path: /artefacts/packages
+          path: artefacts/packages
           destination: packages
       - store_artifacts:
-          path: /artefacts/tests-results
+          path: artefacts/tests-results
           destination: tests-results
       - store_test_results:
-          path: /artefacts/tests-results
+          path: artefacts/tests-results
