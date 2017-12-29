@@ -190,14 +190,12 @@ private GitVersion SemVerForMono()
     {
         var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/GitVersion.CommandLine/tools/GitVersion.exe").ToString();
 
-        var binary = gitVersionBinaryPath;
         var arguments =  new ProcessArgumentBuilder()
-            .Append("mono")
             .AppendQuoted(gitVersionBinaryPath)
             .Append("-nofetch");
 
         var exitCode = StartProcess(
-            binary,
+            "mono",
             new ProcessSettings
             {
                 RedirectStandardOutput = true,
