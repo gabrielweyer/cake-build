@@ -12,7 +12,7 @@ set -u
 set -o pipefail
 
 # Use in the the functions: eval $invocation
-invocation='say_verbose "Calling: ${yellow:-}${FUNCNAME[0]} ${green:-}$*${normal:-}"'
+invocation='say_verbose "Calling: ${FUNCNAME[0]} $*"'
 
 # standard output may be used as a return value in the functions
 # we need a way to write text on the screen in the functions so that
@@ -21,13 +21,13 @@ invocation='say_verbose "Calling: ${yellow:-}${FUNCNAME[0]} ${green:-}$*${normal
 exec 3>&1
 
 say_err() {
-    printf "%b\n" "${red:-}dotnet_install: Error: $1${normal:-}" >&2
+    printf "%b\n" "dotnet_install: Error: $1" >&2
 }
 
 say() {
     # using stream 3 (defined in the beginning) to not interfere with stdout of functions
     # which may be used as return value
-    printf "%b\n" "${cyan:-}dotnet-install:${normal:-} $1" >&3
+    printf "%b\n" "$dotnet-install: $1" >&3
 }
 
 say_verbose() {
