@@ -30,6 +30,8 @@ say() {
     printf "%b\n" "$dotnet-install: $1" >&3
 }
 
+say "Calling say just after it was defined"
+
 say_verbose() {
     if [ "$verbose" = true ]; then
         say "$1"
