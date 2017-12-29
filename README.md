@@ -114,6 +114,18 @@ Build status is visible [here][app-veyor].
 - You can modify `AppVeyor`'s build number programatically
   - `Cake` integrates with `AppVeyor`: publish test results, upload artifacts, update build number...
 
+## Status checks
+
+The `master` branch is [`protected`][github-protected-branch]:
+
+- Force push is disabled on `master`
+- `master` cannot be deleted
+- Non-protected branches (such as `features/*`) cannot be merged into `master` until they satisfy:
+  - An `AppVeyor` passing build
+  - A `Travis` passing build
+
+After a branch was configured as `protected`, `GitHub` will suggest available [status checks][github-status-checks].
+
 [cake]: https://cakebuild.net/
 [build-ps1]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
 [nuget-org]: https://www.nuget.org/
@@ -138,3 +150,5 @@ Build status is visible [here][app-veyor].
 [my-get-super-r]: https://www.myget.org/feed/gabrielweyer/package/nuget/Contoso.Hello.SuperLogic
 [my-get-super-pre-badge]: https://img.shields.io/myget/gabrielweyer-pre-release/v/Contoso.Hello.SuperLogic.svg?label=MyGet
 [my-get-super-pre]: https://www.myget.org/feed/gabrielweyer-pre-release/package/nuget/Contoso.Hello.SuperLogic
+[github-protected-branch]: https://help.github.com/articles/configuring-protected-branches/
+[github-status-checks]: https://help.github.com/articles/enabling-required-status-checks/
