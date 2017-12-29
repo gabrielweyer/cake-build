@@ -15,7 +15,7 @@ jobs:
       # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
       # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
       - run: export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"
-      - run: tools/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$DOTNET_RUNTIME_INSTALL_DIR"
+      - run: tools/dotnet-install.sh -T dumb --shared-runtime --version 1.0.8 --install-dir "$DOTNET_RUNTIME_INSTALL_DIR"
       # Install Mono
       - run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
       - run: echo "deb http://download.mono-project.com/repo/debian stretch main" | sudo tee /etc/apt/sources.list.d/mono-official.list
