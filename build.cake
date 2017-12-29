@@ -36,9 +36,9 @@ Task("SemVer")
     {
         GitVersion gitVersion;
 
-        if (TravisCI.IsRunningOnTravisCI)
+        if (IsRunningOnLinuxOrDarwin())
         {
-            gitVersion = SemVerForTravis();
+            gitVersion = SemVerForMono();
         }
         else
         {
@@ -76,7 +76,7 @@ Task("Build")
             ArgumentCustomization = args => args.Append("--no-restore")
         };
 
-        if (TravisCI.IsRunningOnTravisCI)
+        if (IsRunningOnLinuxOrDarwin())
         {
             settings.Framework = "netstandard2.0";
 
@@ -107,7 +107,7 @@ Task("Test")
             .Append(configuration)
             .Append("-nobuild");
 
-        if (TravisCI.IsRunningOnTravisCI)
+        if (IsRunningOnLinuxOrDarwin())
         {
             argumentsBuilder
                 .Append("-framework")
@@ -142,7 +142,7 @@ Task("Pack")
                 .WithProperty("Copyright", $"Copyright Contoso {DateTime.Now.Year}")
         };
 
-        if (TravisCI.IsRunningOnTravisCI)
+        if (IsRunningOnLinuxOrDarwin())
         {
             settings.MSBuildSettings.WithProperty("TargetFrameworks", "netstandard2.0");
         }
@@ -171,7 +171,21 @@ Task("Default")
 
 RunTarget(target);
 
-private GitVersion SemVerForTravis()
+/// <summary>
+/// - No .NET Framework installed, only .NET Core
+/// - Running GitVersion.exe (and other exes) via Mono
+/// </summary>
+private bool IsRunningOnLinuxOrDarwin()
+{
+    return TravisCI.IsRunningOnTravisCI || IsRunningOnCircleCI();
+}
+
+private bool IsRunningOnCircleCI()
+{
+    return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIRCLECI"));
+}
+
+private GitVersion SemVerForMono()
 {
     IEnumerable<string> redirectedStandardOutput;
     IEnumerable<string> redirectedStandardError;
@@ -180,18 +194,12 @@ private GitVersion SemVerForTravis()
     {
         var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/GitVersion.CommandLine/tools/GitVersion.exe").ToString();
 
-        var binary = gitVersionBinaryPath;
         var arguments =  new ProcessArgumentBuilder()
-                    .Append("-nofetch");
-
-        if (TravisCI.IsRunningOnTravisCI)
-        {
-            binary = "mono";
-            arguments.PrependQuoted(gitVersionBinaryPath);
-        }
+            .AppendQuoted(gitVersionBinaryPath)
+            .Append("-nofetch");
 
         var exitCode = StartProcess(
-            binary,
+            "mono",
             new ProcessSettings
             {
                 RedirectStandardOutput = true,
@@ -204,7 +212,7 @@ private GitVersion SemVerForTravis()
         if (exitCode != 0)
         {
             var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
-            Error($"Semver: {error}");
+            Error($"Semver: exit code: {exitCode} - {error}");
             throw new InvalidOperationException();
         }
     }

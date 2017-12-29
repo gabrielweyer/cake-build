@@ -116,8 +116,9 @@ fi
 # We installed the 1.0.8 dotnet core runtime in a child script
 # hence the dotnet path has not been exported (`sourcing` is
 # not supported in Travis CI)
+# The same issue is present in CircleCI
 dotnet_binary="dotnet"
-if [ $TRAVIS == "true" ]; then
+if [[ $TRAVIS == "true" ]] || [[ $CIRCLECI == "true" ]]; then
     dotnet_binary="$DOTNET_RUNTIME_INSTALL_DIR/dotnet"
 fi
 
