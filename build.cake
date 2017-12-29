@@ -36,7 +36,7 @@ Task("SemVer")
     {
         GitVersion gitVersion;
 
-        if (IsRunningExeOnMono())
+        if (IsRunningOnLinuxOrDarwin())
         {
             gitVersion = SemVerForMono();
         }
@@ -76,7 +76,7 @@ Task("Build")
             ArgumentCustomization = args => args.Append("--no-restore")
         };
 
-        if (TravisCI.IsRunningOnTravisCI)
+        if (IsRunningOnLinuxOrDarwin())
         {
             settings.Framework = "netstandard2.0";
 
@@ -107,7 +107,7 @@ Task("Test")
             .Append(configuration)
             .Append("-nobuild");
 
-        if (TravisCI.IsRunningOnTravisCI)
+        if (IsRunningOnLinuxOrDarwin())
         {
             argumentsBuilder
                 .Append("-framework")
@@ -142,7 +142,7 @@ Task("Pack")
                 .WithProperty("Copyright", $"Copyright Contoso {DateTime.Now.Year}")
         };
 
-        if (TravisCI.IsRunningOnTravisCI)
+        if (IsRunningOnLinuxOrDarwin())
         {
             settings.MSBuildSettings.WithProperty("TargetFrameworks", "netstandard2.0");
         }
@@ -171,7 +171,11 @@ Task("Default")
 
 RunTarget(target);
 
-private bool IsRunningExeOnMono()
+/// <summary>
+/// - No .NET Framework installed, only .NET Core
+/// - Running GitVersion.exe (and other exes) via Mono
+/// </summary>
+private bool IsRunningOnLinuxOrDarwin()
 {
     return TravisCI.IsRunningOnTravisCI || IsRunningOnCircleCI();
 }
