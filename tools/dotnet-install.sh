@@ -27,7 +27,7 @@ say_err() {
 say() {
     # using stream 3 (defined in the beginning) to not interfere with stdout of functions
     # which may be used as return value
-    printf "%b\n" "$dotnet-install: ${1:-}" >&3
+    printf "%b\n" "$dotnet-install: $1" >&3
 }
 
 say_verbose() {
@@ -710,6 +710,8 @@ verbose=false
 shared_runtime=false
 runtime_id=""
 override_non_versioned_files=true
+
+say "Reading arguments"
 
 while [ $# -ne 0 ]
 do
