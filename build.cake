@@ -236,7 +236,7 @@ private GitVersion SemVerForMono()
 
 private void TransformCircleCITestResults()
 {
-    const string xsltFilePath = "C:/tmp/JUnit.xslt";
+    const string xsltFilePath = "build/JUnit.xslt";
 
     var testResultsCircleCIDir = testsResultsDir.Combine("junit");
     var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
