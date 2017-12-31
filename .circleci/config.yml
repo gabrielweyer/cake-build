@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Make scripts executable
           command: |
-            chmod +x tools/dotnet-install.sh
+            chmod +x build/dotnet-install.sh
             chmod +x ./build.sh
       # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
       # `Cake.dll` is targeting `.NET Core` `1.0.3`, so we need to install the latest `1.0.x` runtime
@@ -18,7 +18,7 @@ jobs:
           name: Install .NET Core 1.0.8 runtime
           command: |
             echo 'export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"' >> $BASH_ENV
-            tools/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$PWD/.dotnetcli"
+            build/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$PWD/.dotnetcli"
       - run:
           name: Install Mono
           command: |

@@ -77,8 +77,8 @@ install:
   # `Cake.dll` is targeting `.NET Core` `1.0.3`, so we need to install the latest `1.0.x` runtime
   # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
   # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
-  - ps: .\tools\dotnet-install.ps1 -SharedRuntime -Version 1.0.8
+  - ps: .\build\dotnet-install.ps1 -SharedRuntime -Version 1.0.8
   # `BeanstalkSeeder` is targeting `.NET Core` `2.0`, so we can safely install the latest `SDK`
   # The `SDK` is required to restore, build, publish... a `.NET Core` application
   # https://www.microsoft.com/net/download/windows
-  - ps: .\tools\dotnet-install.ps1 -Channel Current
+  - ps: .\build\dotnet-install.ps1 -Channel Current
