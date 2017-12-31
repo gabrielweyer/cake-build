@@ -166,8 +166,16 @@ Task("PublishAppVeyorArtifacts")
             .ForEach(f => AppVeyor.UploadArtifact(f, new AppVeyorUploadArtifactsSettings { DeploymentName = "packages" }));
     });
 
+Task("TransformCircleCITestResults")
+    .IsDependentOn("PublishAppVeyorArtifacts")
+    .WithCriteria(() => IsRunningOnCircleCI())
+    .Does(() =>
+    {
+        TransformCircleCITestResults();
+    });
+
 Task("Default")
-    .IsDependentOn("PublishAppVeyorArtifacts");
+    .IsDependentOn("TransformCircleCITestResults");
 
 RunTarget(target);
 
@@ -224,6 +232,22 @@ private GitVersion SemVerForMono()
 
     var json = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
     return Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
+}
+
+private void TransformCircleCITestResults()
+{
+    const string xsltFilePath = "C:/tmp/JUnit.xslt";
+
+    var testResultsCircleCIDir = testsResultsDir.Combine("junit");
+    var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
+
+    foreach (var testResultsFile in testResultsFiles)
+    {
+        var inputFilePath = testResultsFile;
+        var outputFilePath = testResultsCircleCIDir.CombineWithFilePath(testResultsFile.GetFilename());
+
+        XmlTransform(xsltFilePath, inputFilePath, outputFilePath);
+    }
 }
 
 private void FixProps()
