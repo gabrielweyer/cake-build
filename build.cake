@@ -241,6 +241,8 @@ private void TransformCircleCITestResults()
     var testResultsCircleCIDir = testsResultsDir.Combine("junit");
     var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
 
+    EnsureDirectoryExists(testResultsCircleCIDir);
+
     foreach (var testResultsFile in testResultsFiles)
     {
         var inputFilePath = testResultsFile;
