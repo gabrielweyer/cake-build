@@ -249,7 +249,7 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
             .AppendQuoted(outputFilePath.FullPath);
 
         var exitCode = StartProcess(
-            "dotnet",
+            "/usr/bin/dotnet",
             new ProcessSettings
             {
                 RedirectStandardOutput = true,
