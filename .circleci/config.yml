@@ -39,4 +39,4 @@ jobs:
           path: artefacts/junit
           destination: tests-results-junit
       - store_test_results:
-          path: artefacts/tests-results/junit
+          path: artefacts/junit
