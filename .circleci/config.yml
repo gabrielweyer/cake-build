@@ -33,10 +33,10 @@ jobs:
           path: artefacts/packages
           destination: packages
       - store_artifacts:
-          path: artefacts/tests-results/*
+          path: artefacts/tests-results
           destination: tests-results-xunit
       - store_artifacts:
-          path: artefacts/tests-results/junit
+          path: artefacts/junit
           destination: tests-results-junit
       - store_test_results:
           path: artefacts/tests-results/junit
