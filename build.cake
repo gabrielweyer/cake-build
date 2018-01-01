@@ -278,7 +278,7 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
 
 private void TransformCircleCITestResults()
 {
-    var testResultsCircleCIDir = artefactsDir.Combine("junit");
+    var testResultsCircleCIDir = artefactsDir.Combine("junit/xUnit");
     var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
 
     EnsureDirectoryExists(testResultsCircleCIDir);
