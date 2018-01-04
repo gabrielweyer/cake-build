@@ -123,12 +123,15 @@ Task("Test")
 
             DotNetCoreTool(projectFile, "xunit", arguments, settings);
         }
-
+    })
+    .Does(() =>
+    {
         if (IsRunningOnCircleCI())
         {
             TransformCircleCITestResults();
         }
-    }).DeferOnError();
+    })
+    .DeferOnError();
 
 Task("Pack")
     .IsDependentOn("Test")
@@ -275,7 +278,7 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
 
 private void TransformCircleCITestResults()
 {
-    var testResultsCircleCIDir = artefactsDir.Combine("junit/xUnit");
+    var testResultsCircleCIDir = artefactsDir.Combine("junit");
     var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
 
     EnsureDirectoryExists(testResultsCircleCIDir);
