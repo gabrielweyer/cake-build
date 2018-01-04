@@ -5,7 +5,7 @@ namespace Contoso.Hello.HelloTests
 {
     public class EvenMoreUselessTests
     {
-        [Fact(Skip = "To test the JUnit transformer")]
+        [Fact]
         public void WhenDoWork_ThenSomeSweetJson()
         {
             // Act
@@ -14,7 +14,7 @@ namespace Contoso.Hello.HelloTests
             
             // Assert
             
-            Assert.Equal("Some JSON (maybe): \"Hello\"", actual);
+            Assert.Equal("Some JaSON (maybe): \"Hello\"", actual);
         }
     }
 }
