@@ -123,7 +123,12 @@ Task("Test")
 
             DotNetCoreTool(projectFile, "xunit", arguments, settings);
         }
-    });
+
+        if (IsRunningOnCircleCI())
+        {
+            TransformCircleCITestResults();
+        }
+    }).DeferOnError();
 
 Task("Pack")
     .IsDependentOn("Test")
@@ -166,16 +171,8 @@ Task("PublishAppVeyorArtifacts")
             .ForEach(f => AppVeyor.UploadArtifact(f, new AppVeyorUploadArtifactsSettings { DeploymentName = "packages" }));
     });
 
-Task("TransformCircleCITestResults")
-    .IsDependentOn("PublishAppVeyorArtifacts")
-    .WithCriteria(() => IsRunningOnCircleCI())
-    .Does(() =>
-    {
-        TransformCircleCITestResults();
-    });
-
 Task("Default")
-    .IsDependentOn("TransformCircleCITestResults");
+    .IsDependentOn("PublishAppVeyorArtifacts");
 
 RunTarget(target);
 
