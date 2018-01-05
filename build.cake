@@ -278,7 +278,8 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
 
 private void TransformCircleCITestResults()
 {
-    var testResultsCircleCIDir = artefactsDir.Combine("junit");
+    // CircleCi infer the name of the testing framework from the containing folder
+    var testResultsCircleCIDir = artefactsDir.Combine("junit/xUnit");
     var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
 
     EnsureDirectoryExists(testResultsCircleCIDir);

@@ -39,7 +39,8 @@ jobs:
           destination: tests-results-xunit
       - store_artifacts:
           name: Uploading JUnit test results as artifacts
-          path: artefacts/junit
+          path: artefacts/junit/xUnit
           destination: tests-results-junit
       - store_test_results:
+          # CircleCi infer the name of the testing framework from the containing folder
           path: artefacts/junit
