@@ -122,7 +122,7 @@ Build status is visible [here][circle-ci].
 - `Linux` and `OS X`
 - Build in `Docker` containers
 - Supports artifacts and test results
-  - Test results have to be in `JUnit` format
+  - Test results have to be in `JUnit` format, you can use the package [`xUnitToJUnit.CommandLine`][xunit-to-junit] to do the transformation
 
 ## Status checks
 
@@ -167,3 +167,4 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [github-status-checks]: https://help.github.com/articles/enabling-required-status-checks/
 [circle-ci]: https://circleci.com/gh/gabrielweyer/cake-build
 [circle-ci-shield]: https://circleci.com/gh/gabrielweyer/cake-build/tree/master.svg?style=shield
+[xunit-to-junit]: https://www.nuget.org/packages/xUnitToJUnit.CommandLine/

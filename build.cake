@@ -123,7 +123,15 @@ Task("Test")
 
             DotNetCoreTool(projectFile, "xunit", arguments, settings);
         }
-    });
+    })
+    .Does(() =>
+    {
+        if (IsRunningOnCircleCI())
+        {
+            TransformCircleCITestResults();
+        }
+    })
+    .DeferOnError();
 
 Task("Pack")
     .IsDependentOn("Test")
@@ -224,6 +232,65 @@ private GitVersion SemVerForMono()
 
     var json = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
     return Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
+}
+
+private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
+{
+    IEnumerable<string> redirectedStandardOutput;
+    IEnumerable<string> redirectedStandardError;
+
+    try
+    {
+        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/xUnitToJUnit.CommandLine/tools/xunit-to-junit.dll").ToString();
+
+        var arguments =  new ProcessArgumentBuilder()
+            .AppendQuoted(gitVersionBinaryPath)
+            .AppendQuoted(inputFilePath.FullPath)
+            .AppendQuoted(outputFilePath.FullPath);
+
+        var exitCode = StartProcess(
+            "/usr/bin/dotnet",
+            new ProcessSettings
+            {
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                Arguments = arguments
+            },
+            out redirectedStandardOutput,
+            out redirectedStandardError);
+
+        if (exitCode != 0)
+        {
+            var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
+            Error($"xunit-to-junit: exit code: {exitCode} - {error}");
+            throw new InvalidOperationException();
+        }
+
+        var standardOutput = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
+        Information(standardOutput);
+    }
+    catch (System.Exception ex)
+    {
+        Error($"Exception {ex.GetType()} - {ex.Message} - {ex.StackTrace} - Has inner exception {ex.InnerException != null}");
+        throw;
+    }
+}
+
+private void TransformCircleCITestResults()
+{
+    // CircleCi infer the name of the testing framework from the containing folder
+    var testResultsCircleCIDir = artefactsDir.Combine("junit/xUnit");
+    var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
+
+    EnsureDirectoryExists(testResultsCircleCIDir);
+
+    foreach (var testResultsFile in testResultsFiles)
+    {
+        var inputFilePath = testResultsFile;
+        var outputFilePath = testResultsCircleCIDir.CombineWithFilePath(testResultsFile.GetFilename());
+
+        TransformXml(inputFilePath, outputFilePath);
+    }
 }
 
 private void FixProps()

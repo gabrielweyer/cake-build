@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Make scripts executable
           command: |
-            chmod +x tools/dotnet-install.sh
+            chmod +x build/dotnet-install.sh
             chmod +x ./build.sh
       # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
       # `Cake.dll` is targeting `.NET Core` `1.0.3`, so we need to install the latest `1.0.x` runtime
@@ -18,7 +18,7 @@ jobs:
           name: Install .NET Core 1.0.8 runtime
           command: |
             echo 'export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"' >> $BASH_ENV
-            tools/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$PWD/.dotnetcli"
+            build/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$PWD/.dotnetcli"
       - run:
           name: Install Mono
           command: |
@@ -30,8 +30,17 @@ jobs:
           name: Build
           command: ./build.sh --pack
       - store_artifacts:
+          name: Uploading NuGet packages as artifacts
           path: artefacts/packages
           destination: packages
       - store_artifacts:
+          name: Uploading xUnit test results as artifacts
           path: artefacts/tests-results
-          destination: tests-results
+          destination: tests-results-xunit
+      - store_artifacts:
+          name: Uploading JUnit test results as artifacts
+          path: artefacts/junit/xUnit
+          destination: tests-results-junit
+      - store_test_results:
+          # CircleCi infer the name of the testing framework from the containing folder
+          path: artefacts/junit

@@ -23,13 +23,13 @@ install:
   - cd $TRAVIS_REPO_SLUG
   - git checkout -qf $TRAVIS_COMMIT
   # Make shell scripts executable
-  - chmod +x tools/dotnet-install.sh
+  - chmod +x build/dotnet-install.sh
   - chmod +x ./build.sh
   # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
   # `Cake.dll` is targeting `.NET Core` `1.0.3`, so we need to install the latest `1.0.x` runtime
   # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
   # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
   - export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"
-  - tools/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$DOTNET_RUNTIME_INSTALL_DIR"
+  - build/dotnet-install.sh --shared-runtime --version 1.0.8 --install-dir "$DOTNET_RUNTIME_INSTALL_DIR"
 script:
   - ./build.sh --pack
