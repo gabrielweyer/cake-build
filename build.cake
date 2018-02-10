@@ -220,7 +220,7 @@ private GitVersion SemVerForMono()
         if (exitCode != 0)
         {
             var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
-            Error($"Semver: exit code: {exitCode} - {error}");
+            Error($"GitVersion: exit code: {exitCode} - {error}");
             throw new InvalidOperationException();
         }
     }
@@ -241,10 +241,10 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
 
     try
     {
-        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/xUnitToJUnit.CommandLine/tools/xunit-to-junit.dll").ToString();
+        var xUnitToJUnitBinaryPath = MakeAbsolute((FilePath) "./tools/xUnitToJUnit.CommandLine/tools/xunit-to-junit.dll").ToString();
 
         var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(gitVersionBinaryPath)
+            .AppendQuoted(xUnitToJUnitBinaryPath)
             .AppendQuoted(inputFilePath.FullPath)
             .AppendQuoted(outputFilePath.FullPath);
 
