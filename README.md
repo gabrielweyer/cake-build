@@ -7,9 +7,9 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.0.4` |
-| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.4`, `net461` |
-| [CircleCI](#circle-ci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.0.4-sdk-2.1.3-jessie` | `nestandard2.0` | `netcoreapp2.0.4` |
+| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.0.5` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.5`, `net461` |
+| [CircleCI](#circle-ci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.0.5-sdk-2.1.4-jessie` | `nestandard2.0` | `netcoreapp2.0.5` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -101,7 +101,7 @@ Build status is visible [here][travis-ci].
     - Targets `netstandard2.0` / `netcoreapp2.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
     - Custom implementation of `GitVersion` (search for `SemVer`), the built-in helper wouldn't work on `mono`
 - Doesn't parse test result files
-- [Artefacts][travis-artefacts] have to be uploaded to `S3`
+- [Artifacts][travis-artifacts] have to be uploaded to `S3`
 
 ### AppVeyor
 
@@ -148,7 +148,7 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [private-assets]: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#includeassets-excludeassets-and-privateassets
 [travis-ci]: https://travis-ci.org/gabrielweyer/cake-build
 [travis-ci-shield]: https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master
-[travis-artefacts]: https://docs.travis-ci.com/user/uploading-artifacts/
+[travis-artifacts]: https://docs.travis-ci.com/user/uploading-artifacts/
 [build-sh]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
 [app-veyor]: https://ci.appveyor.com/project/GabrielWeyer/cake-build
 [app-veyor-shield]: https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true

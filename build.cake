@@ -4,16 +4,16 @@ var configuration = Argument("configuration", "Release");
 var assemblyVersion = "1.0.0";
 var packageVersion = "1.0.0";
 
-var artefactsDir = MakeAbsolute(Directory("artefacts"));
-var testsResultsDir = artefactsDir.Combine(Directory("tests-results"));
-var packagesDir = artefactsDir.Combine(Directory("packages"));
+var artifactsDir = MakeAbsolute(Directory("artifacts"));
+var testsResultsDir = artifactsDir.Combine(Directory("tests-results"));
+var packagesDir = artifactsDir.Combine(Directory("packages"));
 
 var solutionPath = "./build.sln";
 
 Task("Clean")
     .Does(() =>
     {
-        CleanDirectory(artefactsDir);
+        CleanDirectory(artifactsDir);
 
         var settings = new DotNetCoreCleanSettings
         {
@@ -220,7 +220,7 @@ private GitVersion SemVerForMono()
         if (exitCode != 0)
         {
             var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
-            Error($"Semver: exit code: {exitCode} - {error}");
+            Error($"GitVersion: exit code: {exitCode} - {error}");
             throw new InvalidOperationException();
         }
     }
@@ -241,10 +241,10 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
 
     try
     {
-        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/xUnitToJUnit.CommandLine/tools/xunit-to-junit.dll").ToString();
+        var xUnitToJUnitBinaryPath = MakeAbsolute((FilePath) "./tools/xUnitToJUnit.CommandLine/tools/xunit-to-junit.dll").ToString();
 
         var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(gitVersionBinaryPath)
+            .AppendQuoted(xUnitToJUnitBinaryPath)
             .AppendQuoted(inputFilePath.FullPath)
             .AppendQuoted(outputFilePath.FullPath);
 
@@ -279,7 +279,7 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
 private void TransformCircleCITestResults()
 {
     // CircleCi infer the name of the testing framework from the containing folder
-    var testResultsCircleCIDir = artefactsDir.Combine("junit/xUnit");
+    var testResultsCircleCIDir = artifactsDir.Combine("junit/xUnit");
     var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
 
     EnsureDirectoryExists(testResultsCircleCIDir);
