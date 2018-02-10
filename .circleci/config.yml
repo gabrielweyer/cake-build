@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:2.0.4-sdk-2.1.3-jessie
+      - image: microsoft/dotnet:2.0.5-sdk-2.1.4-jessie
     steps:
       - checkout
       - run:
@@ -10,13 +10,13 @@ jobs:
           command: |
             chmod +x build/dotnet-install.sh
             chmod +x ./build.sh
-      # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
-      # `Cake.dll` is targeting `.NET Core` `1.0.9`, so we need to install the latest `1.0.x` runtime
-      # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
-      # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
       - run:
-          name: Install .NET Core 1.0.8 runtime
+          name: Install .NET Core 1.0.9 runtime
           command: |
+            # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
+            # `Cake.dll` is targeting `.NET Core` `1.0.9`, so we need to install the latest `1.0.x` runtime
+            # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
+            # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
             echo 'export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"' >> $BASH_ENV
             build/dotnet-install.sh --shared-runtime --version 1.0.9 --install-dir "$PWD/.dotnetcli"
       - run:

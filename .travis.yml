@@ -2,7 +2,7 @@ language: csharp
 # Needed for `NuGet.exe` and `GitVersion.exe`
 mono: latest
 # SDK version, based on the targeted `netstandard` / `netcoreapp` version in the projects
-dotnet: 2.1.3
+dotnet: 2.1.4
 matrix:
   include:
     - os: linux
