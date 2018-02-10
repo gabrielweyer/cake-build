@@ -4,16 +4,16 @@ var configuration = Argument("configuration", "Release");
 var assemblyVersion = "1.0.0";
 var packageVersion = "1.0.0";
 
-var artefactsDir = MakeAbsolute(Directory("artefacts"));
-var testsResultsDir = artefactsDir.Combine(Directory("tests-results"));
-var packagesDir = artefactsDir.Combine(Directory("packages"));
+var artifactsDir = MakeAbsolute(Directory("artifacts"));
+var testsResultsDir = artifactsDir.Combine(Directory("tests-results"));
+var packagesDir = artifactsDir.Combine(Directory("packages"));
 
 var solutionPath = "./build.sln";
 
 Task("Clean")
     .Does(() =>
     {
-        CleanDirectory(artefactsDir);
+        CleanDirectory(artifactsDir);
 
         var settings = new DotNetCoreCleanSettings
         {
@@ -279,7 +279,7 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
 private void TransformCircleCITestResults()
 {
     // CircleCi infer the name of the testing framework from the containing folder
-    var testResultsCircleCIDir = artefactsDir.Combine("junit/xUnit");
+    var testResultsCircleCIDir = artifactsDir.Combine("junit/xUnit");
     var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
 
     EnsureDirectoryExists(testResultsCircleCIDir);
