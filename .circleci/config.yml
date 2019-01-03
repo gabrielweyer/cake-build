@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:2.0.5-sdk-2.1.4-jessie
+      - image: microsoft/2.2.100-sdk-alpine3.8
     steps:
       - checkout
       - run:
@@ -42,5 +42,5 @@ jobs:
           path: artifacts/junit/xUnit
           destination: tests-results-junit
       - store_test_results:
-          # CircleCi infer the name of the testing framework from the containing folder
+          # CircleCI infer the name of the testing framework from the containing folder
           path: artifacts/junit

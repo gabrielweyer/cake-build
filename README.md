@@ -7,9 +7,9 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.0.5` |
-| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.5`, `net461` |
-| [CircleCI](#circle-ci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.0.5-sdk-2.1.4-jessie` | `nestandard2.0` | `netcoreapp2.0.5` |
+| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.2.0` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.2.0`, `net461` |
+| [CircleCI](#circle-ci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.100-sdk-alpine3.8` | `nestandard2.0` | `netcoreapp2.2.0` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -98,7 +98,7 @@ Build status is visible [here][travis-ci].
   - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
   - `build.sh` (the [Cake bootstrapper][build-sh]) has been modified to support `Cake Core CLR`
   - `build.cake` has been modified
-    - Targets `netstandard2.0` / `netcoreapp2.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
+    - Targets `netstandard2.0` / `netcoreapp2.2.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
     - Custom implementation of `GitVersion` (search for `SemVer`), the built-in helper wouldn't work on `mono`
 - Doesn't parse test result files
 - [Artifacts][travis-artifacts] have to be uploaded to `S3`
