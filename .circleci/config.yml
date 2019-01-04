@@ -20,7 +20,7 @@ jobs:
             export PATH="$PATH:/root/.dotnet/tools"
             dotnet nuget locals all --list
             dotnet cake build.cake --exclusive
-            find /root/.nuget/packages/GitVersion.CommandLine.DotNetCore/gitversion.commandline.dotnetcore/4.0.0/tools/lib/linux/x86_64 -name '*.so' -type f -print | xargs ldd | grep 'not found'
+            find /root/.nuget/packages/gitversion.commandline.dotnetcore/4.0.0/tools/lib/linux/x86_64 -name '*.so' -type f -print | xargs ldd | grep 'not found'
       - store_artifacts:
           name: Uploading NuGet packages as artifacts
           path: artifacts/packages
