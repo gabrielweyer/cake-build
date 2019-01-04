@@ -22,7 +22,9 @@ jobs:
             apt-get -qq -y install libcurl3
       - run:
           name: Build
-          command: ./build.sh --pack
+          command: |
+            ./build.sh --exclusive
+            find ./tools/GitVersion.CommandLine.DotNetCore/tools/lib/linux/x86_64 -name '*.so' -type f -print | xargs ldd | grep 'not found'
       - store_artifacts:
           name: Uploading NuGet packages as artifacts
           path: artifacts/packages

@@ -29,5 +29,4 @@ install:
   # Make shell scripts executable
   - chmod +x ./build.sh
 script:
-  - ./build.sh --exclusive
-  - find ./tools/GitVersion.CommandLine.DotNetCore/tools/lib/linux/x86_64 -name '*.so' -type f -print | xargs ldd | grep 'not found'
+  - ./build.sh --pack
