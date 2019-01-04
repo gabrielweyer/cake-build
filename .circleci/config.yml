@@ -6,6 +6,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install libcurl3 for GitVersion
+          command: |
+            apt-get update
+            apt=get install -qq -y libcurl3
+      - run:
           name: Install Cake.Tool .NET Core global tool
           command: |
             export PATH="$PATH:/root/.dotnet/tools"
@@ -14,7 +19,6 @@ jobs:
           name: Build
           command: |
             export PATH="$PATH:/root/.dotnet/tools"
-            dotnet nuget locals all --list
             dotnet cake build.cake --exclusive
             find /root/.nuget/packages/gitversion.commandline.dotnetcore/4.0.0/tools/lib/linux/x86_64 -name '*.so' -type f -print | xargs ldd | grep 'not found'
       - store_artifacts:
