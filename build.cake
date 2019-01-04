@@ -36,16 +36,7 @@ Task("SemVer")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        GitVersion gitVersion;
-
-        if (IsRunningOnLinuxOrDarwin())
-        {
-            gitVersion = SemVerForMono();
-        }
-        else
-        {
-            gitVersion = GitVersion();
-        }
+        GitVersion gitVersion = SemVerForDotNetCore();
 
         assemblyVersion = gitVersion.AssemblySemVer;
         packageVersion = gitVersion.NuGetVersion;
@@ -195,21 +186,21 @@ private bool IsRunningOnCircleCI()
     return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIRCLECI"));
 }
 
-private GitVersion SemVerForMono()
+private GitVersion SemVerForDotNetCore()
 {
     IEnumerable<string> redirectedStandardOutput;
     IEnumerable<string> redirectedStandardError;
 
     try
     {
-        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/GitVersion.CommandLine/tools/GitVersion.exe").ToString();
+        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/GitVersion.CommandLine.DotNetCore/tools/GitVersion.dll").ToString();
 
         var arguments =  new ProcessArgumentBuilder()
             .AppendQuoted(gitVersionBinaryPath)
             .Append("-nofetch");
 
         var exitCode = StartProcess(
-            "mono",
+            "dotnet",
             new ProcessSettings
             {
                 RedirectStandardOutput = true,
