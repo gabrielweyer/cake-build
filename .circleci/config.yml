@@ -24,6 +24,7 @@ jobs:
             # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
             echo 'export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"' >> $BASH_ENV
             build/dotnet-install.sh --shared-runtime --version 1.0.9 --install-dir "$PWD/.dotnetcli" --verbose
+            find "$PWD/.dotnetcli" -name '*.so' -type f -print | xargs ldd | grep 'not found'
       - run:
           name: Install Mono
           command: |
