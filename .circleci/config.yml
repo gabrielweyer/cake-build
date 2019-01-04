@@ -6,10 +6,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Make scripts executable
-          command: |
-            chmod +x ./build.sh
-      - run:
           name: Install Cake.Tool .NET Core global tool
           command: |
             export PATH="$PATH:/root/.dotnet/tools"
