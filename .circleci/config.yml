@@ -10,17 +10,14 @@ jobs:
           command: |
             chmod +x ./build.sh
       - run:
-          name: Install Mono
+          name: Install Cake.Tool .NET Core global tool
           command: |
-            apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-            echo "deb http://download.mono-project.com/repo/ubuntu stable-bionic main" | tee /etc/apt/sources.list.d/mono-stable-official.list
-            apt-get update
-            apt-get -qq -y install mono-complete
+            dotnet tool install -g Cake.Tool
       - run:
           name: List missing required packages for GitVersion
           command: |
             apt-get -qq -y install libcurl3
-            ./build.sh --exclusive
+            dotnet cake build.cake --pack
             find ./tools/GitVersion.CommandLine.DotNetCore/tools/lib/linux/x86_64 -name '*.so' -type f -print | xargs ldd | grep 'not found'
       - store_artifacts:
           name: Uploading NuGet packages as artifacts
