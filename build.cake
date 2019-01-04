@@ -1,4 +1,5 @@
 #r Newtonsoft.Json
+#tool nuget:?package=GitVersion.CommandLine.DotNetCore&version=4.0.0
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
