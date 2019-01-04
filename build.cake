@@ -194,10 +194,11 @@ private GitVersion SemVerForDotNetCore()
 
     try
     {
-        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/GitVersion.CommandLine.DotNetCore/tools/GitVersion.dll").ToString();
+        var gitVersionPath = Context.Tools.Resolve("GitVersion.dll");
+        Information($"GitVersion path: {gitVersionPath}");
 
         var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(gitVersionBinaryPath)
+            .AppendQuoted(gitVersionPath.ToString())
             .Append("-nofetch");
 
         var exitCode = StartProcess(
