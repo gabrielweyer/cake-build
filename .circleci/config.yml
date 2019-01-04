@@ -9,7 +9,7 @@ jobs:
           name: Install libcurl3 for GitVersion
           command: |
             apt-get update
-            apt=get install -qq -y libcurl3
+            apt-get install -qq -y libcurl3
       - run:
           name: Install Cake.Tool .NET Core global tool
           command: |
