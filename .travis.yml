@@ -1,5 +1,5 @@
 language: csharp
-# Needed for `NuGet.exe` and `GitVersion.exe`
+# Needed for `NuGet.exe`
 mono: latest
 # SDK version, based on the targeted `netstandard` / `netcoreapp` version in the projects
 dotnet: 2.2.101

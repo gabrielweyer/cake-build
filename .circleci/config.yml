@@ -17,6 +17,10 @@ jobs:
             apt-get update
             apt-get -qq -y install mono-complete
       - run:
+          name: Install required packages for GitVersion
+          command: |
+            apt-get -qq -y install libcurl3
+      - run:
           name: Build
           command: ./build.sh --pack
       - store_artifacts:
