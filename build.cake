@@ -176,7 +176,6 @@ RunTarget(target);
 
 /// <summary>
 /// - No .NET Framework installed, only .NET Core
-/// - Running exes via Mono
 /// </summary>
 private bool IsRunningOnLinuxOrDarwin()
 {
