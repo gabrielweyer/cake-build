@@ -26,4 +26,5 @@ install:
   - git checkout -qf $TRAVIS_COMMIT
 script:
   - dotnet tool install -g Cake.Tool --version 0.31.0
+  - echo $HOME
   - export PATH="$PATH:/root/.dotnet/tools" && dotnet cake build.cake --pack
