@@ -30,7 +30,7 @@ install:
   - chmod +x build/dotnet-install.sh
   - chmod +x ./build.sh
   # Install missing packages in Ubuntu Xenial
-  - if [ $TRAVIS_OS_NAME = linux ]; then apt-get update; apt-get -qq -y install libunwind8; fi
+  - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get update; sudo apt-get -qq -y install libunwind8; fi
   # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
   # `Cake.dll` is targeting `.NET Core` `1.0.9`, so we need to install the latest `1.0.x` runtime
   # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
