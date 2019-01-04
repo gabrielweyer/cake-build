@@ -241,7 +241,7 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
         Information($"xUnit to JUnit path: {xUnitToJUnitPath}");
 
         var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(xUnitToJUnitPath)
+            .AppendQuoted(xUnitToJUnitPath.ToString())
             .AppendQuoted(inputFilePath.FullPath)
             .AppendQuoted(outputFilePath.FullPath);
 
