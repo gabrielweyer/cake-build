@@ -19,6 +19,8 @@ skip_commits:
     - .editorconfig
     - LICENSE
     - README.md
+    - .travis.yml
+    - .circleci/config.yml
 deploy:
   # The provider is case sensitive
   - provider: GitHub
