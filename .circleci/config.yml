@@ -12,11 +12,12 @@ jobs:
       - run:
           name: Install Cake.Tool .NET Core global tool
           command: |
-            dotnet tool install -g Cake.Tool
             export PATH="$PATH:/root/.dotnet/tools"
+            dotnet tool install -g Cake.Tool
       - run:
           name: Build
           command: |
+            export PATH="$PATH:/root/.dotnet/tools"
             dotnet cake build.cake --pack
             find ./tools/GitVersion.CommandLine.DotNetCore/tools/lib/linux/x86_64 -name '*.so' -type f -print | xargs ldd | grep 'not found'
       - store_artifacts:
