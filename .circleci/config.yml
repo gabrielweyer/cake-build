@@ -21,7 +21,7 @@ jobs:
           command: |
             apt search libssl
             apt search libcrypto
-            apt-get -qq -y install libssl1.0.0
+            apt-get -t=jessie -qq -y install libssl1.0.0
       - run:
           name: Build
           command: |
