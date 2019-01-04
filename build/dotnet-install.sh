@@ -52,6 +52,10 @@ get_legacy_os_name_from_platform() {
             echo "debian"
             return 0
             ;;
+        "debian.9")
+            echo "debian"
+            return 0
+            ;;
         "fedora.23")
             echo "fedora.23"
             return 0
