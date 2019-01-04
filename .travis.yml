@@ -1,6 +1,4 @@
 language: csharp
-# Needed for `NuGet.exe`
-mono: latest
 # SDK version, based on the targeted `netstandard` / `netcoreapp` version in the projects
 dotnet: 2.2.101
 matrix:
@@ -26,7 +24,6 @@ install:
   - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
   - cd $TRAVIS_REPO_SLUG
   - git checkout -qf $TRAVIS_COMMIT
-  # Make shell scripts executable
-  - chmod +x ./build.sh
 script:
-  - ./build.sh --pack
+  - dotnet tool install -g Cake.Tool --version 0.31.0
+  - dotnet cake build.cake --pack
