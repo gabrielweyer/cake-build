@@ -16,6 +16,7 @@ jobs:
       - run:
           name: List missing required packages for GitVersion
           command: |
+            apt-get update
             apt-get -qq -y install libcurl3
             dotnet cake build.cake --pack
             find ./tools/GitVersion.CommandLine.DotNetCore/tools/lib/linux/x86_64 -name '*.so' -type f -print | xargs ldd | grep 'not found'
