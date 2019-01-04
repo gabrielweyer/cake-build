@@ -34,6 +34,6 @@ install:
   # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
   # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
   - export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"
-  - build/dotnet-install.sh --shared-runtime --version 1.0.9 --install-dir "$DOTNET_RUNTIME_INSTALL_DIR"
+  - build/dotnet-install.sh --shared-runtime --version 1.0.9 --install-dir "$DOTNET_RUNTIME_INSTALL_DIR" --verbose
 script:
   - ./build.sh --pack
