@@ -1,5 +1,6 @@
 #r Newtonsoft.Json
 #tool nuget:?package=GitVersion.CommandLine.DotNetCore&version=4.0.0
+#tool nuget:?package=xUnitToJUnit.CommandLine&version=0.2.0
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -236,10 +237,11 @@ private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
 
     try
     {
-        var xUnitToJUnitBinaryPath = MakeAbsolute((FilePath) "./tools/xUnitToJUnit.CommandLine/tools/xunit-to-junit.dll").ToString();
+        var xUnitToJUnitPath = Context.Tools.Resolve("xunit-to-junit.dll");
+        Information($"xUnit to JUnit path: {xUnitToJUnitPath}");
 
         var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(xUnitToJUnitBinaryPath)
+            .AppendQuoted(xUnitToJUnitPath)
             .AppendQuoted(inputFilePath.FullPath)
             .AppendQuoted(outputFilePath.FullPath);
 
