@@ -9,7 +9,7 @@
 | --- | --- | --- | --- | --- |
 | [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.2.0` |
 | [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.2.0`, `net461` |
-| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.100-sdk-alpine3.8` | `nestandard2.0` | `netcoreapp2.2.0` |
+| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.100-sdk-stretch` | `nestandard2.0` | `netcoreapp2.2.0` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 

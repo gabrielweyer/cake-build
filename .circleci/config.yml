@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:2.2.100-sdk-alpine3.8
+      - image: microsoft/dotnet:2.2.100-sdk-stretch
     steps:
       - checkout
       - run:
