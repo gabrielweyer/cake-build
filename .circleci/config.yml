@@ -13,7 +13,7 @@ jobs:
           name: Install Cake.Tool .NET Core global tool
           command: |
             export PATH="$PATH:/root/.dotnet/tools"
-            dotnet tool install -g Cake.Tool
+            dotnet tool install -g Cake.Tool --version 0.31.0
       - run:
           name: Build
           command: |
