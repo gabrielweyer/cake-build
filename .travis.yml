@@ -1,35 +1,31 @@
 language: csharp
-# Needed for `NuGet.exe` and `GitVersion.exe`
-mono: latest
 # SDK version, based on the targeted `netstandard` / `netcoreapp` version in the projects
-dotnet: 2.1.4
+dotnet: 2.2.101
 matrix:
   include:
     - os: linux
+      # .NET Core 2.2 requires Ubuntu 16.04+ (Xenial)
+      # https://github.com/dotnet/core/blob/master/release-notes/2.2/2.2-supported-os.md#linux
+      # The default vesion in Travis CI is currently 14.04 (Trusty)
+      dist: xenial
     - os: osx
-      # .NET Core 2 requires OSX 10.12+
-      # https://github.com/dotnet/core/blob/master/release-notes/2.0/2.0-supported-os.md#macos
+      # .NET Core 2.2 requires OSX 10.12+
+      # https://github.com/dotnet/core/blob/master/release-notes/2.2/2.2-supported-os.md#macos
+      # The default version in Travis CI is currently OS X 10.13 so nothing needs to be done
       # https://docs.travis-ci.com/user/reference/osx/#OS-X-Version
-      osx_image: xcode9
 branches:
   only:
   - master
   # We'll also build whenever there is a new commit on any branch starting with `features/`
   - /features\/.+/
 install:
-  # We're cloning the entire repository so that GitVersion can do its thing (by default Travis
-  # is only getting a few commits)
+  # We're cloning the entire repository so that GitVersion can do its thing
+  # by default Travis is only getting a few commits
   - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
   - cd $TRAVIS_REPO_SLUG
   - git checkout -qf $TRAVIS_COMMIT
-  # Make shell scripts executable
-  - chmod +x build/dotnet-install.sh
-  - chmod +x ./build.sh
-  # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
-  # `Cake.dll` is targeting `.NET Core` `1.0.9`, so we need to install the latest `1.0.x` runtime
-  # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
-  # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
-  - export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"
-  - build/dotnet-install.sh --shared-runtime --version 1.0.9 --install-dir "$DOTNET_RUNTIME_INSTALL_DIR"
 script:
-  - ./build.sh --pack
+  - export PATH="$PATH:$HOME/.dotnet/tools"
+  - dotnet tool install -g Cake.Tool --version 0.31.0
+  - dotnet cake build.cake --bootstrap
+  - dotnet cake build.cake --pack

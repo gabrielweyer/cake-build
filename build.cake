@@ -1,3 +1,10 @@
+#module nuget:?package=Cake.DotNetTool.Module&version=0.1.0
+
+#tool dotnet:?package=GitVersion.Tool&version=4.0.1-beta1-58
+#tool dotnet:?package=dotnet-xunit-to-junit&version=1.0.0
+
+#r Newtonsoft.Json
+
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
@@ -34,16 +41,12 @@ Task("SemVer")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        GitVersion gitVersion;
+        var gitVersionSettings = new GitVersionSettings
+        {
+            NoFetch = true,
+        };
 
-        if (IsRunningOnLinuxOrDarwin())
-        {
-            gitVersion = SemVerForMono();
-        }
-        else
-        {
-            gitVersion = GitVersion();
-        }
+        var gitVersion = GitVersion(gitVersionSettings);
 
         assemblyVersion = gitVersion.AssemblySemVer;
         packageVersion = gitVersion.NuGetVersion;
@@ -84,7 +87,7 @@ Task("Build")
                 .ToList()
                 .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
 
-            settings.Framework = "netcoreapp2.0";
+            settings.Framework = "netcoreapp2.2";
 
             GetFiles("./tests/*/*Tests.csproj")
                 .ToList()
@@ -111,7 +114,7 @@ Task("Test")
         {
             argumentsBuilder
                 .Append("-framework")
-                .Append("netcoreapp2.0");
+                .Append("netcoreapp2.2");
         }
 
         var projectFiles = GetFiles("./tests/*/*Tests.csproj");
@@ -155,8 +158,6 @@ Task("Pack")
             settings.MSBuildSettings.WithProperty("TargetFrameworks", "netstandard2.0");
         }
 
-        FixProps();
-
         GetFiles("./src/*/*.csproj")
             .ToList()
             .ForEach(f => DotNetCorePack(f.FullPath, settings));
@@ -181,11 +182,10 @@ RunTarget(target);
 
 /// <summary>
 /// - No .NET Framework installed, only .NET Core
-/// - Running GitVersion.exe (and other exes) via Mono
 /// </summary>
 private bool IsRunningOnLinuxOrDarwin()
 {
-    return TravisCI.IsRunningOnTravisCI || IsRunningOnCircleCI();
+    return Context.Environment.Platform.IsUnix();
 }
 
 private bool IsRunningOnCircleCI()
@@ -193,119 +193,31 @@ private bool IsRunningOnCircleCI()
     return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIRCLECI"));
 }
 
-private GitVersion SemVerForMono()
-{
-    IEnumerable<string> redirectedStandardOutput;
-    IEnumerable<string> redirectedStandardError;
-
-    try
-    {
-        var gitVersionBinaryPath = MakeAbsolute((FilePath) "./tools/GitVersion.CommandLine/tools/GitVersion.exe").ToString();
-
-        var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(gitVersionBinaryPath)
-            .Append("-nofetch");
-
-        var exitCode = StartProcess(
-            "mono",
-            new ProcessSettings
-            {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                Arguments = arguments
-            },
-            out redirectedStandardOutput,
-            out redirectedStandardError);
-
-        if (exitCode != 0)
-        {
-            var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
-            Error($"GitVersion: exit code: {exitCode} - {error}");
-            throw new InvalidOperationException();
-        }
-    }
-    catch (System.Exception ex)
-    {
-        Error($"Exception {ex.GetType()} - {ex.Message} - {ex.StackTrace} - Has inner exception {ex.InnerException != null}");
-        throw;
-    }
-
-    var json = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
-    return Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
-}
-
-private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
-{
-    IEnumerable<string> redirectedStandardOutput;
-    IEnumerable<string> redirectedStandardError;
-
-    try
-    {
-        var xUnitToJUnitBinaryPath = MakeAbsolute((FilePath) "./tools/xUnitToJUnit.CommandLine/tools/xunit-to-junit.dll").ToString();
-
-        var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(xUnitToJUnitBinaryPath)
-            .AppendQuoted(inputFilePath.FullPath)
-            .AppendQuoted(outputFilePath.FullPath);
-
-        var exitCode = StartProcess(
-            "/usr/bin/dotnet",
-            new ProcessSettings
-            {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                Arguments = arguments
-            },
-            out redirectedStandardOutput,
-            out redirectedStandardError);
-
-        if (exitCode != 0)
-        {
-            var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
-            Error($"xunit-to-junit: exit code: {exitCode} - {error}");
-            throw new InvalidOperationException();
-        }
-
-        var standardOutput = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
-        Information(standardOutput);
-    }
-    catch (System.Exception ex)
-    {
-        Error($"Exception {ex.GetType()} - {ex.Message} - {ex.StackTrace} - Has inner exception {ex.InnerException != null}");
-        throw;
-    }
-}
-
 private void TransformCircleCITestResults()
 {
-    // CircleCi infer the name of the testing framework from the containing folder
+    // CircleCI infer the name of the testing framework from the containing folder
     var testResultsCircleCIDir = artifactsDir.Combine("junit/xUnit");
-    var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
-
     EnsureDirectoryExists(testResultsCircleCIDir);
+
+    var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
 
     foreach (var testResultsFile in testResultsFiles)
     {
         var inputFilePath = testResultsFile;
         var outputFilePath = testResultsCircleCIDir.CombineWithFilePath(testResultsFile.GetFilename());
 
-        TransformXml(inputFilePath, outputFilePath);
+        var arguments = new ProcessArgumentBuilder()
+            .AppendQuoted(inputFilePath.ToString())
+            .AppendQuoted(outputFilePath.ToString())
+            .Render();
+
+        var toolName = Context.Environment.Platform.IsUnix() ? "dotnet-xunit-to-junit" : "dotnet-xunit-to-junit.exe";
+
+        var settings = new DotNetCoreToolSettings
+        {
+            ToolPath = Context.Tools.Resolve(toolName)
+        };
+
+        DotNetCoreTool(arguments, settings);
     }
-}
-
-private void FixProps()
-{
-    /* Workaround this issue: https://github.com/NuGet/Home/issues/4337
-       `pack` does not respect the `Version` and ends up generating invalid
-       `NuGet` packages when same-solution project dependencies
-     */
-
-    var restoreSettings = new DotNetCoreRestoreSettings
-    {
-        MSBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("Version", packageVersion)
-            .WithProperty("Configuration", configuration)
-    };
-
-    DotNetCoreRestore(restoreSettings);
 }

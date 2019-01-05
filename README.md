@@ -7,9 +7,10 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.0.5` |
-| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.0.5`, `net461` |
-| [CircleCI](#circle-ci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.0.5-sdk-2.1.4-jessie` | `nestandard2.0` | `netcoreapp2.0.5` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.2.0`, `net461` |
+| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `nestandard2.0` | `netcoreapp2.2.0` |
+| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.100-sdk-bionic` | `nestandard2.0` | `netcoreapp2.2.0` |
+| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.2.0` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -22,6 +23,30 @@ I tried to create a *somewhat* realistic scenario without writing too much code:
 - The solution contains a test project.
 - Use [`SemVer`][semver] to version the `DLLs` and the `NuGet` packages.
   - **Note**: `SemVer` is implemented via [`GitVersion`][git-version].
+
+## Running locally
+
+### Pre-requisites
+
+- [.NET Core SDK v2.2.101][dotnet-sdk] and higher
+
+### Initial setup on Windows
+
+```posh
+.\bootstrap.ps1
+```
+
+### Initial setup on Linux / OS X
+
+```bash
+./bootstrap.sh
+```
+
+### Run build script
+
+```bash
+dotnet cake build.cake
+```
 
 ## Benefits over a nuspec file
 
@@ -60,20 +85,7 @@ Luckily [this issue][project-reference-dll-issue] provides a workaround. All the
 
 ## Pinning the version of Cake
 
-To pin the version of `Cake`, add the following lines to your `.gitignore` file:
-
-```bash
-tools/*
-!tools/packages.config
-```
-
 Pinning the version of `Cake` guarantees you'll be using the same version of `Cake` on your machine and in the build server.
-
-## Reusing this to bootstrap your project
-
-- Get the latest [`build.ps1`][build-ps1]
-- Copy [`build.cake`][build-cake] into the root of your directory
-- [Pin](#pinning-the-version-of-cake) the version of `Cake`
 
 ## CI
 
@@ -88,32 +100,27 @@ In case of a successful build `AppVeyor` will:
   - [Create][github-release] a `GitHub` **pre-release**
   - Publish the `NuGet` packages (including symbols) to `gabrielweyer-pre-release` [feed][my-get-gabrielweyer-pre-release-feed]
 
-### Travis CI
+### Azure DevOps
 
-Build status is visible [here][travis-ci].
+Build status is visible [here][azure-devops].
 
-`Travis CI` has a few limitations:
-
-- `Linux` and `OS X` only so you can't build any `net*` `Framework`s
-  - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
-  - `build.sh` (the [Cake bootstrapper][build-sh]) has been modified to support `Cake Core CLR`
-  - `build.cake` has been modified
-    - Targets `netstandard2.0` / `netcoreapp2.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
-    - Custom implementation of `GitVersion` (search for `SemVer`), the built-in helper wouldn't work on `mono`
-- Doesn't parse test result files
-- [Artifacts][travis-artifacts] have to be uploaded to `S3`
+- `Linux`, `OS X` and `Windows`
+- Can target both `.NET Core` and `.NET Framework` when running on `Windows`
+- Supports artifacts and test results
+- Supports files exclusion
 
 ### AppVeyor
 
 Build status is visible [here][app-veyor].
 
-- `Windows` only
-- Can target both `.NET Core` and `.NET Framework`
+- `Windows` and `Linux`
+- Can target both `.NET Core` and `.NET Framework` when running on `Windows`
   - For this reason we'll publish the `NuGet` packages using `AppVeyor`
 - Can create a `GitHub` release and `tag` the `repository` if required
 - Supports artifacts and test results
 - You can modify `AppVeyor`'s build number programatically
   - `Cake` integrates with `AppVeyor`: publish test results, upload artifacts, update build number...
+- Supports files exclusion
 
 ### CircleCI
 
@@ -122,7 +129,22 @@ Build status is visible [here][circle-ci].
 - `Linux` and `OS X`
 - Build in `Docker` containers
 - Supports artifacts and test results
-  - Test results have to be in `JUnit` format, you can use the package [`xUnitToJUnit.CommandLine`][xunit-to-junit] to do the transformation
+  - Test results have to be in `JUnit` format, you can use the package [`dotnet-xunit-to-junit`][xunit-to-junit] to do the transformation
+- Can't exclude files easily
+
+### Travis CI
+
+Build status is visible [here][travis-ci].
+
+`Travis CI` has a few limitations:
+
+- `Linux` and `OS X` only so you can't build any `net*` `Framework`s
+  - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
+  - `build.cake` has been modified
+    - Targets `netstandard2.0` / `netcoreapp2.2.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
+- Doesn't parse test result files
+- [Artifacts][travis-artifacts] have to be uploaded to `S3`
+- Can't exclude files easily
 
 ## Status checks
 
@@ -138,7 +160,6 @@ The `master` branch is [`protected`][github-protected-branch]:
 After a branch was configured as `protected`, `GitHub` will suggest available [status checks][github-status-checks].
 
 [cake]: https://cakebuild.net/
-[build-ps1]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
 [nuget-org]: https://www.nuget.org/
 [build-cake]: build.cake
 [semver]: https://semver.org/
@@ -149,7 +170,6 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [travis-ci]: https://travis-ci.org/gabrielweyer/cake-build
 [travis-ci-shield]: https://travis-ci.org/gabrielweyer/cake-build.svg?branch=master
 [travis-artifacts]: https://docs.travis-ci.com/user/uploading-artifacts/
-[build-sh]: https://raw.githubusercontent.com/cake-build/example/master/build.ps1
 [app-veyor]: https://ci.appveyor.com/project/GabrielWeyer/cake-build
 [app-veyor-shield]: https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=master&svg=true
 [my-get-gabrielweyer-feed]: https://www.myget.org/feed/Packages/gabrielweyer
@@ -167,4 +187,7 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [github-status-checks]: https://help.github.com/articles/enabling-required-status-checks/
 [circle-ci]: https://circleci.com/gh/gabrielweyer/cake-build
 [circle-ci-shield]: https://circleci.com/gh/gabrielweyer/cake-build/tree/master.svg?style=shield
-[xunit-to-junit]: https://www.nuget.org/packages/xUnitToJUnit.CommandLine/
+[xunit-to-junit]: https://www.nuget.org/packages/dotnet-xunit-to-junit/
+[dotnet-sdk]: https://dotnet.microsoft.com/download
+[azure-devops-shield]: https://dev.azure.com/gabrielweyer/cake-build/_apis/build/status/Cake?branchName=master
+[azure-devops]: https://dev.azure.com/gabrielweyer/cake-build/_build/latest?definitionId=12?branchName=master

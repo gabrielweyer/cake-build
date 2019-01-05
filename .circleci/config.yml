@@ -2,33 +2,25 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:2.0.5-sdk-2.1.4-jessie
+      - image: microsoft/dotnet:2.2.100-sdk-bionic
     steps:
       - checkout
       - run:
-          name: Make scripts executable
+          name: Install "Cake.Tool" .NET Core global tool
           command: |
-            chmod +x build/dotnet-install.sh
-            chmod +x ./build.sh
+            export PATH="$PATH:$HOME/.dotnet/tools"
+            dotnet tool install -g Cake.Tool --version 0.31.0
       - run:
-          name: Install .NET Core 1.0.9 runtime
+          name: Install libcurl3 for GitVersion
           command: |
-            # `dotnet-install.sh` is available at: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
-            # `Cake.dll` is targeting `.NET Core` `1.0.9`, so we need to install the latest `1.0.x` runtime
-            # The runtime is required to run a `.NET Core` application, it's part of the `SDK`
-            # https://github.com/dotnet/core/blob/master/release-notes/download-archive.md
-            echo 'export DOTNET_RUNTIME_INSTALL_DIR="$PWD/.dotnetcli"' >> $BASH_ENV
-            build/dotnet-install.sh --shared-runtime --version 1.0.9 --install-dir "$PWD/.dotnetcli"
-      - run:
-          name: Install Mono
-          command: |
-            apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-            echo "deb http://download.mono-project.com/repo/debian jessie main" | tee /etc/apt/sources.list.d/mono-official.list
             apt-get update
-            apt-get -qq -y install mono-complete
+            apt-get install -qq -y libcurl3
       - run:
           name: Build
-          command: ./build.sh --pack
+          command: |
+            export PATH="$PATH:$HOME/.dotnet/tools"
+            dotnet cake build.cake --bootstrap
+            dotnet cake build.cake --pack
       - store_artifacts:
           name: Uploading NuGet packages as artifacts
           path: artifacts/packages
@@ -42,5 +34,5 @@ jobs:
           path: artifacts/junit/xUnit
           destination: tests-results-junit
       - store_test_results:
-          # CircleCi infer the name of the testing framework from the containing folder
+          # CircleCI infer the name of the testing framework from the containing folder
           path: artifacts/junit
