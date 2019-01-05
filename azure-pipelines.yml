@@ -25,3 +25,17 @@ steps:
     dotnet cake build.cake --bootstrap
     dotnet cake build.cake --pack
   displayName: 'Build'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'xUnit'
+    testResultsFiles: '*.xml'
+    searchFolder: '$(System.DefaultWorkingDirectory)artifacts/tests-results'
+  condition: succeededOrFailed()
+  displayName: 'Publish Test Results'
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: 'NuGet packages'
+    targetPath: 'artifacts/packages'
+  displayName: 'Publish NuGet packages'
