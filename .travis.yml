@@ -19,11 +19,12 @@ branches:
   # We'll also build whenever there is a new commit on any branch starting with `features/`
   - /features\/.+/
 install:
-  # We're cloning the entire repository so that GitVersion can do its thing (by default Travis
-  # is only getting a few commits)
+  # We're cloning the entire repository so that GitVersion can do its thing
+  # by default Travis is only getting a few commits
   - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
   - cd $TRAVIS_REPO_SLUG
   - git checkout -qf $TRAVIS_COMMIT
 script:
+  - export PATH="$PATH:$HOME/.dotnet/tools"
   - dotnet tool install -g Cake.Tool --version 0.31.0
-  - export PATH="$PATH:$HOME/.dotnet/tools" && dotnet cake build.cake --pack
+  - dotnet cake build.cake --pack
