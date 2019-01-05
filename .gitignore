@@ -9,6 +9,5 @@ bin/
 
 # Cake
 
-tools/*
-!tools/packages.config
+tools/
 artifacts/

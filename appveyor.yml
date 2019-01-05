@@ -5,7 +5,7 @@ branches:
     # We'll also build whenever there is a new commit on any branch starting with `features/`
     - /features\/.+/
 build_script:
-  - ps: .\build.ps1 -pack
+  - ps: dotnet cake build.cake --pack
 assembly_info:
   # We'll version the binaries and the NuGet package in the build script
   patch: false
@@ -21,7 +21,6 @@ skip_commits:
     - README.md
     - .travis.yml
     - .circleci/config.yml
-    - build.sh
 deploy:
   # The provider is case sensitive
   - provider: GitHub
@@ -80,3 +79,4 @@ install:
   # The `SDK` is required to restore, build, publish... a `.NET Core` application
   # https://www.microsoft.com/net/download/windows
   - ps: .\build\dotnet-install.ps1 -Channel Current
+  - ps: dotnet tool install -g Cake.Tool --version 0.31.0
