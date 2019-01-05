@@ -1,0 +1,25 @@
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - .editorconfig
+    - LICENSE
+    - README.md
+    - appveyor.yml
+    - .travis.yml
+    - .circleci/config.yml
+
+steps:
+- bash: |
+    dotnet tool install --global Cake.Tool --version 0.31.0
+  displayName: 'Install "Cake.Tool" .NET Core global tool'
+
+- bash: |
+    dotnet cake build.cake --bootstrap
+    dotnet cake build.cake --pack
+  displayName: 'Build'

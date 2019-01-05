@@ -22,6 +22,7 @@ skip_commits:
     - README.md
     - .travis.yml
     - .circleci/config.yml
+    - azure-pipelines.yml
 deploy:
   # The provider is case sensitive
   - provider: GitHub
