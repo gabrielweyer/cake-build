@@ -30,7 +30,7 @@ steps:
   inputs:
     testResultsFormat: 'xUnit'
     testResultsFiles: '*.xml'
-    searchFolder: '$(System.DefaultWorkingDirectory)artifacts/tests-results'
+    searchFolder: '$(System.DefaultWorkingDirectory)/artifacts/tests-results'
   condition: succeededOrFailed()
   displayName: 'Publish Test Results'
 
