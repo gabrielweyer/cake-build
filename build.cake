@@ -185,7 +185,7 @@ RunTarget(target);
 /// </summary>
 private bool IsRunningOnLinuxOrDarwin()
 {
-    return TravisCI.IsRunningOnTravisCI || IsRunningOnCircleCI();
+    return Context.Environment.Platform.IsUnix();
 }
 
 private bool IsRunningOnCircleCI()
