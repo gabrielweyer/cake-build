@@ -6,10 +6,15 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Cake.Tool .NET Core global tool
+          name: Install "Cake.Tool" .NET Core global tool
           command: |
             export PATH="$PATH:$HOME/.dotnet/tools"
             dotnet tool install -g Cake.Tool --version 0.31.0
+      - run:
+          name: Install "dotnet-xunit-to-junit" .NET Core global tool
+          command: |
+            export PATH="$PATH:$HOME/.dotnet/tools"
+            dotnet tool install -g dotnet-xunit-to-junit --version 1.0.0
       - run:
           name: Install libcurl3 for GitVersion
           command: |

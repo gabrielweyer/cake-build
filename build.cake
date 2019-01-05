@@ -1,6 +1,5 @@
 #r Newtonsoft.Json
 #tool nuget:?package=GitVersion.CommandLine.DotNetCore&version=4.0.0
-#tool nuget:?package=xUnitToJUnit.CommandLine&version=0.2.0
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -229,63 +228,25 @@ private GitVersion SemVerForDotNetCore()
     return Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
 }
 
-private void TransformXml(FilePath inputFilePath, FilePath outputFilePath)
-{
-    IEnumerable<string> redirectedStandardOutput;
-    IEnumerable<string> redirectedStandardError;
-
-    try
-    {
-        var xUnitToJUnitPath = Context.Tools.Resolve("xunit-to-junit.dll");
-        Information($"xUnit to JUnit path: {xUnitToJUnitPath}");
-
-        var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(xUnitToJUnitPath.ToString())
-            .AppendQuoted(inputFilePath.FullPath)
-            .AppendQuoted(outputFilePath.FullPath);
-
-        var exitCode = StartProcess(
-            "/usr/bin/dotnet",
-            new ProcessSettings
-            {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                Arguments = arguments
-            },
-            out redirectedStandardOutput,
-            out redirectedStandardError);
-
-        if (exitCode != 0)
-        {
-            var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
-            Error($"xunit-to-junit: exit code: {exitCode} - {error}");
-            throw new InvalidOperationException();
-        }
-
-        var standardOutput = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
-        Information(standardOutput);
-    }
-    catch (System.Exception ex)
-    {
-        Error($"Exception {ex.GetType()} - {ex.Message} - {ex.StackTrace} - Has inner exception {ex.InnerException != null}");
-        throw;
-    }
-}
-
 private void TransformCircleCITestResults()
 {
-    // CircleCi infer the name of the testing framework from the containing folder
+    // CircleCI infer the name of the testing framework from the containing folder
     var testResultsCircleCIDir = artifactsDir.Combine("junit/xUnit");
-    var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
-
     EnsureDirectoryExists(testResultsCircleCIDir);
+
+    var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
 
     foreach (var testResultsFile in testResultsFiles)
     {
         var inputFilePath = testResultsFile;
         var outputFilePath = testResultsCircleCIDir.CombineWithFilePath(testResultsFile.GetFilename());
 
-        TransformXml(inputFilePath, outputFilePath);
+        var arguments = new ProcessArgumentBuilder()
+            .AppendQuoted(inputFilePath.ToString())
+            .AppendQuoted(outputFilePath.ToString())
+            .Render();
+
+        DotNetCoreTool("xunit-to-junit", arguments);
     }
 }
 
@@ -294,7 +255,7 @@ private void FixProps()
     /* Workaround this issue: https://github.com/NuGet/Home/issues/4337
        `pack` does not respect the `Version` and ends up generating invalid
        `NuGet` packages when same-solution project dependencies
-     */
+    */
 
     var restoreSettings = new DotNetCoreRestoreSettings
     {
