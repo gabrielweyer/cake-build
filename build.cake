@@ -213,7 +213,14 @@ private void TransformCircleCITestResults()
             .AppendQuoted(outputFilePath.ToString())
             .Render();
 
-        DotNetCoreTool($"xunit-to-junit {arguments}");
+        var toolName = Context.Environment.Platform.IsUnix() ? "dotnet-xunit-to-junit" : "dotnet-xunit-to-junit.exe";
+
+        var settings = new DotNetCoreToolSettings
+        {
+            ToolPath = Context.Tools.Resolve(toolName)
+        };
+
+        DotNetCoreTool(arguments, settings);
     }
 }
 
