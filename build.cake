@@ -1,5 +1,9 @@
+#module nuget:?package=Cake.DotNetTool.Module&version=0.1.0
+
+#tool dotnet:?package=GitVersion.Tool&version=4.0.1-beta1-58
+#tool dotnet:?package=dotnet-xunit-to-junit&version=1.0.0
+
 #r Newtonsoft.Json
-#tool nuget:?package=GitVersion.CommandLine.DotNetCore&version=4.0.0
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -37,7 +41,12 @@ Task("SemVer")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        GitVersion gitVersion = SemVerForDotNetCore();
+        var gitVersionSettings = new GitVersionSettings
+        {
+            NoFetch = true,
+        };
+
+        var gitVersion = GitVersion(gitVersionSettings);
 
         assemblyVersion = gitVersion.AssemblySemVer;
         packageVersion = gitVersion.NuGetVersion;
@@ -184,48 +193,6 @@ private bool IsRunningOnLinuxOrDarwin()
 private bool IsRunningOnCircleCI()
 {
     return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIRCLECI"));
-}
-
-private GitVersion SemVerForDotNetCore()
-{
-    IEnumerable<string> redirectedStandardOutput;
-    IEnumerable<string> redirectedStandardError;
-
-    try
-    {
-        var gitVersionPath = Context.Tools.Resolve("GitVersion.dll");
-        Information($"GitVersion path: {gitVersionPath}");
-
-        var arguments =  new ProcessArgumentBuilder()
-            .AppendQuoted(gitVersionPath.ToString())
-            .Append("-nofetch");
-
-        var exitCode = StartProcess(
-            "dotnet",
-            new ProcessSettings
-            {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                Arguments = arguments
-            },
-            out redirectedStandardOutput,
-            out redirectedStandardError);
-
-        if (exitCode != 0)
-        {
-            var error = string.Join(Environment.NewLine, redirectedStandardError.ToList());
-            Error($"GitVersion: exit code: {exitCode} - {error}");
-            throw new InvalidOperationException();
-        }
-    }
-    catch (System.Exception ex)
-    {
-        Error($"Exception {ex.GetType()} - {ex.Message} - {ex.StackTrace} - Has inner exception {ex.InnerException != null}");
-        throw;
-    }
-
-    var json = string.Join(Environment.NewLine, redirectedStandardOutput.ToList());
-    return Newtonsoft.Json.JsonConvert.DeserializeObject<GitVersion>(json);
 }
 
 private void TransformCircleCITestResults()
