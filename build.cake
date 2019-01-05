@@ -246,7 +246,7 @@ private void TransformCircleCITestResults()
             .AppendQuoted(outputFilePath.ToString())
             .Render();
 
-        DotNetCoreTool("xunit-to-junit", arguments);
+        DotNetCoreTool($"xunit-to-junit {arguments}");
     }
 }
 
