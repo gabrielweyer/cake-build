@@ -5,6 +5,7 @@ trigger:
   branches:
     include:
     - master
+    - features/*
   paths:
     exclude:
     - .editorconfig
@@ -20,6 +21,7 @@ steps:
   displayName: 'Install "Cake.Tool" .NET Core global tool'
 
 - bash: |
+    export PATH="$PATH:$HOME/.dotnet/tools"
     dotnet cake build.cake --bootstrap
     dotnet cake build.cake --pack
   displayName: 'Build'
