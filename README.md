@@ -24,6 +24,8 @@ I tried to create a *somewhat* realistic scenario without writing too much code:
 - Use [`SemVer`][semver] to version the `DLLs` and the `NuGet` packages.
   - **Note**: `SemVer` is implemented via [`GitVersion`][git-version].
 
+I wrote a detailed [blog post][cake-build-post] about this experiment.
+
 ## Running locally
 
 ### Pre-requisites
@@ -89,7 +91,7 @@ Pinning the version of `Cake` guarantees you'll be using the same version of `Ca
 
 ## CI
 
-Each time a commit is pushed to `master` or `features/*` `Travis CI`, `CircleCI` and `AppVeyor` will build the changes.
+Each time a commit is pushed to `master` or `features/*`; `AppVeyor`, `Azure DevOps`, `CircleCI` and `Travis CI` will build the changes.
 
 In case of a successful build `AppVeyor` will:
 
@@ -99,15 +101,6 @@ In case of a successful build `AppVeyor` will:
 - On `features/*`
   - [Create][github-release] a `GitHub` **pre-release**
   - Publish the `NuGet` packages (including symbols) to `gabrielweyer-pre-release` [feed][my-get-gabrielweyer-pre-release-feed]
-
-### Azure DevOps
-
-Build status is visible [here][azure-devops].
-
-- `Linux`, `OS X` and `Windows`
-- Can target both `.NET Core` and `.NET Framework` when running on `Windows`
-- Supports artifacts and test results
-- Supports files exclusion
 
 ### AppVeyor
 
@@ -120,6 +113,15 @@ Build status is visible [here][app-veyor].
 - Supports artifacts and test results
 - You can modify `AppVeyor`'s build number programatically
   - `Cake` integrates with `AppVeyor`: publish test results, upload artifacts, update build number...
+- Supports files exclusion
+
+### Azure DevOps
+
+Build status is visible [here][azure-devops].
+
+- `Linux`, `OS X` and `Windows`
+- Can target both `.NET Core` and `.NET Framework` when running on `Windows`
+- Supports artifacts and test results
 - Supports files exclusion
 
 ### CircleCI
@@ -191,3 +193,4 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [dotnet-sdk]: https://dotnet.microsoft.com/download
 [azure-devops-shield]: https://dev.azure.com/gabrielweyer/cake-build/_apis/build/status/Cake?branchName=master
 [azure-devops]: https://dev.azure.com/gabrielweyer/cake-build/_build/latest?definitionId=12?branchName=master
+[cake-build-post]: https://gabrielweyer.github.io/2018/04/22/cake-build/
