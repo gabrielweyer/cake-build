@@ -28,8 +28,10 @@ steps:
   displayName: 'Install "Cake.Tool" .NET Core global tool'
 
 - bash: |
+    echo $PATH
     export PATH="$PATH:$HOME/.dotnet/tools"
-    export PATH="$PATH:/home/vsts/.dotnet"
+    export PATH="/home/vsts/.dotnet:$PATH"
+    dotnet --info
     dotnet cake build.cake --bootstrap
     dotnet cake build.cake --pack
   displayName: 'Build'
