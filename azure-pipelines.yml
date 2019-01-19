@@ -17,10 +17,8 @@ trigger:
 
 steps:
 - bash: |
-    dotnet --info
     chmod +x build/dotnet-install.sh
     build/dotnet-install.sh --channel Current
-    dotnet --info
   displayName: 'Install Current .NET Core SDK'
 
 - bash: |
@@ -28,12 +26,8 @@ steps:
   displayName: 'Install "Cake.Tool" .NET Core global tool'
 
 - bash: |
-    echo $PATH
-    echo $HOME
     export PATH="$PATH:$HOME/.dotnet/tools"
-    export PATH="/home/vsts/.dotnet:$PATH"
-    echo $PATH
-    dotnet --info
+    export PATH="$HOME/.dotnet:$PATH"
     dotnet cake build.cake --bootstrap
     dotnet cake build.cake --pack
   displayName: 'Build'
