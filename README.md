@@ -9,7 +9,7 @@
 | --- | --- | --- | --- | --- |
 | [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `netcoreapp2.2.0`, `net461` |
 | [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `netcoreapp2.2.0` |
-| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.100-sdk-bionic` | `netstandard2.0` | `netcoreapp2.2.0` |
+| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.103-sdk-bionic` | `netstandard2.0` | `netcoreapp2.2.0` |
 | [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `netstandard2.0` | `netcoreapp2.2.0` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
@@ -30,7 +30,7 @@ I wrote a detailed [blog post][cake-build-post] about this experiment.
 
 ### Pre-requisites
 
-- [.NET Core SDK v2.2.101][dotnet-sdk] and higher
+- [.NET Core SDK v2.2.103][dotnet-sdk] and higher
 
 ### Initial setup on Windows
 
