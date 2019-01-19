@@ -1,3 +1,4 @@
+build/dotnet-install.sh eol=lf
 bootstrap.sh eol=lf
 
 *.ps1 linguist-vendored

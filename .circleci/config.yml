@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:2.2.100-sdk-bionic
+      - image: microsoft/dotnet:2.2.103-sdk-bionic
     steps:
       - checkout
       - run:

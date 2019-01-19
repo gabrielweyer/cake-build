@@ -1,6 +1,7 @@
 language: csharp
 # SDK version, based on the targeted `netstandard` / `netcoreapp` version in the projects
-dotnet: 2.2.101
+dotnet: 2.2.103
+mono: none
 matrix:
   include:
     - os: linux

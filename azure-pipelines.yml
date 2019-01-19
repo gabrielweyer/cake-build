@@ -17,11 +17,17 @@ trigger:
 
 steps:
 - bash: |
+    chmod +x build/dotnet-install.sh
+    build/dotnet-install.sh --channel Current
+  displayName: 'Install Current .NET Core SDK'
+
+- bash: |
     dotnet tool install --global Cake.Tool --version 0.31.0
   displayName: 'Install "Cake.Tool" .NET Core global tool'
 
 - bash: |
     export PATH="$PATH:$HOME/.dotnet/tools"
+    export PATH="$HOME/.dotnet:$PATH"
     dotnet cake build.cake --bootstrap
     dotnet cake build.cake --pack
   displayName: 'Build'
