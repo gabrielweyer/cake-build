@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.2;net461</TargetFrameworks>
-    <RuntimeFrameworkVersion>2.2.0</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>2.2.1</RuntimeFrameworkVersion>
     <IsPackable>false</IsPackable>
     <AssemblyName>Contoso.Hello.HelloTests</AssemblyName>
     <RootNamespace>Contoso.Hello.HelloTests</RootNamespace>
