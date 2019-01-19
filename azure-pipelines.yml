@@ -17,8 +17,10 @@ trigger:
 
 steps:
 - bash: |
+    dotnet --info
     chmod +x build/dotnet-install.sh
     build/dotnet-install.sh --channel Current
+    dotnet --info
   displayName: 'Install Current .NET Core SDK'
 
 - bash: |
