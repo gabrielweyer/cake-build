@@ -27,6 +27,7 @@ steps:
 
 - bash: |
     export PATH="$PATH:$HOME/.dotnet/tools"
+    export PATH="$PATH:/home/vsts/.dotnet"
     dotnet cake build.cake --bootstrap
     dotnet cake build.cake --pack
   displayName: 'Build'
