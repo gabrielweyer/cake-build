@@ -7,10 +7,10 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `nestandard2.0`, `net461` | `netcoreapp2.2.0`, `net461` |
-| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `nestandard2.0` | `netcoreapp2.2.0` |
-| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.100-sdk-bionic` | `nestandard2.0` | `netcoreapp2.2.0` |
-| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `nestandard2.0` | `netcoreapp2.2.0` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `netcoreapp2.2.0`, `net461` |
+| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `netcoreapp2.2.0` |
+| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.100-sdk-bionic` | `netstandard2.0` | `netcoreapp2.2.0` |
+| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `netstandard2.0` | `netcoreapp2.2.0` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -19,7 +19,7 @@ I tried to create a *somewhat* realistic scenario without writing too much code:
 - The solution contains two projects which will be packed as `NuGet` packages.
   - The `SuperLogic` project depends from `Logic` and when packing this project reference will be turned into a `NuGet` package reference (handled out of the box by `dotnet pack`).
   - The `Logic` project references a `NuGet` package from [nuget.org][nuget-org] via a `PackageReference`, `dotnet pack` will turn this into a package reference.
-- The projects target both `nestandard2.0` and `net461` so they can be used with the `.NET Framework` (`net461` and above).
+- The projects target both `netstandard2.0` and `net461` so they can be used with the `.NET Framework` (`net461` and above).
 - The solution contains a test project.
 - Use [`SemVer`][semver] to version the `DLLs` and the `NuGet` packages.
   - **Note**: `SemVer` is implemented via [`GitVersion`][git-version].
