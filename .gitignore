@@ -1,6 +1,7 @@
 # Rider
 
 .idea/
+*.DotSettings.user
 
 # Compilation detritus
 
@@ -11,3 +12,7 @@ bin/
 
 tools/
 artifacts/
+
+# Visual Studio
+
+.vs/
