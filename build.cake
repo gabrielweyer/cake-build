@@ -87,7 +87,7 @@ Task("Build")
                 .ToList()
                 .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
 
-            settings.Framework = "netcoreapp2.2";
+            settings.Framework = "netcoreapp3.1";
 
             GetFiles("./tests/*/*Tests.csproj")
                 .ToList()
@@ -114,7 +114,7 @@ Task("Test")
         {
             argumentsBuilder
                 .Append("-framework")
-                .Append("netcoreapp2.2");
+                .Append("netcoreapp3.1");
         }
 
         var projectFiles = GetFiles("./tests/*/*Tests.csproj");

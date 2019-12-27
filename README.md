@@ -7,10 +7,10 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `netcoreapp2.2.0`, `net461` |
-| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `netcoreapp2.2.0` |
-| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `microsoft/dotnet:2.2.103-sdk-bionic` | `netstandard2.0` | `netcoreapp2.2.0` |
-| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `netstandard2.0` | `netcoreapp2.2.0` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `netcoreapp3.1.0`, `net461` |
+| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `netcoreapp3.1.0` |
+| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/core/sdk:3.1.100-bionic` | `netstandard2.0` | `netcoreapp3.1.0` |
+| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `netstandard2.0` | `netcoreapp3.1.0` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -30,7 +30,8 @@ I wrote a detailed [blog post][cake-build-post] about this experiment.
 
 ### Pre-requisites
 
-- [.NET Core SDK v2.2.103][dotnet-sdk] and higher
+- [.NET Core SDK v3.1.100][dotnet-sdk] and higher
+  - [.NET Core SDK v2.1.607][dotnet-sdk] and higher
 
 ### Initial setup on Windows
 
@@ -143,7 +144,7 @@ Build status is visible [here][travis-ci].
 - `Linux` and `OS X` only so you can't build any `net*` `Framework`s
   - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
   - `build.cake` has been modified
-    - Targets `netstandard2.0` / `netcoreapp2.2.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
+    - Targets `netstandard2.0` / `netcoreapp3.1.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
 - Doesn't parse test result files
 - [Artifacts][travis-artifacts] have to be uploaded to `S3`
 - Can't exclude files easily
