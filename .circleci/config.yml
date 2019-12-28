@@ -9,7 +9,7 @@ jobs:
           name: Install "Cake.Tool" .NET Core global tool
           command: |
             export PATH="$PATH:$HOME/.dotnet/tools"
-            dotnet tool install -g Cake.Tool --version 0.31.0
+            dotnet tool install -g Cake.Tool --version 0.35.0
       - run:
           name: Install libcurl3 for GitVersion
           command: |

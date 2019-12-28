@@ -22,7 +22,7 @@ steps:
   displayName: 'Install LTS .NET Core SDK'
 
 - bash: |
-    dotnet tool install --global Cake.Tool --version 0.31.0
+    dotnet tool install --global Cake.Tool --version 0.35.0
   displayName: 'Install "Cake.Tool" .NET Core global tool'
 
 - bash: |
