@@ -31,11 +31,10 @@ I wrote a detailed [blog post][cake-build-post] about this experiment.
 ### Pre-requisites
 
 - [.NET Core SDK v3.1.100][dotnet-sdk] and higher
-  - [.NET Core SDK v2.1.607][dotnet-sdk] and higher
 
 ### Initial setup on Windows
 
-```posh
+```powershell
 .\bootstrap.ps1
 ```
 
@@ -132,7 +131,7 @@ Build status is visible [here][circle-ci].
 - `Linux` and `OS X`
 - Build in `Docker` containers
 - Supports artifacts and test results
-  - Test results have to be in `JUnit` format, you can use the package [`dotnet-xunit-to-junit`][xunit-to-junit] to do the transformation
+  - Test results have to be in `JUnit` format, you can use the package [XunitXml.TestLogger][xunit-xml-test-logger] for a `xUnit` logger and then convert the file using the package [dotnet-xunit-to-junit][xunit-to-junit]
 - Can't exclude files easily
 
 ### Travis CI
@@ -195,3 +194,4 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [azure-devops-shield]: https://dev.azure.com/gabrielweyer/cake-build/_apis/build/status/Cake?branchName=master
 [azure-devops]: https://dev.azure.com/gabrielweyer/cake-build/_build/latest?definitionId=12?branchName=master
 [cake-build-post]: https://gabrielweyer.github.io/2018/04/22/cake-build/
+[xunit-xml-test-logger]: https://www.nuget.org/packages/XunitXml.TestLogger/

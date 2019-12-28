@@ -103,18 +103,15 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var settings = new DotNetCoreToolSettings();
-
-        var argumentsBuilder = new ProcessArgumentBuilder()
-            .Append("-configuration")
-            .Append(configuration)
-            .Append("-nobuild");
+        var settings = new DotNetCoreTestSettings
+        {
+            Configuration = configuration,
+            NoBuild = true
+        };
 
         if (IsRunningOnLinuxOrDarwin())
         {
-            argumentsBuilder
-                .Append("-framework")
-                .Append("netcoreapp3.1");
+            settings.Framework = "netcoreapp3.1";
         }
 
         var projectFiles = GetFiles("./tests/*/*Tests.csproj");
@@ -122,9 +119,9 @@ Task("Test")
         foreach (var projectFile in projectFiles)
         {
             var testResultsFile = testsResultsDir.Combine($"{projectFile.GetFilenameWithoutExtension()}.xml");
-            var arguments = $"{argumentsBuilder.Render()} -xml \"{testResultsFile}\"";
+            settings.Logger = $"\"xunit;LogFilePath={testResultsFile}\"";
 
-            DotNetCoreTool(projectFile, "xunit", arguments, settings);
+            DotNetCoreTest(projectFile.FullPath, settings);
         }
     })
     .Does(() =>
