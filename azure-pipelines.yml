@@ -18,8 +18,8 @@ trigger:
 steps:
 - bash: |
     chmod +x build/dotnet-install.sh
-    build/dotnet-install.sh --channel Current
-  displayName: 'Install Current .NET Core SDK'
+    build/dotnet-install.sh
+  displayName: 'Install LTS .NET Core SDK'
 
 - bash: |
     dotnet tool install --global Cake.Tool --version 0.31.0
