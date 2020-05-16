@@ -113,13 +113,13 @@ In case of a successful build `AppVeyor` will:
   - [Create][github-release] a `GitHub` **pre-release**
   - Publish the `NuGet` packages (including symbols) to `gabrielweyer-pre-release` [feed][my-get-gabrielweyer-pre-release-feed]
 
+When running on a platform that is not Windows, we can't target the `.NET` full Framework, hence the build script is calling `IsRunningOnLinuxOrDarwin` to detect the available capabilities.
+
 ### AppVeyor
 
 Build status is visible [here][app-veyor].
 
-- `Windows`
-- Can target both `.NET Core` and `.NET Framework`
-  - For this reason we'll publish the `NuGet` packages using `AppVeyor`
+- Supports `Linux`, `macOS` and `Windows` hosted agents
 - Can create a `GitHub` release and `tag` the `repository` if required
 - Supports artifacts and test results
 - You can modify `AppVeyor`'s build number programatically
@@ -130,8 +130,7 @@ Build status is visible [here][app-veyor].
 
 Build status is visible [here][azure-devops].
 
-- `Linux`, `OS X` and `Windows`
-- Can target both `.NET Core` and `.NET Framework` when running on `Windows`
+- Supports `Linux`, `macOS` and `Windows` hosted agents
 - Supports artifacts and test results
 - Supports files exclusion
 
@@ -139,22 +138,22 @@ Build status is visible [here][azure-devops].
 
 Build status is visible [here][circle-ci].
 
-- `Linux` and `OS X`
-- Build in `Docker` containers
-- Supports artifacts and test results
-  - Test results have to be in `JUnit` format, you can use the package [XunitXml.TestLogger][xunit-xml-test-logger] for a `xUnit` logger and then convert the file using the package [dotnet-xunit-to-junit][xunit-to-junit]
+- Supports `Docker`, `Linux`, `macOS` and `Windows` hosted agents
+- Supports artifacts
+
+`CircleCI` has a few limitations:
+
+- Test results have to be in `JUnit` format, you can use the package [XunitXml.TestLogger][xunit-xml-test-logger] for a `xUnit` logger and then convert the file using the package [dotnet-xunit-to-junit][xunit-to-junit]
 - Can't exclude files easily
 
 ### Travis CI
 
 Build status is visible [here][travis-ci].
 
+- Supports `Linux`, `macOS` and `Windows` hosted agents
+
 `Travis CI` has a few limitations:
 
-- `Linux` and `OS X` only so you can't build any `net*` `Framework`s
-  - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
-  - `build.cake` has been modified
-    - Targets `netstandard2.0` / `netcoreapp3.1.4` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
 - Doesn't parse test result files
 - [Artifacts][travis-artifacts] have to be uploaded to `S3`
 - Can't exclude files easily
