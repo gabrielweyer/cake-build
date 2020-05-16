@@ -7,10 +7,10 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `netcoreapp3.1.0`, `net461` |
-| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `netcoreapp3.1.0` |
-| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/core/sdk:3.1.100-bionic` | `netstandard2.0` | `netcoreapp3.1.0` |
-| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `netstandard2.0` | `netcoreapp3.1.0` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `netcoreapp3.1.4`, `net461` |
+| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `netcoreapp3.1.4` |
+| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/core/sdk:3.1.202-bionic` | `netstandard2.0` | `netcoreapp3.1.4` |
+| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `netstandard2.0` | `netcoreapp3.1.4` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -26,11 +26,26 @@ I tried to create a *somewhat* realistic scenario without writing too much code:
 
 I wrote a detailed [blog post][cake-build-post] about this experiment.
 
+## Table of contents
+
+- [Pinning the version of Cake](#pinning-the-version-of-cake)
+- [Running locally](#running-locally)
+- [Benefits over a nuspec file](#benefits-over-a-nuspec-file)
+- [Referencing a project without turning it into a package reference](#referencing-a-project-without-turning-it-into-a-package-reference)
+- [CI](#ci)
+- [Status checks](#status-checks)
+
+## Pinning the version of Cake
+
+Pinning the version of `Cake` guarantees you'll be using the same version of `Cake` on your machine and in the build server.
+
+This is done by using `Cake` as a `.NET Core` **local** tool. The version is specified in `.config\dotnet-tools.json`.
+
 ## Running locally
 
 ### Pre-requisites
 
-- [.NET Core SDK v3.1.100][dotnet-sdk] and higher
+- [.NET Core SDK v3.1.202][dotnet-sdk] and higher
 
 ### Initial setup on Windows
 
@@ -53,7 +68,7 @@ dotnet cake build.cake
 ## Benefits over a nuspec file
 
 - A single file describing the package and the project instead of two (`*.csproj` and `*.nuspec`)
-- References (projects or `NuGet` packages) are resolved automatically. There is no need to tweak a file manually anymore!
+- References (projects or `NuGet` packages) are resolved automatically. There is no need to tweak a file manually any more!
 
 ## Referencing a project without turning it into a package reference
 
@@ -85,10 +100,6 @@ Luckily [this issue][project-reference-dll-issue] provides a workaround. All the
 </Target>
 ```
 
-## Pinning the version of Cake
-
-Pinning the version of `Cake` guarantees you'll be using the same version of `Cake` on your machine and in the build server.
-
 ## CI
 
 Each time a commit is pushed to `master` or `features/*`; `AppVeyor`, `Azure DevOps`, `CircleCI` and `Travis CI` will build the changes.
@@ -102,13 +113,13 @@ In case of a successful build `AppVeyor` will:
   - [Create][github-release] a `GitHub` **pre-release**
   - Publish the `NuGet` packages (including symbols) to `gabrielweyer-pre-release` [feed][my-get-gabrielweyer-pre-release-feed]
 
+When running on a platform that is not Windows, we can't target the `.NET` full Framework, hence the build script is calling `IsRunningOnLinuxOrDarwin` to detect the available capabilities.
+
 ### AppVeyor
 
 Build status is visible [here][app-veyor].
 
-- `Windows` and `Linux`
-- Can target both `.NET Core` and `.NET Framework` when running on `Windows`
-  - For this reason we'll publish the `NuGet` packages using `AppVeyor`
+- Supports `Linux`, `macOS` and `Windows` hosted agents
 - Can create a `GitHub` release and `tag` the `repository` if required
 - Supports artifacts and test results
 - You can modify `AppVeyor`'s build number programatically
@@ -119,8 +130,7 @@ Build status is visible [here][app-veyor].
 
 Build status is visible [here][azure-devops].
 
-- `Linux`, `OS X` and `Windows`
-- Can target both `.NET Core` and `.NET Framework` when running on `Windows`
+- Supports `Linux`, `macOS` and `Windows` hosted agents
 - Supports artifacts and test results
 - Supports files exclusion
 
@@ -128,22 +138,22 @@ Build status is visible [here][azure-devops].
 
 Build status is visible [here][circle-ci].
 
-- `Linux` and `OS X`
-- Build in `Docker` containers
-- Supports artifacts and test results
-  - Test results have to be in `JUnit` format, you can use the package [XunitXml.TestLogger][xunit-xml-test-logger] for a `xUnit` logger and then convert the file using the package [dotnet-xunit-to-junit][xunit-to-junit]
+- Supports `Docker`, `Linux`, `macOS` and `Windows` hosted agents
+- Supports artifacts
+
+`CircleCI` has a few limitations:
+
+- Test results have to be in `JUnit` format, you can use the package [XunitXml.TestLogger][xunit-xml-test-logger] for a `xUnit` logger and then convert the file using the package [dotnet-xunit-to-junit][xunit-to-junit]
 - Can't exclude files easily
 
 ### Travis CI
 
 Build status is visible [here][travis-ci].
 
+- Supports `Linux`, `macOS` and `Windows` hosted agents
+
 `Travis CI` has a few limitations:
 
-- `Linux` and `OS X` only so you can't build any `net*` `Framework`s
-  - For this reason I'm not publishing the `NuGet` packages from `Travis CI`
-  - `build.cake` has been modified
-    - Targets `netstandard2.0` / `netcoreapp3.1.0` only on Travis (search for `TravisCI.IsRunningOnTravisCI`)
 - Doesn't parse test result files
 - [Artifacts][travis-artifacts] have to be uploaded to `S3`
 - Can't exclude files easily
@@ -156,7 +166,7 @@ The `master` branch is [`protected`][github-protected-branch]:
 - `master` cannot be deleted
 - Non-protected branches (such as `features/*`) cannot be merged into `master` until they satisfy:
   - An `AppVeyor` passing build
-  - A `Travis` passing build
+  - An `Azure DevOps` passing build
   - A `CircleCI` passing build
 
 After a branch was configured as `protected`, `GitHub` will suggest available [status checks][github-status-checks].

@@ -2,14 +2,13 @@ version: 2
 jobs:
   build:
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1.100-bionic
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1.202-bionic
     steps:
       - checkout
       - run:
-          name: Install "Cake.Tool" .NET Core global tool
+          name: Restore "Cake.Tool" .NET Core local tool
           command: |
-            export PATH="$PATH:$HOME/.dotnet/tools"
-            dotnet tool install -g Cake.Tool --version 0.35.0
+            dotnet tool restore
       - run:
           name: Install libcurl3 for GitVersion
           command: |
