@@ -17,10 +17,10 @@ trigger:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Install .NET Core SDK 3.1.100'
+  displayName: 'Install .NET Core SDK 3.1.202'
   inputs:
     packageType: sdk
-    version: 3.1.100
+    version: 3.1.202
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - bash: |
