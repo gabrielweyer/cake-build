@@ -5,7 +5,4 @@
         <RootNamespace>Contoso.Hello.ExtraLogic</RootNamespace>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(APPVEYOR)' == 'True'">
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    </PropertyGroup>
 </Project>

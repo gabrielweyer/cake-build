@@ -1,0 +1,8 @@
+<Project>
+    <PropertyGroup>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(APPVEYOR)' == 'True'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+</Project>

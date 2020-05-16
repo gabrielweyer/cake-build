@@ -21,7 +21,4 @@
       <BuildOutputInPackage Include="$(OutputPath)Contoso.Hello.ExtraLogic.dll" />
     </ItemGroup>
   </Target>
-  <PropertyGroup Condition="'$(APPVEYOR)' == 'True'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
 </Project>
