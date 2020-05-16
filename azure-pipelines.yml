@@ -24,7 +24,7 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - bash: |
-    dotnet tool install --global Cake.Tool --version 0.35.0
+    dotnet tool install --global Cake.Tool --version 0.37.0
   displayName: 'Install "Cake.Tool" .NET Core global tool'
 
 - bash: |

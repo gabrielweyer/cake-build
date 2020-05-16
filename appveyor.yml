@@ -81,4 +81,4 @@ install:
   # The `SDK` is required to restore, build, publish... a `.NET Core` application
   # https://www.microsoft.com/net/download/windows
   - ps: .\build\dotnet-install.ps1
-  - ps: dotnet tool install --global Cake.Tool --version 0.35.0
+  - ps: dotnet tool install --global Cake.Tool --version 0.37.0
