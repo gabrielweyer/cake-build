@@ -5,7 +5,6 @@ branches:
     # We'll also build whenever there is a new commit on any branch starting with `features/`
     - /features\/.+/
 build_script:
-  - ps: dotnet --info
   - ps: dotnet cake build.cake --bootstrap
   - ps: dotnet cake build.cake --pack
 assembly_info:
@@ -81,7 +80,5 @@ install:
   # Cake build is targeting `.NET Core` `3.1.x`, so we can safely install the latest supported `SDK`
   # The `SDK` is required to restore, build, publish... a `.NET Core` application
   # https://www.microsoft.com/net/download/windows
-  - ps: dotnet --info
   - ps: .\build\dotnet-install.ps1 -InstallDir 'C:\Program Files\dotnet\'
-  - ps: dotnet --info
   - ps: dotnet tool restore
