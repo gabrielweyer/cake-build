@@ -26,6 +26,21 @@ I tried to create a *somewhat* realistic scenario without writing too much code:
 
 I wrote a detailed [blog post][cake-build-post] about this experiment.
 
+## Table of contents
+
+- [Pinning the version of Cake](#pinning-the-version-of-cake)
+- [Running locally](#running-locally)
+- [Benefits over a nuspec file](#benefits-over-a-nuspec-file)
+- [Referencing a project without turning it into a package reference](#referencing-a-project-without-turning-it-into-a-package-reference)
+- [CI](#ci)
+- [Status checks](#status-checks)
+
+## Pinning the version of Cake
+
+Pinning the version of `Cake` guarantees you'll be using the same version of `Cake` on your machine and in the build server.
+
+This is done by using `Cake` as a `.NET Core` **local** tool. The version is specified in `.config\dotnet-tools.json`.
+
 ## Running locally
 
 ### Pre-requisites
@@ -53,7 +68,7 @@ dotnet cake build.cake
 ## Benefits over a nuspec file
 
 - A single file describing the package and the project instead of two (`*.csproj` and `*.nuspec`)
-- References (projects or `NuGet` packages) are resolved automatically. There is no need to tweak a file manually anymore!
+- References (projects or `NuGet` packages) are resolved automatically. There is no need to tweak a file manually any more!
 
 ## Referencing a project without turning it into a package reference
 
@@ -85,10 +100,6 @@ Luckily [this issue][project-reference-dll-issue] provides a workaround. All the
 </Target>
 ```
 
-## Pinning the version of Cake
-
-Pinning the version of `Cake` guarantees you'll be using the same version of `Cake` on your machine and in the build server.
-
 ## CI
 
 Each time a commit is pushed to `master` or `features/*`; `AppVeyor`, `Azure DevOps`, `CircleCI` and `Travis CI` will build the changes.
@@ -106,8 +117,8 @@ In case of a successful build `AppVeyor` will:
 
 Build status is visible [here][app-veyor].
 
-- `Windows` and `Linux`
-- Can target both `.NET Core` and `.NET Framework` when running on `Windows`
+- `Windows`
+- Can target both `.NET Core` and `.NET Framework`
   - For this reason we'll publish the `NuGet` packages using `AppVeyor`
 - Can create a `GitHub` release and `tag` the `repository` if required
 - Supports artifacts and test results
@@ -156,7 +167,7 @@ The `master` branch is [`protected`][github-protected-branch]:
 - `master` cannot be deleted
 - Non-protected branches (such as `features/*`) cannot be merged into `master` until they satisfy:
   - An `AppVeyor` passing build
-  - A `Travis` passing build
+  - An `Azure DevOps` passing build
   - A `CircleCI` passing build
 
 After a branch was configured as `protected`, `GitHub` will suggest available [status checks][github-status-checks].
