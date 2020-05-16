@@ -4,9 +4,8 @@
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(APPVEYOR)' == 'True'">
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <Deterministic Condition="'$(APPVEYOR)' == 'True'">true</Deterministic>
+        <ContinuousIntegrationBuild Condition="'$(APPVEYOR)' == 'True'">true</ContinuousIntegrationBuild>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
