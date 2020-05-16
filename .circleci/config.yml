@@ -6,10 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install "Cake.Tool" .NET Core global tool
+          name: Restore "Cake.Tool" .NET Core local tool
           command: |
-            export PATH="$PATH:$HOME/.dotnet/tools"
-            dotnet tool install -g Cake.Tool --version 0.37.0
+            dotnet tool restore
       - run:
           name: Install libcurl3 for GitVersion
           command: |
