@@ -82,6 +82,6 @@ install:
   # The `SDK` is required to restore, build, publish... a `.NET Core` application
   # https://www.microsoft.com/net/download/windows
   - ps: dotnet --info
-  - ps: .\build\dotnet-install.ps1
+  - ps: .\build\dotnet-install.ps1 -InstallDir 'C:\Program Files\dotnet\'
   - ps: dotnet --info
   - ps: dotnet tool restore
