@@ -17,7 +17,7 @@ matrix:
       # https://docs.travis-ci.com/user/reference/osx/#OS-X-Version
 branches:
   only:
-  - master
+  - main
   # We'll also build whenever there is a new commit on any branch starting with `features/`
   - /features\/.+/
 install:
