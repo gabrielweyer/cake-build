@@ -1,7 +1,7 @@
 image: Visual Studio 2019
 branches:
   only:
-    - master
+    - main
     # We'll also build whenever there is a new commit on any branch starting with `features/`
     - /features\/.+/
 build_script:
@@ -36,7 +36,7 @@ deploy:
     draft: false
     prerelease: false
     on:
-      branch: master
+      branch: main
   - provider: GitHub
     # By convention release versions start with `v`
     release: v$(APPVEYOR_BUILD_VERSION)
@@ -59,7 +59,7 @@ deploy:
     symbol_server: https://www.myget.org/F/gabrielweyer/symbols/api/v2/package
     artifact: packages
     on:
-      branch: master
+      branch: main
   - provider: NuGet
     server: https://www.myget.org/F/gabrielweyer-pre-release/api/v2/package
     api_key:
