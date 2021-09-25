@@ -191,7 +191,7 @@ private bool IsRunningOnCircleCI()
 private void TransformCircleCITestResults()
 {
     // CircleCI infer the name of the testing framework from the containing folder
-    var testResultsCircleCIDir = artifactsDir.Combine("junit/xUnit");
+    var testResultsCircleCIDir = artifactsDir.Combine("junit");
     EnsureDirectoryExists(testResultsCircleCIDir);
 
     var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
