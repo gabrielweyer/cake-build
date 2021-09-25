@@ -12,7 +12,6 @@ trigger:
     - LICENSE
     - README.md
     - appveyor.yml
-    - .travis.yml
     - .circleci/config.yml
 
 steps:

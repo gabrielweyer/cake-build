@@ -20,7 +20,6 @@ skip_commits:
     - .editorconfig
     - LICENSE
     - README.md
-    - .travis.yml
     - .circleci/config.yml
     - azure-pipelines.yml
 deploy:
