@@ -10,7 +10,6 @@
 | [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `netcoreapp3.1.4`, `net461` |
 | [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `netcoreapp3.1.4` |
 | [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/core/sdk:3.1.202-bionic` | `netstandard2.0` | `netcoreapp3.1.4` |
-| [Travis CI](#travis-ci) | [![Build Status][travis-ci-shield]][travis-ci] | `Linux`, `OS X` | `netstandard2.0` | `netcoreapp3.1.4` |
 
 Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
 
@@ -102,7 +101,7 @@ Luckily [this issue][project-reference-dll-issue] provides a workaround. All the
 
 ## CI
 
-Each time a commit is pushed to `main` or `features/*`; `AppVeyor`, `Azure DevOps`, `CircleCI` and `Travis CI` will build the changes.
+Each time a commit is pushed to `main` or `features/*`; `AppVeyor`, `Azure DevOps` and `CircleCI` will build the changes.
 
 In case of a successful build `AppVeyor` will:
 
@@ -146,18 +145,6 @@ Build status is visible [here][circle-ci].
 - Test results have to be in `JUnit` format, you can use the package [XunitXml.TestLogger][xunit-xml-test-logger] for a `xUnit` logger and then convert the file using the package [dotnet-xunit-to-junit][xunit-to-junit]
 - Can't exclude files easily
 
-### Travis CI
-
-Build status is visible [here][travis-ci].
-
-- Supports `Linux`, `macOS` and `Windows` hosted agents
-
-`Travis CI` has a few limitations:
-
-- Doesn't parse test result files
-- [Artifacts][travis-artifacts] have to be uploaded to `S3`
-- Can't exclude files easily
-
 ## Status checks
 
 The `main` branch is [`protected`][github-protected-branch]:
@@ -179,9 +166,6 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [pack-issues]: https://github.com/NuGet/Home/issues/6285
 [project-reference-dll-issue]: https://github.com/NuGet/Home/issues/3891
 [private-assets]: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#includeassets-excludeassets-and-privateassets
-[travis-ci]: https://travis-ci.org/gabrielweyer/cake-build
-[travis-ci-shield]: https://travis-ci.org/gabrielweyer/cake-build.svg?branch=main
-[travis-artifacts]: https://docs.travis-ci.com/user/uploading-artifacts/
 [app-veyor]: https://ci.appveyor.com/project/GabrielWeyer/cake-build
 [app-veyor-shield]: https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=main&svg=true
 [my-get-gabrielweyer-feed]: https://www.myget.org/feed/Packages/gabrielweyer
