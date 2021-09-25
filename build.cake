@@ -1,5 +1,3 @@
-#module nuget:?package=Cake.DotNetTool.Module&version=0.4.0
-
 #tool dotnet:?package=GitVersion.Tool&version=5.7.0
 #tool dotnet:?package=dotnet-xunit-to-junit&version=1.0.4
 
@@ -119,7 +117,7 @@ Task("Test")
         foreach (var projectFile in projectFiles)
         {
             var testResultsFile = testsResultsDir.Combine($"{projectFile.GetFilenameWithoutExtension()}.xml");
-            settings.Logger = $"\"xunit;LogFilePath={testResultsFile}\"";
+            settings.Loggers = new List<string>() { $"\"xunit;LogFilePath={testResultsFile}\"" };
 
             DotNetCoreTest(projectFile.FullPath, settings);
         }
