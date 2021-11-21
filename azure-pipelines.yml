@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'Ubuntu-18.04'
+  vmImage: ubuntu-20.04
 
 trigger:
   branches:
@@ -16,15 +16,15 @@ trigger:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Install .NET Core SDK 3.1.202'
+  displayName: 'Install .NET SDK 6.0.100'
   inputs:
     packageType: sdk
-    version: 3.1.202
+    version: 6.0.100
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - bash: |
     dotnet tool restore
-  displayName: 'Restoring "Cake.Tool" .NET Core local tool'
+  displayName: 'Restoring "Cake.Tool" .NET local tool'
 
 - bash: |
     export PATH="$PATH:$HOME/.dotnet/tools"

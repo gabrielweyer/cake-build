@@ -1,4 +1,4 @@
-image: Visual Studio 2019
+image: Visual Studio 2022
 branches:
   only:
     - main
@@ -76,7 +76,7 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 # `install` will run before `build_script`
 install:
-  # Cake build is targeting `.NET Core` `3.1.x`, so we can safely install the latest supported `SDK`
+  # Cake build is targeting `.NET` `6.0.x`, so we can safely install the latest supported `SDK`
   # The `SDK` is required to restore, build, publish... a `.NET Core` application
   # https://www.microsoft.com/net/download/windows
   - ps: .\build\dotnet-install.ps1 -InstallDir 'C:\Program Files\dotnet\'

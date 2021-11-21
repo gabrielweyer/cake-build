@@ -7,11 +7,11 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `netcoreapp3.1.4`, `net461` |
-| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `netcoreapp3.1.4` |
-| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/core/sdk:3.1.202-bionic` | `netstandard2.0` | `netcoreapp3.1.4` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `net6.0`, `net461` |
+| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `net6.0` |
+| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/sdk:6.0-focal` | `netstandard2.0` | `net6.0` |
 
-Demonstrates a basic build of a `.NET Core` `NuGet` package using [Cake][cake].
+Demonstrates a basic build of a `.NET` `NuGet` package using [Cake][cake].
 
 I tried to create a *somewhat* realistic scenario without writing too much code:
 
@@ -38,13 +38,13 @@ I wrote a detailed [blog post][cake-build-post] about this experiment.
 
 Pinning the version of `Cake` guarantees you'll be using the same version of `Cake` on your machine and in the build server.
 
-This is done by using `Cake` as a `.NET Core` **local** tool. The version is specified in `.config\dotnet-tools.json`.
+This is done by using `Cake` as a `.NET` **local** tool. The version is specified in `.config\dotnet-tools.json`.
 
 ## Running locally
 
 ### Pre-requisites
 
-- [.NET Core SDK v3.1.202][dotnet-sdk] and higher
+- [.NET SDK 6.0.x][dotnet-sdk] and higher
 
 ### Initial setup on Windows
 
@@ -165,7 +165,7 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [git-version]: https://gitversion.readthedocs.io/en/latest/
 [pack-issues]: https://github.com/NuGet/Home/issues/6285
 [project-reference-dll-issue]: https://github.com/NuGet/Home/issues/3891
-[private-assets]: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#includeassets-excludeassets-and-privateassets
+[private-assets]: https://docs.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#controlling-dependency-assets
 [app-veyor]: https://ci.appveyor.com/project/GabrielWeyer/cake-build
 [app-veyor-shield]: https://ci.appveyor.com/api/projects/status/github/gabrielweyer/cake-build?branch=main&svg=true
 [my-get-gabrielweyer-feed]: https://www.myget.org/feed/Packages/gabrielweyer
@@ -184,7 +184,7 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [circle-ci]: https://circleci.com/gh/gabrielweyer/cake-build
 [circle-ci-shield]: https://circleci.com/gh/gabrielweyer/cake-build/tree/main.svg?style=shield
 [xunit-to-junit]: https://www.nuget.org/packages/dotnet-xunit-to-junit/
-[dotnet-sdk]: https://dotnet.microsoft.com/download
+[dotnet-sdk]: https://dotnet.microsoft.com/download/dotnet/6.0
 [azure-devops-shield]: https://dev.azure.com/gabrielweyer/cake-build/_apis/build/status/Cake?branchName=main
 [azure-devops]: https://dev.azure.com/gabrielweyer/cake-build/_build/latest?definitionId=12?branchName=main
 [cake-build-post]: https://gabrielweyer.github.io/2018/04/22/cake-build/
