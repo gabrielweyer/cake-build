@@ -15,13 +15,6 @@ test: off
 # AppVeyor will create a release tag if a matching one does not exist
 # hence triggering another build
 skip_tags: true
-skip_commits:
-  files:
-    - .editorconfig
-    - LICENSE
-    - README.md
-    - .circleci/config.yml
-    - azure-pipelines.yml
 deploy:
   # The provider is case sensitive
   - provider: GitHub
