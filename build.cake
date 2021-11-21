@@ -85,7 +85,7 @@ Task("Build")
                 .ToList()
                 .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
 
-            settings.Framework = "netcoreapp3.1";
+            settings.Framework = "net6.0";
 
             GetFiles("./tests/*/*Tests.csproj")
                 .ToList()
@@ -109,7 +109,7 @@ Task("Test")
 
         if (IsRunningOnLinuxOrDarwin())
         {
-            settings.Framework = "netcoreapp3.1";
+            settings.Framework = "net6.0";
         }
 
         var projectFiles = GetFiles("./tests/*/*Tests.csproj");
