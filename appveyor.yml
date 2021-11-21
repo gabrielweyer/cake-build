@@ -30,7 +30,7 @@ deploy:
     auth_token:
       # Encrypted `GitHub` `PAT`
       # https://www.appveyor.com/docs/deployment/github/#provider-settings
-      secure: AmCNluoUjQddLCZrNghd0XjLwFhrofDMF7UTdmJDLuK5g/+FKGfBr6IOIbN3hrRw
+      secure: 9GDrvSy5jgreqfc9gz9lC3vajzPE7hkxy2AeD+bFn8TjGy5W13SEY61QvlWvtdKZ
     artifact: packages
     draft: false
     prerelease: false
@@ -42,7 +42,7 @@ deploy:
     auth_token:
       # Encrypted `GitHub` `PAT`
       # https://www.appveyor.com/docs/deployment/github/#provider-settings
-      secure: AmCNluoUjQddLCZrNghd0XjLwFhrofDMF7UTdmJDLuK5g/+FKGfBr6IOIbN3hrRw
+      secure: 9GDrvSy5jgreqfc9gz9lC3vajzPE7hkxy2AeD+bFn8TjGy5W13SEY61QvlWvtdKZ
     artifact: packages
     draft: false
     prerelease: true
