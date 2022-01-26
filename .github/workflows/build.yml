@@ -17,10 +17,8 @@ jobs:
     steps:
       - name: Install latest .NET SDK
         run: .\build\dotnet-install.ps1
-    steps:
       - name: Restore .NET tools
         run: dotnet tool restore
-    steps:
       - name: Build
         run: |
           dotnet cake build.cake --bootstrap
