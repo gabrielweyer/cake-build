@@ -179,8 +179,8 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [my-get-super-r]: https://www.myget.org/feed/gabrielweyer/package/nuget/Contoso.Hello.SuperLogic
 [my-get-super-pre-badge]: https://img.shields.io/myget/gabrielweyer-pre-release/v/Contoso.Hello.SuperLogic.svg?label=MyGet
 [my-get-super-pre]: https://www.myget.org/feed/gabrielweyer-pre-release/package/nuget/Contoso.Hello.SuperLogic
-[github-protected-branch]: https://help.github.com/articles/configuring-protected-branches/
-[github-status-checks]: https://help.github.com/articles/enabling-required-status-checks/
+[github-protected-branch]: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches
+[github-status-checks]: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches#require-status-checks-before-merging
 [circle-ci]: https://app.circleci.com/pipelines/github/gabrielweyer/cake-build
 [circle-ci-shield]: https://circleci.com/gh/gabrielweyer/cake-build/tree/main.svg?style=shield
 [xunit-to-junit]: https://www.nuget.org/packages/dotnet-xunit-to-junit/
