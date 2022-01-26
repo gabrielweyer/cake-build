@@ -15,6 +15,9 @@ jobs:
   Build:
     runs-on: windows-2022
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Install latest .NET SDK
         run: .\build\dotnet-install.ps1
       - name: Restore .NET tools
