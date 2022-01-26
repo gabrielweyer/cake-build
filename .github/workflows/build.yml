@@ -27,6 +27,11 @@ jobs:
         run: |
           dotnet cake build.cake --bootstrap
           dotnet cake build.cake --pack
+      - name: Upload NuGet packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: packages
+          path: .\artifacts\packages
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v2
         with:
