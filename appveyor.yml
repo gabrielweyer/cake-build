@@ -70,7 +70,7 @@ environment:
 # `install` will run before `build_script`
 install:
   # Cake build is targeting `.NET` `6.0.x`, so we can safely install the latest supported `SDK`
-  # The `SDK` is required to restore, build, publish... a `.NET Core` application
+  # The `SDK` is required to restore, build, publish... a `.NET` application
   # https://www.microsoft.com/net/download/windows
   - ps: .\build\dotnet-install.ps1 -InstallDir 'C:\Program Files\dotnet\'
   - ps: dotnet tool restore

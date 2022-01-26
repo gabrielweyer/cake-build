@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Restore "Cake.Tool" .NET Core local tool
+          name: Restore "Cake.Tool" .NET local tool
           command: |
             dotnet tool restore
       - run:
