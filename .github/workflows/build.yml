@@ -12,7 +12,7 @@ on:
       - .circleci/config.yml
       - azure-pipelines.yml
 jobs:
-  Build
+  Build:
     runs-on: ubuntu-latest
     steps:
       - name: Install latest .NET SDK
