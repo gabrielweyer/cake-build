@@ -20,19 +20,19 @@ Task("Clean")
     {
         CleanDirectory(artifactsDir);
 
-        var settings = new DotNetCoreCleanSettings
+        var settings = new DotNetCleanSettings
         {
             Configuration = configuration
         };
 
-        DotNetCoreClean(solutionPath, settings);
+        DotNetClean(solutionPath, settings);
     });
 
 Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        DotNetCoreRestore();
+        DotNetRestore();
     });
 
 Task("SemVer")
@@ -65,12 +65,12 @@ Task("Build")
     .IsDependentOn("SetAppVeyorVersion")
     .Does(() =>
     {
-        var settings = new DotNetCoreBuildSettings
+        var settings = new DotNetBuildSettings
         {
             Configuration = configuration,
             NoIncremental = true,
             NoRestore = true,
-            MSBuildSettings = new DotNetCoreMSBuildSettings()
+            MSBuildSettings = new DotNetMSBuildSettings()
                 .SetVersion(assemblyVersion)
                 .WithProperty("FileVersion", packageVersion)
                 .WithProperty("InformationalVersion", packageVersion)
@@ -83,17 +83,17 @@ Task("Build")
 
             GetFiles("./src/*/*.csproj")
                 .ToList()
-                .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
+                .ForEach(f => DotNetBuild(f.FullPath, settings));
 
             settings.Framework = "net6.0";
 
             GetFiles("./tests/*/*Tests.csproj")
                 .ToList()
-                .ForEach(f => DotNetCoreBuild(f.FullPath, settings));
+                .ForEach(f => DotNetBuild(f.FullPath, settings));
         }
         else
         {
-            DotNetCoreBuild(solutionPath, settings);
+            DotNetBuild(solutionPath, settings);
         }
     });
 
@@ -103,7 +103,7 @@ Task("Test")
     {
         var testResultsFile = testsResultsDir.Combine("{assembly}.{framework}.xml");
 
-        var settings = new DotNetCoreTestSettings
+        var settings = new DotNetTestSettings
         {
             Configuration = configuration,
             NoBuild = true,
@@ -115,7 +115,7 @@ Task("Test")
             settings.Framework = "net6.0";
         }
 
-        DotNetCoreTest(solutionPath, settings);
+        DotNetTest(solutionPath, settings);
     })
     .Does(() =>
     {
@@ -131,14 +131,14 @@ Task("Pack")
     .WithCriteria(() => HasArgument("pack"))
     .Does(() =>
     {
-        var settings = new DotNetCorePackSettings
+        var settings = new DotNetPackSettings
         {
             Configuration = configuration,
             NoBuild = true,
             NoRestore = true,
             IncludeSymbols = true,
             OutputDirectory = packagesDir,
-            MSBuildSettings = new DotNetCoreMSBuildSettings()
+            MSBuildSettings = new DotNetMSBuildSettings()
                 .WithProperty("PackageVersion", packageVersion)
                 .WithProperty("Copyright", $"Copyright Contoso {DateTime.Now.Year}")
         };
@@ -150,7 +150,7 @@ Task("Pack")
 
         GetFiles("./src/*/*.csproj")
             .ToList()
-            .ForEach(f => DotNetCorePack(f.FullPath, settings));
+            .ForEach(f => DotNetPack(f.FullPath, settings));
     });
 
 Task("PublishAppVeyorArtifacts")
@@ -171,7 +171,7 @@ Task("Default")
 RunTarget(target);
 
 /// <summary>
-/// - No .NET Framework installed, only .NET Core
+/// - No .NET 4.6.x Framework installed, only .NET 6.x
 /// </summary>
 private bool IsRunningOnLinuxOrDarwin()
 {
@@ -203,11 +203,11 @@ private void TransformCircleCITestResults()
 
         var toolName = Context.Environment.Platform.IsUnix() ? "dotnet-xunit-to-junit" : "dotnet-xunit-to-junit.exe";
 
-        var settings = new DotNetCoreToolSettings
+        var settings = new DotNetToolSettings
         {
             ToolPath = Context.Tools.Resolve(toolName)
         };
 
-        DotNetCoreTool(arguments, settings);
+        DotNetTool(arguments, settings);
     }
 }
