@@ -101,10 +101,13 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
     {
+        var testResultsFile = testsResultsDir.Combine("{assembly}.{framework}.xml");
+
         var settings = new DotNetCoreTestSettings
         {
             Configuration = configuration,
-            NoBuild = true
+            NoBuild = true,
+            Loggers = new List<string>() { $"\"xunit;LogFilePath={testResultsFile}\"" }
         };
 
         if (IsRunningOnLinuxOrDarwin())
@@ -112,15 +115,7 @@ Task("Test")
             settings.Framework = "net6.0";
         }
 
-        var projectFiles = GetFiles("./tests/*/*Tests.csproj");
-
-        foreach (var projectFile in projectFiles)
-        {
-            var testResultsFile = testsResultsDir.Combine($"{projectFile.GetFilenameWithoutExtension()}.xml");
-            settings.Loggers = new List<string>() { $"\"xunit;LogFilePath={testResultsFile}\"" };
-
-            DotNetCoreTest(projectFile.FullPath, settings);
-        }
+        DotNetCoreTest(solutionPath, settings);
     })
     .Does(() =>
     {
