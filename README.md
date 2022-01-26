@@ -181,7 +181,7 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [my-get-super-pre]: https://www.myget.org/feed/gabrielweyer-pre-release/package/nuget/Contoso.Hello.SuperLogic
 [github-protected-branch]: https://help.github.com/articles/configuring-protected-branches/
 [github-status-checks]: https://help.github.com/articles/enabling-required-status-checks/
-[circle-ci]: https://circleci.com/gh/gabrielweyer/cake-build
+[circle-ci]: https://app.circleci.com/pipelines/github/gabrielweyer/cake-build
 [circle-ci-shield]: https://circleci.com/gh/gabrielweyer/cake-build/tree/main.svg?style=shield
 [xunit-to-junit]: https://www.nuget.org/packages/dotnet-xunit-to-junit/
 [dotnet-sdk]: https://dotnet.microsoft.com/download/dotnet/6.0
