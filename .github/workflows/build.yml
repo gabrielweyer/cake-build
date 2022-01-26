@@ -27,3 +27,9 @@ jobs:
         run: |
           dotnet cake build.cake --bootstrap
           dotnet cake build.cake --pack
+      - name: Upload dotnet test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: tests-results
+          path: .\artifacts\tests-results\*.xml
+        if: ${{ always() }}
