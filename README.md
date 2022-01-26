@@ -162,7 +162,7 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [nuget-org]: https://www.nuget.org/
 [build-cake]: build.cake
 [semver]: https://semver.org/
-[git-version]: https://gitversion.readthedocs.io/en/latest/
+[git-version]: https://gitversion.net/docs/
 [pack-issues]: https://github.com/NuGet/Home/issues/6285
 [project-reference-dll-issue]: https://github.com/NuGet/Home/issues/3891
 [private-assets]: https://docs.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#controlling-dependency-assets
