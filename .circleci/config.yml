@@ -1,4 +1,5 @@
-version: 2
+version: 2.1
+
 jobs:
   build:
     docker:
@@ -30,3 +31,14 @@ jobs:
       - store_test_results:
           # CircleCI infers the name of the testing framework from the containing folder
           path: artifacts/junit
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - main
+                - /features\/.*/
