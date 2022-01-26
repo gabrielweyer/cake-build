@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - 'features/**'
+      - 'gh-actions/**'
     paths-ignore:
       - .editorconfig
       - LICENSE
