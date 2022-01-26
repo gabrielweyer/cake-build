@@ -10,6 +10,7 @@
 | [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net461` | `net6.0`, `net461` |
 | [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `net6.0` |
 | [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/sdk:6.0-focal` | `netstandard2.0` | `net6.0` |
+| [GitHub](#github) | [![Build Status][github-actions-shield]][github-actions] | `Windows` | `netstandard2.0`, `net461` | `net6.0`, `net461` |
 
 Demonstrates a basic build of a `.NET` `NuGet` package using [Cake][cake].
 
@@ -145,6 +146,19 @@ Build status is visible [here][circle-ci].
 - Test results have to be in `JUnit` format, you can use the package [XunitXml.TestLogger][xunit-xml-test-logger] for a `xUnit` logger and then convert the file using the package [dotnet-xunit-to-junit][xunit-to-junit]
 - Can't exclude files easily
 
+### GitHub
+
+Build status is visible [here][github-actions].
+
+- Supports `Linux`, `macOS` and `Windows` hosted agents
+- Supports artifacts
+- Supports files exclusion
+
+`GitHub` has a few limitations:
+
+- A third-party / custom Action is required to display test results.
+- A third-party / custom Action is required to create a GitHub release
+
 ## Status checks
 
 The `main` branch is [`protected`][github-protected-branch]:
@@ -155,6 +169,7 @@ The `main` branch is [`protected`][github-protected-branch]:
   - An `AppVeyor` passing build
   - An `Azure DevOps` passing build
   - A `CircleCI` passing build
+  - A `GitHub` passing build
 
 After a branch was configured as `protected`, `GitHub` will suggest available [status checks][github-status-checks].
 
@@ -189,3 +204,5 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [azure-devops]: https://dev.azure.com/gabrielweyer/cake-build/_build/latest?definitionId=12&branchName=main
 [cake-build-post]: https://gabrielweyer.github.io/2018/04/22/cake-build/
 [xunit-xml-test-logger]: https://www.nuget.org/packages/XunitXml.TestLogger/
+[github-actions]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml
+[github-actions-shield]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml/badge.svg
