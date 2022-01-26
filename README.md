@@ -124,7 +124,8 @@ Build status is visible [here][app-veyor].
 - Supports artifacts and test results
 - You can modify `AppVeyor`'s build number programatically
   - `Cake` integrates with `AppVeyor`: publish test results, upload artifacts, update build number...
-- Supports files exclusion
+- Partially supports files exclusion (commits are skipped as soon as they contain one file in the excluded
+list)
 
 ### Azure DevOps
 
@@ -156,7 +157,7 @@ Build status is visible [here][github-actions].
 
 `GitHub` has a few limitations:
 
-- A third-party / custom Action is required to display test results.
+- A third-party / custom Action is required to display test results
 - A third-party / custom Action is required to create a GitHub release
 
 ## Status checks
