@@ -1,0 +1,27 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+      - 'features/**'
+    paths-ignore:
+      - .editorconfig
+      - LICENSE
+      - README.md
+      - appveyor.yml
+      - .circleci/config.yml
+      - azure-pipelines.yml
+jobs:
+  Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install latest .NET SDK
+        run: .\build\dotnet-install.ps1
+    steps:
+      - name: Restore .NET tools
+        run: dotnet tool restore
+    steps:
+      - name: Build
+        run: |
+          dotnet cake build.cake --bootstrap
+          dotnet cake build.cake --pack

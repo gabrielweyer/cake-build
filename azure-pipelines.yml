@@ -13,6 +13,7 @@ trigger:
     - README.md
     - appveyor.yml
     - .circleci/config.yml
+    - .github/workflows/build.yml
 
 steps:
 - task: UseDotNet@2
