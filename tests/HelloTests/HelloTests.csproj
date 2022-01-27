@@ -6,10 +6,10 @@
     <RootNamespace>Contoso.Hello.HelloTests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="JunitXml.TestLogger" Version="3.0.110" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
-    <PackageReference Include="XunitXml.TestLogger" Version="3.0.70" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Logic\Logic.csproj" />

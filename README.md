@@ -144,7 +144,7 @@ Build status is visible [here][circle-ci].
 
 `CircleCI` has a few limitations:
 
-- Test results have to be in `JUnit` format, you can use the package [XunitXml.TestLogger][xunit-xml-test-logger] for a `xUnit` logger and then convert the file using the package [dotnet-xunit-to-junit][xunit-to-junit]
+- Test results have to be in `JUnit` format, you can use the package [JunitXml.TestLogger][junit-xml-test-logger] for a `JUnit` logger
 - Can't exclude files easily
 
 ### GitHub
@@ -199,11 +199,10 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [github-status-checks]: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches#require-status-checks-before-merging
 [circle-ci]: https://app.circleci.com/pipelines/github/gabrielweyer/cake-build
 [circle-ci-shield]: https://circleci.com/gh/gabrielweyer/cake-build/tree/main.svg?style=shield
-[xunit-to-junit]: https://www.nuget.org/packages/dotnet-xunit-to-junit/
 [dotnet-sdk]: https://dotnet.microsoft.com/download/dotnet/6.0
 [azure-devops-shield]: https://dev.azure.com/gabrielweyer/cake-build/_apis/build/status/Cake?branchName=main
 [azure-devops]: https://dev.azure.com/gabrielweyer/cake-build/_build/latest?definitionId=12&branchName=main
 [cake-build-post]: https://gabrielweyer.github.io/2018/04/22/cake-build/
-[xunit-xml-test-logger]: https://www.nuget.org/packages/XunitXml.TestLogger/
+[junit-xml-test-logger]: https://www.nuget.org/packages/JUnitXml.TestLogger/
 [github-actions]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml
 [github-actions-shield]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml/badge.svg

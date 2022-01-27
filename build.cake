@@ -1,5 +1,4 @@
 #tool dotnet:?package=GitVersion.Tool&version=5.8.1
-#tool dotnet:?package=dotnet-xunit-to-junit&version=3.0.2
 
 #r Newtonsoft.Json
 
@@ -10,7 +9,6 @@ var assemblyVersion = "1.0.0";
 var packageVersion = "1.0.0";
 
 var artifactsDir = MakeAbsolute(Directory("artifacts"));
-var testsResultsDir = artifactsDir.Combine(Directory("tests-results"));
 var packagesDir = artifactsDir.Combine(Directory("packages"));
 
 var solutionPath = "./build.sln";
@@ -101,13 +99,16 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var testResultsFile = testsResultsDir.Combine("{assembly}.{framework}.xml");
+        var testResultsFile = artifactsDir
+            .Combine("test-results")
+            .Combine("junit")
+            .Combine("{assembly}.{framework}.xml");
 
         var settings = new DotNetTestSettings
         {
             Configuration = configuration,
             NoBuild = true,
-            Loggers = new List<string>() { $"\"xunit;LogFilePath={testResultsFile}\"" }
+            Loggers = new List<string>() { $"\"junit;LogFilePath={testResultsFile}\"" }
         };
 
         if (IsRunningOnLinuxOrDarwin())
@@ -116,13 +117,6 @@ Task("Test")
         }
 
         DotNetTest(solutionPath, settings);
-    })
-    .Does(() =>
-    {
-        if (IsRunningOnCircleCI())
-        {
-            TransformCircleCITestResults();
-        }
     })
     .DeferOnError();
 
@@ -181,33 +175,4 @@ private bool IsRunningOnLinuxOrDarwin()
 private bool IsRunningOnCircleCI()
 {
     return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIRCLECI"));
-}
-
-private void TransformCircleCITestResults()
-{
-    // CircleCI infer the name of the testing framework from the containing folder
-    var testResultsCircleCIDir = artifactsDir.Combine("junit");
-    EnsureDirectoryExists(testResultsCircleCIDir);
-
-    var testResultsFiles = GetFiles($"{testsResultsDir}/*.xml");
-
-    foreach (var testResultsFile in testResultsFiles)
-    {
-        var inputFilePath = testResultsFile;
-        var outputFilePath = testResultsCircleCIDir.CombineWithFilePath(testResultsFile.GetFilename());
-
-        var arguments = new ProcessArgumentBuilder()
-            .AppendQuoted(inputFilePath.ToString())
-            .AppendQuoted(outputFilePath.ToString())
-            .Render();
-
-        var toolName = Context.Environment.Platform.IsUnix() ? "dotnet-xunit-to-junit" : "dotnet-xunit-to-junit.exe";
-
-        var settings = new DotNetToolSettings
-        {
-            ToolPath = Context.Tools.Resolve(toolName)
-        };
-
-        DotNetTool(arguments, settings);
-    }
 }
