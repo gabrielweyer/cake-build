@@ -36,9 +36,9 @@ steps:
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFormat: 'xUnit'
+    testResultsFormat: 'JUnit'
     testResultsFiles: '*.xml'
-    searchFolder: '$(System.DefaultWorkingDirectory)/artifacts/tests-results'
+    searchFolder: '$(System.DefaultWorkingDirectory)/artifacts/junit'
   condition: succeededOrFailed()
   displayName: 'Publish Test Results'
 
