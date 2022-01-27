@@ -11,10 +11,10 @@ namespace Contoso.Hello.HelloTests
             // Act
 
             var actual = EvenMoreUseless.DoWork();
-            
+
             // Assert
-            
-            Assert.Equal("Some JSON (maybe): \"Hello\"", actual);
+
+            Assert.Equal("Some JSON maybe): \"Hello\"", actual);
         }
     }
 }
