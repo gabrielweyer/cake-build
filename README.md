@@ -102,7 +102,7 @@ Luckily [this issue][project-reference-dll-issue] provides a workaround. All the
 
 ## CI
 
-Each time a commit is pushed to `main` or `features/*`; `AppVeyor`, `Azure DevOps` and `CircleCI` will build the changes.
+Each time a commit is pushed to `main` or `features/*`; `AppVeyor`, `Azure DevOps`, `CircleCI` and `GitHub` will build the changes.
 
 In case of a successful build `AppVeyor` will:
 
@@ -131,7 +131,7 @@ list)
 
 Build status is visible [here][azure-devops].
 
-- Supports `Linux`, `macOS` and `Windows` hosted agents
+- Supports `Docker`, `Linux`, `macOS` and `Windows` hosted agents
 - Supports artifacts and test results
 - Supports files exclusion
 
@@ -151,7 +151,7 @@ Build status is visible [here][circle-ci].
 
 Build status is visible [here][github-actions].
 
-- Supports `Linux`, `macOS` and `Windows` hosted agents
+- Supports `Docker`, `Linux`, `macOS` and `Windows` hosted agents
 - Supports artifacts
 - Supports files exclusion
 
