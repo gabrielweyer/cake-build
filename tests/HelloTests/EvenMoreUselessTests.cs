@@ -14,7 +14,7 @@ namespace Contoso.Hello.HelloTests
 
             // Assert
 
-            Assert.Equal("Some JSON maybe): \"Hello\"", actual);
+            Assert.Equal("Some JSON (maybe): \"Hello\"", actual);
         }
     }
 }
