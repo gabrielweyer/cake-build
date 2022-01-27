@@ -22,11 +22,11 @@ jobs:
           destination: packages
       - store_artifacts:
           name: Uploading JUnit test results as artifacts
-          path: artifacts/junit
+          path: artifacts/test-results/junit
           destination: tests-results-junit
       - store_test_results:
           # CircleCI infers the name of the testing framework from the containing folder
-          path: artifacts/junit
+          path: artifacts/test-results
 
 workflows:
   version: 2

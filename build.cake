@@ -99,7 +99,10 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var testResultsFile = artifactsDir.Combine("junit").Combine("{assembly}.{framework}.xml");
+        var testResultsFile = artifactsDir
+            .Combine("test-results")
+            .Combine("junit")
+            .Combine("{assembly}.{framework}.xml");
 
         var settings = new DotNetTestSettings
         {
