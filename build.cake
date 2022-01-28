@@ -65,8 +65,19 @@ Task("SetAppVeyorVersion")
         AppVeyor.UpdateBuildVersion(packageVersion);
     });
 
+Task("SetGitHubVersion")
+    .IsDependentOn("Semver")
+    .WithCriteria(() => GitHubActions.IsRunningOnGitHubActions)
+    .Does(() =>
+    {
+        var gitHubEnvironmentFile = Environment.GetEnvironmentVariable("GITHUB_ENV");
+        var packageVersionEnvironmentVariable = $"PACKAGE_VERSION={packageVersion}";
+        System.IO.File.WriteAllText(gitHubEnvironmentFile, packageVersionEnvironmentVariable);
+    });
+
 Task("Build")
     .IsDependentOn("SetAppVeyorVersion")
+    .IsDependentOn("SetGitHubVersion")
     .Does(() =>
     {
         var settings = new DotNetBuildSettings
