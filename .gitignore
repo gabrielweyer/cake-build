@@ -1,18 +1,17 @@
 # Rider
-
 .idea/
 *.DotSettings.user
 
 # Compilation detritus
-
 obj/
 bin/
 
 # Cake
-
 tools/
 artifacts/
 
 # Visual Studio
-
 .vs/
+
+# Visual Studio Test Platform
+*.trx
