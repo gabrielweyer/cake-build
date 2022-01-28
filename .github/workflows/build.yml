@@ -46,3 +46,11 @@ jobs:
           name: Test results
           path: 'artifacts/test-results/trx/*.trx'
           reporter: dotnet-trx
+      - name: Display package version
+        run: echo "v${{ env.PACKAGE_VERSION }}"
+      # - name: Create GitHub release
+      #   uses: softprops/action-gh-release@v0.1.14
+      #   with:
+      #     files: .\artifacts\packages
+      #     prerelease: true
+      #     tag_name: ''

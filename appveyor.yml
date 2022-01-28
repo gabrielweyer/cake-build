@@ -29,18 +29,18 @@ deploy:
     prerelease: false
     on:
       branch: main
-  - provider: GitHub
-    # By convention release versions start with `v`
-    release: v$(APPVEYOR_BUILD_VERSION)
-    auth_token:
-      # Encrypted `GitHub` `PAT`
-      # https://www.appveyor.com/docs/deployment/github/#provider-settings
-      secure: 9GDrvSy5jgreqfc9gz9lC3vajzPE7hkxy2AeD+bFn8TjGy5W13SEY61QvlWvtdKZ
-    artifact: packages
-    draft: false
-    prerelease: true
-    on:
-      branch: /features\/.+/
+  # - provider: GitHub
+  #   # By convention release versions start with `v`
+  #   release: v$(APPVEYOR_BUILD_VERSION)
+  #   auth_token:
+  #     # Encrypted `GitHub` `PAT`
+  #     # https://www.appveyor.com/docs/deployment/github/#provider-settings
+  #     secure: 9GDrvSy5jgreqfc9gz9lC3vajzPE7hkxy2AeD+bFn8TjGy5W13SEY61QvlWvtdKZ
+  #   artifact: packages
+  #   draft: false
+  #   prerelease: true
+  #   on:
+  #     branch: /features\/.+/
   - provider: NuGet
     server: https://www.myget.org/F/gabrielweyer/api/v2/package
     api_key:
