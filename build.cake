@@ -136,7 +136,7 @@ Task("Test")
             Framework = testProject.FrameworkVersion
         };
 
-        if (IsRunningOnCircleCI())
+        if (IsRunningOnCircleCI() || AzurePipelines.IsRunningOnAzurePipelines)
         {
             var jUnitTestResultsFile = testResultsDir
                 .Combine("junit")
