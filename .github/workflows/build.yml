@@ -36,5 +36,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: tests-results
-          path: .\artifacts\test-units\junit\*.xml
+          path: .\artifacts\test-results\trx\*.trx
         if: ${{ always() }}
+      - name: Report test results
+        uses: dorny/test-reporter@v1.5.0
+        continue-on-error: true
+        if: ${{ always() }}
+        with:
+          name: Test results
+          path: 'artifacts/test-results/trx/*.trx'
+          reporter: dotnet-trx

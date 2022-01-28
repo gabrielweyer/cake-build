@@ -1,4 +1,5 @@
 #tool dotnet:?package=GitVersion.Tool&version=5.8.1
+#addin nuget:?package=Cake.Incubator&version=7.0.0
 
 #r Newtonsoft.Json
 
@@ -10,8 +11,11 @@ var packageVersion = "1.0.0";
 
 var artifactsDir = MakeAbsolute(Directory("artifacts"));
 var packagesDir = artifactsDir.Combine(Directory("packages"));
+var testResultsDir = artifactsDir.Combine(Directory("test-results"));
 
 var solutionPath = "./build.sln";
+
+var testProjects = new List<TestProject>();
 
 Task("Clean")
     .Does(() =>
@@ -24,6 +28,8 @@ Task("Clean")
         };
 
         DotNetClean(solutionPath, settings);
+
+        DeleteFiles("./**/*.trx");
     });
 
 Task("Restore")
@@ -95,28 +101,58 @@ Task("Build")
         }
     });
 
-Task("Test")
+Task("ListTestProjectsAndFrameworkVersions")
     .IsDependentOn("Build")
-    .Does(() =>
+    .DoesForEach(GetFiles("./tests/*/*Tests.csproj"), (testProject) =>
     {
-        var testResultsFile = artifactsDir
-            .Combine("test-results")
-            .Combine("junit")
-            .Combine("{assembly}.{framework}.xml");
+        var parsedProject = ParseProject(testProject.FullPath, configuration: configuration);
 
+        parsedProject.TargetFrameworkVersions.ToList().ForEach(frameworkVersion =>
+        {
+            if (IsRunningOnLinuxOrDarwin() && frameworkVersion != "net6.0")
+            {
+                Information($"Skipping test project '{parsedProject.AssemblyName}' framework '{frameworkVersion}' as we're not running on Windows");
+                return;
+            }
+
+            var projectToTest = new TestProject
+            {
+                FullPath = testProject.FullPath,
+                AssemblyName = parsedProject.AssemblyName,
+                FrameworkVersion = frameworkVersion
+            };
+            testProjects.Add(projectToTest);
+        });
+    });
+
+Task("Test")
+    .IsDependentOn("ListTestProjectsAndFrameworkVersions")
+    .DoesForEach(() => testProjects, (testProject) =>
+    {
         var settings = new DotNetTestSettings
         {
             Configuration = configuration,
             NoBuild = true,
-            Loggers = new List<string>() { $"\"junit;LogFilePath={testResultsFile}\"" }
+            Framework = testProject.FrameworkVersion
         };
 
-        if (IsRunningOnLinuxOrDarwin())
+        if (IsRunningOnCircleCI())
         {
-            settings.Framework = "net6.0";
+            var jUnitTestResultsFile = testResultsDir
+                .Combine("junit")
+                .Combine("{assembly}.{framework}.xml");
+            settings.Loggers.Add($"\"junit;LogFilePath={jUnitTestResultsFile}\"");
         }
 
-        DotNetTest(solutionPath, settings);
+        if (GitHubActions.IsRunningOnGitHubActions)
+        {
+            var trxTestResultsFile = testResultsDir
+                .Combine("trx")
+                .Combine($"{testProject.AssemblyName}.{testProject.FrameworkVersion}.trx");
+            settings.Loggers.Add($"\"trx;LogFileName={trxTestResultsFile}\"");
+        }
+
+        DotNetTest(testProject.FullPath, settings);
     })
     .DeferOnError();
 
@@ -175,4 +211,11 @@ private bool IsRunningOnLinuxOrDarwin()
 private bool IsRunningOnCircleCI()
 {
     return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CIRCLECI"));
+}
+
+class TestProject
+{
+    public string FullPath { get; set; }
+    public string AssemblyName { get; set; }
+    public string FrameworkVersion { get; set; }
 }
