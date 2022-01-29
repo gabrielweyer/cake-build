@@ -62,3 +62,4 @@ jobs:
           prerelease: true
           fail_on_unmatched_files: true
           tag_name: 'v${{ env.PACKAGE_VERSION }}'
+          target_commitish: '${{ github.sha }}'
