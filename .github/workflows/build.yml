@@ -48,11 +48,15 @@ jobs:
           reporter: dotnet-trx
       - name: Create GitHub release on main branch
         if: ${{ github.ref_name == 'main' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           New-Item empty-release-notes.txt -ItemType file
           gh release create v${{ env.PACKAGE_VERSION }} --title v${{ env.PACKAGE_VERSION }} (Get-Item .\artifacts\packages\*) --target ${{ github.sha }} --repo ${{ github.repository }} --notes-file empty-release-notes.txt
       - name: Create GitHub prerelease on features branches
         if: ${{ startsWith(github.ref_name, 'features/') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           New-Item empty-release-notes.txt -ItemType file
           gh release create v${{ env.PACKAGE_VERSION }} --title v${{ env.PACKAGE_VERSION }} (Get-Item .\artifacts\packages\*) --target ${{ github.sha }} --repo ${{ github.repository }} --notes-file empty-release-notes.txt --prerelease
