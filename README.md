@@ -24,7 +24,7 @@ I tried to create a *somewhat* realistic scenario without writing too much code:
 - Use [`SemVer`][semver] to version the `DLLs` and the `NuGet` packages.
   - **Note**: `SemVer` is implemented via [`GitVersion`][git-version].
 
-I wrote a detailed [blog post][cake-build-post] about this experiment.
+I wrote a [blog post][cake-build-post] about this experiment.
 
 ## Table of contents
 
@@ -37,7 +37,7 @@ I wrote a detailed [blog post][cake-build-post] about this experiment.
 
 ## Pinning the version of Cake
 
-Pinning the version of `Cake` guarantees you'll be using the same version of `Cake` on your machine and in the build server.
+Pinning the version of `Cake` guarantees you'll be using the same version of `Cake` on your machine and on the build server.
 
 This is done by using `Cake` as a `.NET` **local** tool. The version is specified in `.config\dotnet-tools.json`.
 
@@ -129,6 +129,8 @@ list)
 
 ### Azure DevOps
 
+Azure DevOps [does not offer a free an unlimited plan for open-source projects any more][azure-devops-public-project-grant].
+
 Build status is visible [here][azure-devops].
 
 - Supports `Docker`, `Linux`, `macOS` and `Windows` hosted agents
@@ -157,7 +159,7 @@ Build status is visible [here][github-actions].
 
 `GitHub` has a few limitations:
 
-- A third-party / custom Action is required to display test results
+- A third-party / custom Action is required to report test results
 - A third-party / custom Action is required to create a GitHub release
 
 ## Status checks
@@ -206,3 +208,4 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [junit-xml-test-logger]: https://www.nuget.org/packages/JUnitXml.TestLogger/
 [github-actions]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml
 [github-actions-shield]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml/badge.svg
+[azure-devops-public-project-grant]: https://devblogs.microsoft.com/devops/change-in-azure-pipelines-grant-for-public-projects/
