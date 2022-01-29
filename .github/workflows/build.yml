@@ -47,22 +47,19 @@ jobs:
           path: 'artifacts/test-results/trx/*.trx'
           reporter: dotnet-trx
       - name: Create GitHub release on main branch
-        uses: softprops/action-gh-release@v0.1.14
         if: ${{ github.ref_name == 'main' }}
-        with:
-          files: 'artifacts/packages/*'
-          prerelease: false
-          fail_on_unmatched_files: true
-          tag_name: 'v${{ env.PACKAGE_VERSION }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          New-Item empty-release-notes.txt -ItemType file
+          gh release create v${{ env.PACKAGE_VERSION }} --title v${{ env.PACKAGE_VERSION }} (Get-Item .\artifacts\packages\*) --target ${{ github.sha }} --repo ${{ github.repository }} --notes-file empty-release-notes.txt
       - name: Create GitHub prerelease on features branches
-        uses: softprops/action-gh-release@v0.1.14
         if: ${{ startsWith(github.ref_name, 'features/') }}
-        with:
-          files: 'artifacts/packages/*'
-          prerelease: true
-          fail_on_unmatched_files: true
-          tag_name: 'v${{ env.PACKAGE_VERSION }}'
-          target_commitish: '${{ github.sha }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          New-Item empty-release-notes.txt -ItemType file
+          gh release create v${{ env.PACKAGE_VERSION }} --title v${{ env.PACKAGE_VERSION }} (Get-Item .\artifacts\packages\*) --target ${{ github.sha }} --repo ${{ github.repository }} --notes-file empty-release-notes.txt --prerelease
       - name: Push NuGet package on main branch
         if: ${{ github.ref_name == 'main' }}
         run: dotnet nuget push .\artifacts\packages\ --source https://www.myget.org/F/gabrielweyer/api/v2/package --api-key ${{ secrets.MYGET_NUGET_RELEASE }} --symbol-source https://www.myget.org/F/gabrielweyer/symbols/api/v2/package
