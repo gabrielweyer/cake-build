@@ -46,10 +46,19 @@ jobs:
           name: Test results
           path: 'artifacts/test-results/trx/*.trx'
           reporter: dotnet-trx
-      - name: Create GitHub release
+      - name: Create GitHub release on main branch
         uses: softprops/action-gh-release@v0.1.14
+        if: ${{ github.ref_name == 'main' }}
         with:
           files: 'artifacts/packages/*'
           prerelease: true
+          fail_on_unmatched_files: true
+          tag_name: 'v${{ env.PACKAGE_VERSION }}'
+      - name: Create GitHub prerelease on features branches
+        uses: softprops/action-gh-release@v0.1.14
+        if: ${{ startsWith(github.ref_name, 'features/') }}
+        with:
+          files: 'artifacts/packages/*'
+          prerelease: false
           fail_on_unmatched_files: true
           tag_name: 'v${{ env.PACKAGE_VERSION }}'
