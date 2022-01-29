@@ -104,7 +104,7 @@ Luckily [this issue][project-reference-dll-issue] provides a workaround. All the
 
 Each time a commit is pushed to `main` or `features/*`; `AppVeyor`, `Azure DevOps`, `CircleCI` and `GitHub` will build the changes.
 
-In case of a successful build `AppVeyor` will:
+In case of a successful build `GitHub` will:
 
 - On `main`
   - [Create][github-release] a `GitHub` **release**
