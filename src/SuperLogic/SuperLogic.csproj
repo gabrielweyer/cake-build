@@ -10,6 +10,7 @@
     <Authors>Gabriel Weyer</Authors>
     <Description>An even more incredible greeting function!</Description>
     <PackageTags>Super Logic;Logic</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeReferencedProjectInPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
   <ItemGroup>

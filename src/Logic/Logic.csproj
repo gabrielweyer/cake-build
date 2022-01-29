@@ -10,6 +10,7 @@
     <Authors>Gabriel Weyer</Authors>
     <Description>An incredible greeting function!</Description>
     <PackageTags>Logic</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
