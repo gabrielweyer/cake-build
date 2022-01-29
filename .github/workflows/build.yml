@@ -49,6 +49,7 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v0.1.14
         with:
-          files: .\artifacts\packages
+          files: 'artifacts/packages/*'
           prerelease: true
+          fail_on_unmatched_files: true
           tag_name: 'v${{ env.PACKAGE_VERSION }}'
