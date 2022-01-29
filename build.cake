@@ -57,14 +57,6 @@ Task("SemVer")
         Information($"NuGetVersion: {packageVersion}");
     });
 
-Task("SetAppVeyorVersion")
-    .IsDependentOn("Semver")
-    .WithCriteria(() => AppVeyor.IsRunningOnAppVeyor)
-    .Does(() =>
-    {
-        AppVeyor.UpdateBuildVersion(packageVersion);
-    });
-
 Task("SetGitHubVersion")
     .IsDependentOn("Semver")
     .WithCriteria(() => GitHubActions.IsRunningOnGitHubActions)
@@ -76,7 +68,6 @@ Task("SetGitHubVersion")
     });
 
 Task("Build")
-    .IsDependentOn("SetAppVeyorVersion")
     .IsDependentOn("SetGitHubVersion")
     .Does(() =>
     {
