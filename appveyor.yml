@@ -15,30 +15,6 @@ test: off
 # AppVeyor will create a release tag if a matching one does not exist
 # hence triggering another build
 skip_tags: true
-deploy:
-  # The provider is case sensitive
-  - provider: NuGet
-    server: https://www.myget.org/F/gabrielweyer/api/v2/package
-    api_key:
-      # Encrypted `MyGet` token - https://www.myget.org/profile/Me#!/AccessTokens
-      # https://www.appveyor.com/docs/deployment/nuget/#provider-settings
-      secure: D6J2fOzbRRsUDeQyVwTszLd+whkulKX1ZO7neqUZs2hMGOMljvRrVpkPlqvKJA2E
-    skip_symbols: false
-    symbol_server: https://www.myget.org/F/gabrielweyer/symbols/api/v2/package
-    artifact: packages
-    on:
-      branch: main
-  - provider: NuGet
-    server: https://www.myget.org/F/gabrielweyer-pre-release/api/v2/package
-    api_key:
-      # Encrypted `MyGet` token - https://www.myget.org/profile/Me#!/AccessTokens
-      # https://www.appveyor.com/docs/deployment/nuget/#provider-settings
-      secure: 5LLnFMrZETquTfl10cGML5CoozXgD0ULTWLlSjsi/oQi0XN0beUPM3O7Nsz8AK/d
-    skip_symbols: false
-    symbol_server: https://www.myget.org/F/gabrielweyer-pre-release/symbols/api/v2/package
-    artifact: packages
-    on:
-      branch: /features\/.+/
 # Environment variables
 environment:
   # No need to pre-warm the `NuGet` cache
