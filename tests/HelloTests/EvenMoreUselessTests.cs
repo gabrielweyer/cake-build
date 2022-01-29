@@ -9,11 +9,9 @@ namespace Contoso.Hello.HelloTests
         public void WhenDoWork_ThenSomeSweetJson()
         {
             // Act
-
             var actual = EvenMoreUseless.DoWork();
 
             // Assert
-
             Assert.Equal("Some JSON (maybe): \"Hello\"", actual);
         }
     }
