@@ -3,11 +3,13 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <AssemblyName>Contoso.Hello.SuperLogic</AssemblyName>
     <RootNamespace>Contoso.Hello.SuperLogic</RootNamespace>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageId>Contoso.Hello.SuperLogic</PackageId>
     <Authors>Gabriel Weyer</Authors>
     <Description>An even more incredible greeting function!</Description>
     <PackageTags>Super Logic;Logic</PackageTags>
-    <RepositoryUrl>https://github.com/gabrielweyer/cake-build</RepositoryUrl>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeReferencedProjectInPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
   <ItemGroup>
