@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'True'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
