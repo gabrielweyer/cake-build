@@ -4,6 +4,5 @@
         <AssemblyName>Contoso.Hello.ExtraLogic</AssemblyName>
         <RootNamespace>Contoso.Hello.ExtraLogic</RootNamespace>
         <IsPackable>false</IsPackable>
-        <DebugType>embedded</DebugType>
     </PropertyGroup>
 </Project>
