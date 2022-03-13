@@ -15,6 +15,9 @@ on:
 jobs:
   Build:
     runs-on: windows-2022
+    env:
+      CREATE_RELEASE: ${{ github.ref_name == 'main' && !contains(github.event.head_commit.message, '[skip-release]') }}
+      CREATE_PRERELEASE: ${{ startsWith(github.ref_name, 'features/') }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -47,22 +50,22 @@ jobs:
           path: 'artifacts/test-results/trx/*.trx'
           reporter: dotnet-trx
       - name: Create GitHub release on main branch
-        if: ${{ github.ref_name == 'main' }}
+        if: ${{ env.CREATE_RELEASE == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           New-Item empty-release-notes.txt -ItemType file
           gh release create v${{ env.PACKAGE_VERSION }} --title v${{ env.PACKAGE_VERSION }} (Get-Item .\artifacts\packages\*) --target ${{ github.sha }} --repo ${{ github.repository }} --notes-file empty-release-notes.txt
       - name: Create GitHub prerelease on features branches
-        if: ${{ startsWith(github.ref_name, 'features/') }}
+        if: ${{ env.CREATE_PRERELEASE == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           New-Item empty-release-notes.txt -ItemType file
           gh release create v${{ env.PACKAGE_VERSION }} --title v${{ env.PACKAGE_VERSION }} (Get-Item .\artifacts\packages\*) --target ${{ github.sha }} --repo ${{ github.repository }} --notes-file empty-release-notes.txt --prerelease
       - name: Push NuGet package on main branch
-        if: ${{ github.ref_name == 'main' }}
+        if: ${{ env.CREATE_RELEASE == 'true' }}
         run: dotnet nuget push .\artifacts\packages\ --source https://www.myget.org/F/gabrielweyer/api/v2/package --api-key ${{ secrets.MYGET_NUGET_RELEASE }} --symbol-source https://www.myget.org/F/gabrielweyer/symbols/api/v2/package
       - name: Push NuGet pre-release package on features branches
-        if: ${{ startsWith(github.ref_name, 'features/') }}
+        if: ${{ env.CREATE_PRERELEASE == 'true' }}
         run: dotnet nuget push .\artifacts\packages\ --source https://www.myget.org/F/gabrielweyer-pre-release/api/v2/package --api-key ${{ secrets.MYGET_NUGET_PRERELEASE }} --symbol-source https://www.myget.org/F/gabrielweyer-pre-release/symbols/api/v2/package
