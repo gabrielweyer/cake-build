@@ -1,4 +1,4 @@
-﻿namespace Contoso.Hello.ExtraLogic
+namespace Contoso.Hello.ExtraLogic
 {
     public static class IncrediblyUseless
     {

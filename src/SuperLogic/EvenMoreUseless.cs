@@ -1,4 +1,4 @@
-﻿using Contoso.Hello.ExtraLogic;
+using Contoso.Hello.ExtraLogic;
 using Contoso.Hello.Logic;
 
 namespace Contoso.Hello.SuperLogic
