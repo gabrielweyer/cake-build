@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;net461</TargetFrameworks>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <AssemblyName>Contoso.Hello.HelloTests</AssemblyName>
     <RootNamespace>Contoso.Hello.HelloTests</RootNamespace>
