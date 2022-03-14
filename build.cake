@@ -39,8 +39,21 @@ Task("Restore")
         DotNetRestore();
     });
 
-Task("SemVer")
+Task("Format")
     .IsDependentOn("Restore")
+    .Does(() =>
+    {
+        var settings = new DotNetFormatSettings
+        {
+            NoRestore = true,
+            VerifyNoChanges = true
+        };
+
+        DotNetFormat(solutionPath, settings);
+    });
+
+Task("SemVer")
+    .IsDependentOn("Format")
     .Does(() =>
     {
         var gitVersionSettings = new GitVersionSettings
