@@ -1,10 +1,9 @@
-namespace Contoso.Hello.ExtraLogic
+namespace Contoso.Hello.ExtraLogic;
+
+public static class IncrediblyUseless
 {
-    public static class IncrediblyUseless
+    public static string DoNothing(string value)
     {
-        public static string DoNothing(string value)
-        {
-            return value;
-        }
+        return value;
     }
 }
