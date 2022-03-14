@@ -5,8 +5,8 @@ branches:
     # We'll also build whenever there is a new commit on any branch starting with `features/`
     - /features\/.+/
 build_script:
-  - ps: dotnet cake build.cake --bootstrap
-  - ps: dotnet cake build.cake --pack
+  - pwsh: dotnet cake build.cake --bootstrap
+  - pwsh: dotnet cake build.cake --pack
 assembly_info:
   # We'll version the binaries and the NuGet package in the build script
   patch: false
@@ -24,5 +24,5 @@ install:
   # Cake build is targeting `.NET` `6.0.x`, so we can safely install the latest supported `SDK`
   # The `SDK` is required to restore, build, publish... a `.NET` application
   # https://www.microsoft.com/net/download/windows
-  - ps: .\build\dotnet-install.ps1 -InstallDir 'C:\Program Files\dotnet\'
-  - ps: dotnet tool restore
+  - pwsh: .\build\dotnet-install.ps1 -InstallDir 'C:\Program Files\dotnet\'
+  - pwsh: dotnet tool restore
