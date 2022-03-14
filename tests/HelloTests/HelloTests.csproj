@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net6.0;net461</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
     <AssemblyName>Contoso.Hello.HelloTests</AssemblyName>
     <RootNamespace>Contoso.Hello.HelloTests</RootNamespace>

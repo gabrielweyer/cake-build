@@ -3,10 +3,16 @@ on:
   push:
     branches:
       - main
-      - 'features/**'
-      - 'gh-actions/**'
     paths-ignore:
-      - .editorconfig
+      - LICENSE
+      - README.md
+      - appveyor.yml
+      - .circleci/config.yml
+      - azure-pipelines.yml
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
       - LICENSE
       - README.md
       - appveyor.yml
