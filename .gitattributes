@@ -3,3 +3,6 @@ bootstrap.sh eol=lf
 
 *.ps1 linguist-vendored
 *.sh linguist-vendored
+
+# Rider setting
+*.DotSettings eol=lf
