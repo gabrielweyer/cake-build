@@ -1,17 +1,14 @@
 name: Build
-on:
-  push:
-    branches:
-      - main
-      - 'features/**'
-      - 'gh-actions/**'
-    paths-ignore:
-      - .editorconfig
-      - LICENSE
-      - README.md
-      - appveyor.yml
-      - .circleci/config.yml
-      - azure-pipelines.yml
+on: [push, pull_request]
+  branches:
+    - main
+  paths-ignore:
+    - .editorconfig
+    - LICENSE
+    - README.md
+    - appveyor.yml
+    - .circleci/config.yml
+    - azure-pipelines.yml
 jobs:
   Build:
     runs-on: windows-2022
