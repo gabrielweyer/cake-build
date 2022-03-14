@@ -8,7 +8,6 @@ trigger:
     - features/*
   paths:
     exclude:
-    - .editorconfig
     - LICENSE
     - README.md
     - appveyor.yml
