@@ -19,13 +19,15 @@ on:
       - .circleci/config.yml
       - azure-pipelines.yml
 jobs:
-  Build:
+  build:
+    name: Build
     runs-on: windows-2022
     env:
       CREATE_RELEASE: ${{ github.ref_name == 'main' && !contains(github.event.head_commit.message, '[skip-release]') }}
       CREATE_PRERELEASE: ${{ startsWith(github.ref_name, 'features/') }}
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Install latest .NET SDK
