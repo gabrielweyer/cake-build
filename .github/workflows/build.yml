@@ -19,13 +19,16 @@ on:
       - .circleci/config.yml
       - azure-pipelines.yml
 jobs:
-  Build:
+  build:
+    name: Build
     runs-on: windows-2022
     env:
       CREATE_RELEASE: ${{ github.ref_name == 'main' && !contains(github.event.head_commit.message, '[skip-release]') }}
-      CREATE_PRERELEASE: ${{ startsWith(github.ref_name, 'features/') }}
+      IS_FEATURE_PULL_REQUEST: ${{ github.event_name == 'pull_request' && startsWith(github.head_ref, 'features/') }}
+      CREATE_PRERELEASE: 'false'
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Install latest .NET SDK
@@ -55,6 +58,14 @@ jobs:
           name: Test results
           path: 'artifacts/test-results/trx/*.trx'
           reporter: dotnet-trx
+      - name: Determine if we're skipping release on feature Pull Request
+        if: ${{ env.IS_FEATURE_PULL_REQUEST == 'true' }}
+        run: |
+          $headCommitMessage = git log ${{ github.event.pull_request.head.sha }} -n 1 --format=%B
+          Write-Host "HEAD commit message is: $headCommitMessage"
+          if ($headCommitMessage -notlike '*[skip-release]*') {
+            "CREATE_PRERELEASE=true" >> $Env:GITHUB_ENV
+          }
       - name: Create GitHub release on main branch
         if: ${{ env.CREATE_RELEASE == 'true' }}
         env:
