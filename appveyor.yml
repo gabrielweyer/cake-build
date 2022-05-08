@@ -1,9 +1,4 @@
 image: Visual Studio 2022
-branches:
-  only:
-    - main
-    # We'll also build whenever there is a new commit on any branch starting with `features/`
-    - /features\/.+/
 build_script:
   - pwsh: dotnet cake build.cake --bootstrap
   - pwsh: dotnet cake build.cake --pack
