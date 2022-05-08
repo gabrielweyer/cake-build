@@ -32,10 +32,4 @@ workflows:
   version: 2
   build:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - main
-                - /features\/.*/
-                - /circleci\/.*/
+      - build
