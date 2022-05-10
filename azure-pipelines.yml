@@ -8,11 +8,12 @@ trigger:
     - features/*
   paths:
     exclude:
-    - LICENSE
-    - README.md
-    - appveyor.yml
     - .circleci/config.yml
     - .github/workflows/build.yml
+    - .vscode/**
+    - appveyor.yml
+    - LICENSE
+    - README.md
 
 steps:
 - task: UseDotNet@2

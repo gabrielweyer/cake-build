@@ -4,20 +4,22 @@ on:
     branches:
       - main
     paths-ignore:
+      - .circleci/config.yml
+      - '.vscode/**'
+      - appveyor.yml
+      - azure-pipelines.yml
       - LICENSE
       - README.md
-      - appveyor.yml
-      - .circleci/config.yml
-      - azure-pipelines.yml
   pull_request:
     branches:
       - main
     paths-ignore:
+      - .circleci/config.yml
+      - '.vscode/**'
+      - appveyor.yml
+      - azure-pipelines.yml
       - LICENSE
       - README.md
-      - appveyor.yml
-      - .circleci/config.yml
-      - azure-pipelines.yml
 jobs:
   build:
     name: Build
