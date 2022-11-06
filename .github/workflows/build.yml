@@ -25,7 +25,7 @@ jobs:
     name: Build
     runs-on: windows-2022
     env:
-      CREATE_RELEASE: ${{ github.ref_name == 'main' && !contains(github.event.head_commit.message, '[skip-release]') }}
+      CREATE_RELEASE: ${{ github.ref_name == 'main' && !contains(github.event.head_commit.message, '[skip-release]') && !contains(github.event.head_commit.message, 'dependabot[bot]') }}
       IS_FEATURE_PULL_REQUEST: ${{ github.event_name == 'pull_request' && startsWith(github.head_ref, 'features/') }}
       CREATE_PRERELEASE: 'false'
     steps:
