@@ -30,7 +30,7 @@ jobs:
       CREATE_PRERELEASE: 'false'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Install latest .NET SDK
@@ -42,18 +42,18 @@ jobs:
           dotnet cake build.cake --bootstrap
           dotnet cake build.cake --pack
       - name: Upload NuGet packages
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: packages
           path: .\artifacts\packages
       - name: Upload dotnet test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tests-results
           path: .\artifacts\test-results\trx\*.trx
         if: ${{ always() }}
       - name: Report test results
-        uses: dorny/test-reporter@v1.5.0
+        uses: dorny/test-reporter@v1.6.0
         continue-on-error: true
         if: ${{ always() }}
         with:
