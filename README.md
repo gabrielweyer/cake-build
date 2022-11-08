@@ -178,7 +178,6 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 
 [cake]: https://cakebuild.net/
 [nuget-org]: https://www.nuget.org/
-[build-cake]: build.cake
 [semver]: https://semver.org/
 [git-version]: https://gitversion.net/docs/
 [pack-issues]: https://github.com/NuGet/Home/issues/6285
