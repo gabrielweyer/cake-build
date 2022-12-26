@@ -162,6 +162,10 @@ Build status is visible [here][github-actions].
 - A third-party / custom Action is required to report test results
 - A third-party / custom Action is required to create a GitHub release
 
+### Travis CI
+
+I decided to remove Travis CI. Travis CI [poorly handled a security vulnerability][travis-ci-vulnerability] and security is of paramount importance when it comes to build systems.
+
 ## Status checks
 
 The `main` branch is [`protected`][github-protected-branch]:
@@ -208,3 +212,4 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [github-actions]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml
 [github-actions-shield]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml/badge.svg
 [azure-devops-public-project-grant]: https://devblogs.microsoft.com/devops/change-in-azure-pipelines-grant-for-public-projects/
+[travis-ci-vulnerability]: https://arstechnica.com/information-technology/2021/09/travis-ci-flaw-exposed-secrets-for-thousands-of-open-source-projects/
