@@ -5,6 +5,9 @@ on:
       - main
     paths-ignore:
       - .circleci/config.yml
+      - .github/workflows/security-scanning-csharp.yml
+      - .github/workflows/skipped-build.yml
+      - .github/dependabot.yml
       - '.vscode/**'
       - appveyor.yml
       - azure-pipelines.yml
@@ -15,6 +18,9 @@ on:
       - main
     paths-ignore:
       - .circleci/config.yml
+      - .github/workflows/security-scanning-csharp.yml
+      - .github/workflows/skipped-build.yml
+      - .github/dependabot.yml
       - '.vscode/**'
       - appveyor.yml
       - azure-pipelines.yml
