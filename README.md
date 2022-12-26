@@ -207,7 +207,7 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [dotnet-sdk]: https://dotnet.microsoft.com/download/dotnet/6.0
 [azure-devops-shield]: https://dev.azure.com/gabrielweyer/cake-build/_apis/build/status/Cake?branchName=main
 [azure-devops]: https://dev.azure.com/gabrielweyer/cake-build/_build/latest?definitionId=12&branchName=main
-[cake-build-post]: https://gabrielweyer.github.io/2018/04/22/cake-build/
+[cake-build-post]: https://gabrielweyer.net/2018/04/21/cake-build/
 [junit-xml-test-logger]: https://www.nuget.org/packages/JUnitXml.TestLogger/
 [github-actions]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml
 [github-actions-shield]: https://github.com/gabrielweyer/cake-build/actions/workflows/build.yml/badge.svg
