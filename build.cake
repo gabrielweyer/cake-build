@@ -1,5 +1,5 @@
 #tool dotnet:?package=GitVersion.Tool&version=5.11.0
-#addin nuget:?package=Cake.Incubator&version=7.0.0
+#addin nuget:?package=Cake.Incubator&version=8.0.0
 
 #r Newtonsoft.Json
 
