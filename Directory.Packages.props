@@ -8,7 +8,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
     <PackageVersion Include="xunit" Version="2.5.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.3" Condition="'$(TargetFramework)' == 'net461'" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" Condition="'$(TargetFramework)' == 'net6.0'" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.0" Condition="'$(TargetFramework)' == 'net6.0'" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 </Project>
