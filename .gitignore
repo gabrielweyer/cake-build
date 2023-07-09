@@ -15,3 +15,6 @@ artifacts/
 
 # Visual Studio Test Platform
 *.trx
+
+# Git
+*.orig
