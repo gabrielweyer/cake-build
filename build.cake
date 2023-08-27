@@ -165,6 +165,7 @@ Task("Test")
                 .Combine("trx")
                 .Combine($"{testProject.AssemblyName}.{testProject.FrameworkVersion}.trx");
             settings.Loggers.Add($"\"trx;LogFileName={trxTestResultsFile}\"");
+            settings.Loggers.Add($"\"GitHubActions;annotations.titleFormat=$test ({testProject.FrameworkVersion})\"");
         }
 
         DotNetTest(testProject.FullPath, settings);
