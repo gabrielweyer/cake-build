@@ -26,10 +26,4 @@
       <BuildOutputInPackage Include="$(OutputPath)Contoso.Hello.ExtraLogic.dll" />
     </ItemGroup>
   </Target>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
 </Project>

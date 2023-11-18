@@ -7,10 +7,10 @@
 
 | CI | Status | Platform(s) | Framework(s) | Test Framework(s) |
 | --- | --- | --- | --- | --- |
-| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net462` | `net6.0`, `net462` |
-| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `net6.0` |
-| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/sdk:6.0-focal` | `netstandard2.0` | `net6.0` |
-| [GitHub](#github) | [![Build Status][github-actions-shield]][github-actions] | `Windows` | `netstandard2.0`, `net462` | `net6.0`, `net462` |
+| [AppVeyor](#appveyor) | [![Build Status][app-veyor-shield]][app-veyor] | `Windows` | `netstandard2.0`, `net462` | `net8.0`, `net462` |
+| [Azure DevOps](#azure-devops) | [![Build Status][azure-devops-shield]][azure-devops] | `Linux` | `netstandard2.0` | `net8.0` |
+| [CircleCI](#circleci) | [![Build Status][circle-ci-shield]][circle-ci] | `Docker`: `mcr.microsoft.com/dotnet/sdk:8.0` | `netstandard2.0` | `net8.0` |
+| [GitHub](#github) | [![Build Status][github-actions-shield]][github-actions] | `Windows` | `netstandard2.0`, `net462` | `net8.0`, `net462` |
 
 Demonstrates a basic build of a `.NET` `NuGet` package using [Cake][cake].
 
@@ -45,7 +45,7 @@ This is done by using `Cake` as a `.NET` **local** tool. The version is specifie
 
 ### Pre-requisites
 
-- [.NET SDK 6.0.x][dotnet-sdk] and higher
+- [.NET SDK 8.0.x][dotnet-sdk] and higher
 
 ### Initial setup on Windows
 
@@ -204,7 +204,7 @@ After a branch was configured as `protected`, `GitHub` will suggest available [s
 [github-status-checks]: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches#require-status-checks-before-merging
 [circle-ci]: https://app.circleci.com/pipelines/github/gabrielweyer/cake-build
 [circle-ci-shield]: https://circleci.com/gh/gabrielweyer/cake-build/tree/main.svg?style=shield
-[dotnet-sdk]: https://dotnet.microsoft.com/download/dotnet/6.0
+[dotnet-sdk]: https://dotnet.microsoft.com/download/dotnet/8.0
 [azure-devops-shield]: https://dev.azure.com/gabrielweyer/cake-build/_apis/build/status/Cake?branchName=main
 [azure-devops]: https://dev.azure.com/gabrielweyer/cake-build/_build/latest?definitionId=12&branchName=main
 [cake-build-post]: https://gabrielweyer.net/2018/04/21/cake-build/
