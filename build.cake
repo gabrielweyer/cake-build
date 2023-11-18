@@ -104,7 +104,7 @@ Task("Build")
                 .ToList()
                 .ForEach(f => DotNetBuild(f.FullPath, settings));
 
-            settings.Framework = "net6.0";
+            settings.Framework = "net8.0";
 
             GetFiles("./tests/*/*Tests.csproj")
                 .ToList()
@@ -124,7 +124,7 @@ Task("ListTestProjectsAndFrameworkVersions")
 
         parsedProject.TargetFrameworkVersions.ToList().ForEach(frameworkVersion =>
         {
-            if (IsRunningOnLinuxOrDarwin() && frameworkVersion != "net6.0")
+            if (IsRunningOnLinuxOrDarwin() && frameworkVersion != "net8.0")
             {
                 Information($"Skipping test project '{parsedProject.AssemblyName}' framework '{frameworkVersion}' as we're not running on Windows");
                 return;

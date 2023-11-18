@@ -6,7 +6,7 @@ assembly_info:
   # We'll version the binaries and the NuGet package in the build script
   patch: false
 # We'll run the tests in the build script
-test: off
+test: false
 # AppVeyor will create a release tag if a matching one does not exist
 # hence triggering another build
 skip_tags: true
@@ -16,7 +16,7 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 # `install` will run before `build_script`
 install:
-  # Cake build is targeting `.NET` `6.0.x`, so we can safely install the latest supported `SDK`
+  # Cake build is targeting `.NET` `8.0.x`, so we can safely install the latest supported `SDK`
   # The `SDK` is required to restore, build, publish... a `.NET` application
   # https://www.microsoft.com/net/download/windows
   - pwsh: .\build\dotnet-install.ps1 -InstallDir 'C:\Program Files\dotnet\'
