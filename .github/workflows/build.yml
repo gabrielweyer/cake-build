@@ -52,12 +52,12 @@ jobs:
           dotnet cake build.cake --bootstrap
           dotnet cake build.cake --pack
       - name: Upload NuGet packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: packages
           path: .\artifacts\packages
       - name: Upload dotnet test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tests-results
           path: .\artifacts\test-results\trx\*.trx
