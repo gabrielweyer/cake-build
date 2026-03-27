@@ -37,10 +37,10 @@ jobs:
       PACKAGE_VERSION:
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         name: Install .NET 8
         with:
           dotnet-version: '8.0.x'
@@ -52,12 +52,12 @@ jobs:
           dotnet cake build.cake --bootstrap
           dotnet cake build.cake --pack
       - name: Upload NuGet packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: packages
           path: .\artifacts\packages
       - name: Upload dotnet test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: tests-results
           path: .\artifacts\test-results\trx\*.trx
