@@ -3,14 +3,9 @@ version: 2.1
 jobs:
   build:
     docker:
-      # Cake.Tool 7+ only targets net10.0 and net11.0
       - image: mcr.microsoft.com/dotnet/sdk:10.0
     steps:
       - checkout
-      - run:
-          name: Install .NET 8 runtime (required to run the net8.0 tests)
-          command: |
-            bash ./build/dotnet-install.sh --runtime dotnet --channel 8.0 --install-dir /usr/share/dotnet
       - run:
           name: Restore "Cake.Tool" .NET local tool
           command: |
