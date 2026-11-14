@@ -1,5 +1,4 @@
 #tool dotnet:?package=GitVersion.Tool&version=5.12.0
-#addin nuget:?package=Cake.Incubator&version=8.0.0
 
 #r Newtonsoft.Json
 
@@ -120,24 +119,24 @@ Task("ListTestProjectsAndFrameworkVersions")
     .IsDependentOn("Build")
     .DoesForEach(GetFiles("./tests/*/*Tests.csproj"), (testProject) =>
     {
-        var parsedProject = ParseProject(testProject.FullPath, configuration: configuration);
+        var (assemblyName, frameworkVersions) = GetAssemblyNameAndTargetFrameworks(testProject);
 
-        parsedProject.TargetFrameworkVersions.ToList().ForEach(frameworkVersion =>
+        foreach (var frameworkVersion in frameworkVersions)
         {
             if (IsRunningOnLinuxOrDarwin() && frameworkVersion != "net8.0")
             {
-                Information($"Skipping test project '{parsedProject.AssemblyName}' framework '{frameworkVersion}' as we're not running on Windows");
-                return;
+                Information($"Skipping test project '{assemblyName}' framework '{frameworkVersion}' as we're not running on Windows");
+                continue;
             }
 
             var projectToTest = new TestProject
             {
                 FullPath = testProject.FullPath,
-                AssemblyName = parsedProject.AssemblyName,
+                AssemblyName = assemblyName,
                 FrameworkVersion = frameworkVersion
             };
             testProjects.Add(projectToTest);
-        });
+        }
     });
 
 Task("Test")
@@ -222,6 +221,45 @@ RunTarget(target);
 private bool IsRunningOnLinuxOrDarwin()
 {
     return Context.Environment.Platform.IsUnix();
+}
+
+/// <summary>
+/// Asks MSBuild for the evaluated 'AssemblyName' and target framework(s) of a project.
+/// </summary>
+private (string AssemblyName, string[] TargetFrameworks) GetAssemblyNameAndTargetFrameworks(FilePath project)
+{
+    var settings = new ProcessSettings
+    {
+        Arguments = new ProcessArgumentBuilder()
+            .Append("msbuild")
+            .AppendQuoted(project.FullPath)
+            .Append($"-property:Configuration={configuration}")
+            .Append("-getProperty:AssemblyName")
+            .Append("-getProperty:TargetFrameworks")
+            .Append("-getProperty:TargetFramework"),
+        RedirectStandardOutput = true
+    };
+
+    var exitCode = StartProcess("dotnet", settings, out var output);
+    var json = string.Join(Environment.NewLine, output);
+
+    if (exitCode != 0)
+    {
+        throw new CakeException($"Failed to evaluate '{project.FullPath}' (exit code {exitCode}): {json}");
+    }
+
+    var properties = System.Text.Json.JsonDocument.Parse(json).RootElement.GetProperty("Properties");
+    var assemblyName = properties.GetProperty("AssemblyName").GetString();
+    var targetFrameworks = properties.GetProperty("TargetFrameworks").GetString();
+
+    if (string.IsNullOrWhiteSpace(targetFrameworks))
+    {
+        targetFrameworks = properties.GetProperty("TargetFramework").GetString();
+    }
+
+    var frameworks = targetFrameworks.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+    return (assemblyName, frameworks);
 }
 
 private bool IsRunningOnCircleCI()
