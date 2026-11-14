@@ -1,7 +1,5 @@
 #tool dotnet:?package=GitVersion.Tool&version=5.12.0
 
-#r Newtonsoft.Json
-
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
