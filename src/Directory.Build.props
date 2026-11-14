@@ -2,6 +2,11 @@
   <PropertyGroup>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
+    <!--
+      Only on by default for net5.0+. Without it 'TargetRefPath' is empty, and 'dotnet format' (MSBuildWorkspace)
+      warns "Found project reference without a matching metadata reference" when loading the workspace.
+    -->
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'True'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
