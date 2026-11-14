@@ -156,7 +156,7 @@ Task("Test")
             var jUnitTestResultsFile = testResultsDir
                 .Combine("junit")
                 .Combine("{assembly}.{framework}.xml");
-            settings.Loggers.Add($"\"junit;LogFilePath={jUnitTestResultsFile}\"");
+            settings.Loggers.Add($"junit;LogFilePath={jUnitTestResultsFile}");
         }
 
         if (GitHubActions.IsRunningOnGitHubActions)
@@ -164,8 +164,8 @@ Task("Test")
             var trxTestResultsFile = testResultsDir
                 .Combine("trx")
                 .Combine($"{testProject.AssemblyName}.{testProject.FrameworkVersion}.trx");
-            settings.Loggers.Add($"\"trx;LogFileName={trxTestResultsFile}\"");
-            settings.Loggers.Add($"\"GitHubActions;annotations.titleFormat=$test@{testProject.FrameworkVersion}\"");
+            settings.Loggers.Add($"trx;LogFileName={trxTestResultsFile}");
+            settings.Loggers.Add($"GitHubActions;annotations.titleFormat=$test@{testProject.FrameworkVersion}");
         }
 
         DotNetTest(testProject.FullPath, settings);
